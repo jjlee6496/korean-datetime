@@ -169,3 +169,31 @@ def test_aihub_eval_scores_detection_and_values(tmp_path: Path) -> None:
 
 def test_aihub_eval_rejects_missing_folder(tmp_path: Path) -> None:
     assert run("aihub_eval.py", str(tmp_path / "없음")).returncode == 2
+
+
+# ---------------------------------------------------------------- aihub_benchmark.py
+
+
+def test_aihub_benchmark_writes_tables_with_source(tmp_path: Path) -> None:
+    document = _aihub_document(
+        "2021-11-01 00:00:00",
+        "29일 첫 신청을 받았다",
+        [{"text": "29일", "extent": [0, 3], "type": "DATE", "value": "2021-10-29"}],
+    )
+    for split in ("Training", "Validation"):
+        folder = tmp_path / split / "02.라벨링데이터" / "TL_뉴스_사회"
+        folder.mkdir(parents=True)
+        (folder / "doc.json").write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
+    result = run("aihub_benchmark.py", str(tmp_path))
+    assert result.returncode == 0, result.stderr
+    assert "AI허브" in result.stdout and "시간 표현 탐지 데이터" in result.stdout  # 출처
+    nearest = next(line for line in result.stdout.splitlines() if line.startswith("| `cycle=nearest`"))
+    future = next(line for line in result.stdout.splitlines() if line.startswith("| `cycle=future`"))
+    assert (
+        nearest.split("|")[2].strip("* ") == "1.000"
+    )  # 뉴스 Training: 29일@11-01 → 10-29 (가장 좋은 값은 굵게)
+    assert future.split("|")[2].strip("* ") == "0.000"
+
+
+def test_aihub_benchmark_requires_both_splits(tmp_path: Path) -> None:
+    assert run("aihub_benchmark.py", str(tmp_path)).returncode == 2

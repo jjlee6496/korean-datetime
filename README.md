@@ -43,6 +43,7 @@ uv run pytest                    # 테스트 + 정량 평가 리포트만
 | `evaluate.py` | 원하는 기준 시각·기간으로 정답셋 리포트 (실패 재현) | `evaluate.py --from 2026-12-25 --to 2027-01-05 --at 23:50` |
 | `vendor.py` | 설치 없이 복사 + 매니페스트, 복사본 수정 여부 검사 | `vendor.py myapp/_vendor`, `vendor.py --check myapp/_vendor/ko_normalizer` |
 | `aihub_eval.py` | AI허브 시간 표현 탐지 데이터(TIMEX3)로 실제 문장 평가. 데이터는 저장소에 넣지 않음 | `aihub_eval.py <라벨링데이터 폴더> --samples 20` |
+| `aihub_benchmark.py` | 옵션별 × Training/Validation 전체 표를 마크다운으로 (`docs/benchmark.md`) | `aihub_benchmark.py <데이터 루트> > docs/benchmark.md` |
 
 일회성 작업(데이터 한 번 변환 등)은 저장소에 넣지 않고, 반복해서 쓰는 작업만 `scripts/`에 둡니다.
 
@@ -118,11 +119,11 @@ parser = TemporalParser(ParseOptions(cycle=Cycle.NEAREST, ambiguous_hour=Ambiguo
 | 옵션 | 기본값 | 설명 |
 |---|---|---|
 | `cycle` | `FUTURE` | 연/월/날짜가 생략된 표현("15일", "6월 3일", "금요일", "추석")의 주기. `FUTURE`: 지났으면 다음 주기("15일"@20일 → 다음 달, "오전 10시"@14시 → 내일) / `PAST`: 오늘 포함 가장 최근 / `NEAREST`: 이전·이번·다음 중 가장 가까운 것 / `CURRENT`: 넘기지 않음. "올해", "이번달"처럼 명시하거나 "지난", "오는"이 붙으면 그쪽을 따름 |
-| `ambiguous_hour` | `NEAREST_FUTURE` | 오전/오후 없는 1~12시. 날짜가 없거나 오늘이면 기준 시각 이후 가장 가까운 시각("3시"@14:30 → 15:00, "2시"@14:30 → 내일 02:00), 다른 날이면 `DAYTIME` 규칙. 그 외 `DAYTIME`, `PM`, `AS_IS`, `CONTEXT`(같은 텍스트의 앞 시각·시간대 말로 정함: "오후 6시에 끝나고 8시 영화" → 20시. AI허브 대화 오전/오후 일치율 0.753, `DAYTIME` 0.681) |
+| `ambiguous_hour` | `NEAREST_FUTURE` | 오전/오후 없는 1~12시. 날짜가 없거나 오늘이면 기준 시각 이후 가장 가까운 시각("3시"@14:30 → 15:00, "2시"@14:30 → 내일 02:00), 다른 날이면 `DAYTIME` 규칙. 그 외 `DAYTIME`, `PM`, `AS_IS`, `CONTEXT`(같은 텍스트의 앞 시각·시간대 말로 정함: "오후 6시에 끝나고 8시 영화" → 20시. AI허브 대화 오전/오후 일치율 0.753, `DAYTIME` 0.681, [벤치마크](docs/benchmark.md)) |
 | `daytime_start` | `7` | `DAYTIME` 규칙에서 오전으로 볼 최소 시각 (7 → 7~11시 오전, 1~6시 오후) |
 | `timezone` | `None` | 기준 시각이 없을 때 서버 시각을 읽을 시간대 |
 | `compact_dates` | `False` | 구분자 없는 `1015`, `261015`를 날짜로 인식 (오탐이 많아 기본 꺼짐) |
-| `vague` | `False` | "최근", "요즘", "향후" 같은 막연한 때를 `Kind.VAGUE`로 인식. 값은 기준일, 방향은 `direction`(recent/past/future). 어휘는 `temporal/lexicon.py`의 `VAGUE_WORDS` 표 하나에서 넣고 뺌. AI허브 뉴스 재현율 0.761 → 0.808, 정밀도 0.938 → 0.926 |
+| `vague` | `False` | "최근", "요즘", "향후" 같은 막연한 때를 `Kind.VAGUE`로 인식. 값은 기준일, 방향은 `direction`(recent/past/future). 어휘는 `temporal/lexicon.py`의 `VAGUE_WORDS` 표 하나에서 넣고 뺌. AI허브 뉴스 재현율 0.765 → 0.808, 정밀도 0.938 → 0.928 ([벤치마크](docs/benchmark.md)) |
 
 ### 용도별 권장 설정
 
@@ -131,7 +132,7 @@ parser = TemporalParser(ParseOptions(cycle=Cycle.NEAREST, ambiguous_hour=Ambiguo
 | 용도 | 설정 | 이유 |
 |---|---|---|
 | 채팅·예약·일정 요청 (기본) | `ParseOptions()` (`cycle=FUTURE`) | "15일에 보자", "3시"는 대부분 앞으로의 일 |
-| 뉴스·보도자료 | `ParseOptions(cycle=Cycle.NEAREST)` | 지난 일과 앞으로의 일정이 섞임. AI허브 뉴스 값 정확도 0.844 → **0.909** |
+| 뉴스·보도자료 | `ParseOptions(cycle=Cycle.NEAREST)` | 지난 일과 앞으로의 일정이 섞임. AI허브 뉴스 값 정확도 0.841 → **0.908** |
 | 일지·회고·완료 보고 | `ParseOptions(cycle=Cycle.PAST)` | 거의 전부 지난 일일 때만 ("15일에 다녀왔다") |
 | 옛 글 다시 처리 | 위 설정 + `now=작성 시각` | "오늘", "지난주"는 글을 쓴 시각 기준이어야 함 |
 
@@ -143,7 +144,7 @@ news.parse("29일 첫 신청을 받았다", now=datetime(2021, 11, 1)).start   #
 news.parse("15일부터 접수한다", now=datetime(2021, 11, 1)).start       # 2021-11-15 (14일 뒤가 17일 전보다 가까움)
 ```
 
-같은 AI허브 뉴스에서 `cycle`별 값 정확도: `FUTURE` 0.844, `PAST` 0.861, `CURRENT` 0.905, `NEAREST` 0.909.
+AI허브 뉴스(Training)에서 `cycle`별 값 정확도: `FUTURE` 0.841, `PAST` 0.860, `CURRENT` 0.904, `NEAREST` 0.908 ([벤치마크](docs/benchmark.md)).
 뉴스를 "과거 우선"으로 처리하면 오히려 손해입니다. "3월부터 등교 권고", "19일부터 예약"처럼 앞으로의 일정 기사가 많기 때문입니다.
 
 그 밖의 규칙:
@@ -274,31 +275,39 @@ TOTAL                 31822     0     0      1.000   1.000
 - `test_holidays.py`: 음력 변환을 한국천문연구원 역서 날짜(2019~2026년 설날·추석·부처님 오신 날)로 검증
 - `test_docs.py`: DSL 문서가 코드·정답셋과 맞는지 (모든 함수·메서드·카테고리가 문서에 있는지, 문서의 식 예시가 실행되는지)
 - `test_vendoring.py`: 설치 없이 다른 이름으로 복사해도 동작하는지
-- 전체: 테스트 491개(기본 490 + 전체 스윕 1), `ruff`·`mypy --strict` 통과
+- 전체: 테스트 493개(기본 492 + 전체 스윕 1), `ruff`·`mypy --strict` 통과
 
-## 실제 문장 평가 (AI허브 시간 표현 탐지 데이터)
+## 벤치마크 (실제 문장)
 
-위 정답셋은 직접 만든 것이라 회귀 방지용입니다. 실제 정확도는 AI허브 [시간 표현 탐지 데이터](https://aihub.or.kr)(TIMEX3 주석, Validation 4,407문서: 뉴스 1,500 · 대화 2,411 · 역사 496)로 잽니다.
-데이터는 라이선스상 저장소에 넣지 않고, 받은 폴더를 넘겨 실행합니다.
+위 정답셋은 직접 만든 것이라 회귀 방지용입니다. 실제 성능은 외부 데이터로 잽니다.
+
+데이터 출처: AI허브(한국지능정보사회진흥원) [「시간 표현 탐지 데이터」](https://aihub.or.kr). 데이터는 이 저장소에 포함하지 않습니다.
+
+**전체 표: [docs/benchmark.md](docs/benchmark.md)** (옵션별 × Training/Validation × 뉴스/대화/역사)
+
+기본 설정, Training(뉴스 98,545 · 대화 91,876 · 역사 26,330개 표현):
+
+| 분야 | 재현율 | 정밀도 | 값 정확도 |
+|---|---:|---:|---:|
+| 뉴스 | 0.765 | 0.938 | 0.841 |
+| 대화 | 0.679 | 0.961 | 0.918 |
+| 역사 | 0.662 | 0.968 | 0.864 |
+
+옵션을 바꿨을 때 가장 크게 달라지는 것 (Training):
+
+| 옵션 | 지표 | 기본값 | 바꾼 값 | 언제 |
+|---|---|---:|---:|---|
+| `cycle=NEAREST` | 뉴스 값 정확도 | 0.841 | **0.908** | 뉴스·보도자료 |
+| `ambiguous_hour=CONTEXT` | 대화 오전/오후 일치율 (695건) | 0.485 | **0.753** | 대화 기록·로그 (실시간 아님) |
+| `vague=True` | 대화 재현율 / 정밀도 | 0.679 / 0.961 | **0.747** / 0.955 | "최근", "향후"도 필요할 때 |
+
+재현율이 낮은 건 대부분 이 라이브러리가 기본으로 다루지 않는 표현 때문입니다. "최근", "요즘"(대화 정답의 74%), "가을", "19세기", 문맥 지시("이날", "그때")가 그렇습니다.
+날짜·시각이 정해진 표현만 보면 재현율은 0.86~0.92입니다.
 
 ```bash
-uv run python scripts/aihub_eval.py "<…>/Validation/02.라벨링데이터"            # zip 그대로
-uv run python scripts/aihub_eval.py "<…>" --cycle nearest --samples 20        # 주기 선택 비교, 실패 예시
+uv run python scripts/aihub_benchmark.py "<…>/01-1.정식개방데이터" > docs/benchmark.md   # 전체 표 다시 만들기
+uv run python scripts/aihub_eval.py "<…>/Validation/02.라벨링데이터" --cycle nearest --samples 20   # 한 설정, 실패 예시
 ```
-
-| 분야 | 정답(DATE/TIME) | 재현율 | 정밀도 | 값 정확도 (작성 시각 기준) |
-|---|---:|---:|---:|---|
-| 뉴스 | 12,245 | 0.761 | 0.938 | 0.844 (`cycle=NEAREST` 0.909) |
-| 대화 | 11,717 | 0.676 | 0.952 | 0.905 (월·일·시만 정해진 값) |
-| 역사 | 3,203 | 0.694 | 0.973 | 0.868 |
-
-종류별 재현율은 날짜·시각이 정해진 표현 0.86~0.92, 시간대 0.92입니다. 전체 재현율을 낮추는 건 이 라이브러리가 일부러 다루지 않는 표현입니다:
-"최근", "요즘", "향후"(값 없음, 대화 정답의 74%), "가을", "19세기", "3분기 전"류, 문맥 지시("이날", "그때").
-
-알려진 한계 (수치로 확인됨):
-- **주기 선택**: 뉴스는 지난 일과 앞으로의 일정이 섞여 기본값(`FUTURE`)보다 `cycle=NEAREST`가 값 정확도가 높음 (0.844 → 0.909, [용도별 권장 설정](#용도별-권장-설정))
-- **오전/오후**: 대화의 오전/오후 없는 시각은 문맥("저녁 먹으러 8시", "8시까지 출근")으로 정해져 일치율이 절반 정도 (`daytime` 정책 0.64, 기본 0.47). 값은 그대로 두고 `meridiem`으로 표시함
-- **"이날", "전날"**: 뉴스에서는 61~71%가 기사 작성일·그 전날이지만 역사·대화에선 문맥 지시라 인식하지 않음
 
 ## 명령행
 
@@ -314,6 +323,7 @@ uv run ko-normalizer "내일 3시에 보고 모레 5시" --all --ambiguous-hour 
 ```
 docs/
 ├── tutorial.md          # 상황별 사용법 (예시 결과는 tests/test_tutorial.py가 실제로 실행해 확인)
+├── benchmark.md         # AI허브 데이터 옵션별 벤치마크 (scripts/aihub_benchmark.py가 생성)
 └── expectation-dsl.md   # 기대값 식(DSL) 전체 정리, 정답셋 관리 절차
 src/ko_normalizer/
 ├── core/            # 날짜/시간이 쓰는 기반: scanner(경계·조사), numerals(한글 수사), clock(기준 시각), types, evaluation
