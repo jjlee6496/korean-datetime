@@ -373,3 +373,7 @@ from myapp._vendor.korean_datetime import parse, reference_time
 
 API를 새로 설계했습니다. 기존 `DateNormalizer`/`TimeNormalizer`, `extract_and_normalize`, `time_range`/`reference_type`, `PatternNormalizer`/`Rule`, `fixed_now`는 제거되었습니다.
 구 코드에 있던 주요 오류("12월25일" → 2월 25일, "다음달 15일" → 이번 달, "05:00" → 날짜 5일·17시, "열한시 십오분" → 23:10, "24시" 예외, 설날/추석 미지원)는 재설계로 해결되었습니다.
+
+## 라이선스
+
+[MIT](LICENSE). 벤치마크에 쓴 AI허브 데이터는 포함하지 않으며, 그 이용 조건은 AI허브를 따릅니다.

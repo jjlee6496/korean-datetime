@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
 license = "MIT"
+license-files = ["LICENSE"]
 keywords = [
     "korean", "hangul", "nlp", "korean-nlp", "datetime", "date-parser", "time-parser", "dateparser",
     "natural-language-date", "temporal-expression", "timex", "relative-date", "date-extraction",
