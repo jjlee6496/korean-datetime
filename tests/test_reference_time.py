@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta, timezone
 
 import pytest
 
-from ko_normalizer import (
+from korean_datetime import (
     ParseOptions,
     TemporalParser,
     current_reference,

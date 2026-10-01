@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from ko_normalizer import parse, parse_all
+from korean_datetime import parse, parse_all
 
 SUNDAY_NIGHT = datetime(2026, 10, 4, 23, 59)
 

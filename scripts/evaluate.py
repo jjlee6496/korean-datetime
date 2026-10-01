@@ -16,7 +16,7 @@ from collections.abc import Sequence
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
-from ko_normalizer.temporal.evaluation import ambiguity_from_report, evaluate_temporal, load_expression_gold
+from korean_datetime.temporal.evaluation import ambiguity_from_report, evaluate_temporal, load_expression_gold
 
 GOLD = Path(__file__).resolve().parent.parent / "tests" / "data" / "temporal_gold.jsonl"
 

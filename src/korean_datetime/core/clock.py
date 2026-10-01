@@ -22,7 +22,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from datetime import date, datetime, tzinfo
 
-_REFERENCE: ContextVar[datetime | None] = ContextVar("ko_normalizer_reference_time", default=None)
+_REFERENCE: ContextVar[datetime | None] = ContextVar("korean_datetime_reference_time", default=None)
 
 
 def _as_datetime(value: datetime | date) -> datetime:

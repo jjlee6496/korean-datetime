@@ -6,8 +6,8 @@ from datetime import date, datetime
 
 import pytest
 
-from ko_normalizer import Direction, Kind, ParseOptions, TemporalParser, parse_all
-from ko_normalizer.temporal import lexicon as lx
+from korean_datetime import Direction, Kind, ParseOptions, TemporalParser, parse_all
+from korean_datetime.temporal import lexicon as lx
 
 NOW = datetime(2026, 10, 1, 10, 0)
 VAGUE = TemporalParser(ParseOptions(vague=True))

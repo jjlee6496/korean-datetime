@@ -24,10 +24,10 @@ from references import (
     sampled_report,
 )
 
-from ko_normalizer import parse
-from ko_normalizer.core.evaluation import EvaluationReport, GoldCase, Metrics, evaluate, load_gold
-from ko_normalizer.temporal.evaluation import evaluate_temporal, load_expression_gold, temporal_matches
-from ko_normalizer.temporal.expectation import evaluate_expectation
+from korean_datetime import parse
+from korean_datetime.core.evaluation import EvaluationReport, GoldCase, Metrics, evaluate, load_gold
+from korean_datetime.temporal.evaluation import evaluate_temporal, load_expression_gold, temporal_matches
+from korean_datetime.temporal.expectation import evaluate_expectation
 
 # 임계값: 정답셋은 회귀 기준이므로 전부 맞아야 한다. 어려운 케이스를 추가하며 조정할 수 있다.
 MIN_ACCURACY = 1.0

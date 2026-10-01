@@ -19,7 +19,7 @@
 
 ```python
 from datetime import datetime
-from ko_normalizer import parse, parse_all
+from korean_datetime import parse, parse_all
 
 NOW = datetime(2026, 10, 1, 14, 30)
 ```
@@ -95,7 +95,7 @@ parse("오후 3시에 보자", now=NOW).ambiguities  # → ()
 다른 규칙이 맞는 서비스라면 바꿀 수 있습니다. 예를 들어 영화 예매처럼 항상 오후인 경우입니다.
 
 ```python
-from ko_normalizer import AmbiguousHour, ParseOptions
+from korean_datetime import AmbiguousHour, ParseOptions
 
 pm = ParseOptions(ambiguous_hour=AmbiguousHour.PM)
 parse("내일 9시", now=NOW, options=pm).start   # → 2026-10-02 21:00:00
@@ -136,7 +136,7 @@ parse("내일", now=utc_now.astimezone(KST)).start   # → 2026-10-02 00:00:00+0
 **문제 2: 요청마다 `now=`를 넘기기 번거롭습니다.** 웹 서버라면 미들웨어에서 한 번만 정합니다.
 
 ```python
-from ko_normalizer import reference_time
+from korean_datetime import reference_time
 
 with reference_time(datetime(2026, 10, 1, 14, 30)):
     parse("내일").start        # → 2026-10-02 00:00:00
@@ -174,7 +174,7 @@ parse("올해 6월 3일", now=NOW).start    # → 2026-06-03 00:00:00
 | `CURRENT` | 넘기지 않음 | 11월 29일 | 이번 주기로 고정 |
 
 ```python
-from ko_normalizer import Cycle
+from korean_datetime import Cycle
 
 news = ParseOptions(cycle=Cycle.NEAREST)
 article = datetime(2021, 11, 1)

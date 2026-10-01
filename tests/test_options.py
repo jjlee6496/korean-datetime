@@ -7,7 +7,7 @@ from datetime import datetime
 import pytest
 from helpers import TODAY, at, d, date_span, days, dt, must, p
 
-from ko_normalizer import AmbiguousHour, ParseOptions, parse
+from korean_datetime import AmbiguousHour, ParseOptions, parse
 
 MORNING = datetime(2026, 9, 28, 8, 5)
 

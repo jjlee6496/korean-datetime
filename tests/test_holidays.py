@@ -7,7 +7,7 @@ from datetime import timedelta
 import pytest
 from helpers import TODAY, d, date_span, must
 
-from ko_normalizer.temporal.lunar import lunar_to_solar
+from korean_datetime.temporal.lunar import lunar_to_solar
 
 # 한국천문연구원 역서 기준으로 알려진 날짜
 SEOLLAL = {

@@ -9,7 +9,7 @@
 
 "금요일"이라는 입력은 기준 시각이 언제든 `next(FRI)`, 즉 "오늘 이후 가장 가까운 금요일"로 해석되어야 한다는 뜻입니다.
 
-- 구현: [`src/ko_normalizer/temporal/expectation.py`](../src/ko_normalizer/temporal/expectation.py)
+- 구현: [`src/korean_datetime/temporal/expectation.py`](../src/korean_datetime/temporal/expectation.py)
 - 정답셋: [`tests/data/temporal_gold.jsonl`](../tests/data/temporal_gold.jsonl)
 - 이 문서가 코드와 맞는지 `tests/test_docs.py`가 검사합니다. 함수·메서드·카테고리를 추가하면 이 문서도 함께 고쳐야 테스트가 통과합니다.
 
@@ -286,7 +286,7 @@ X의 주기는 **가장 안쪽 기본 값**이 정합니다([4.1](#41-기본-값
 
 ### 5.3 비교 규칙
 
-`src/ko_normalizer/temporal/evaluation.py`의 `temporal_matches`가 비교합니다. 식 결과는 아래 필드로 바뀌어 비교됩니다(`Expect.as_expected()`).
+`src/korean_datetime/temporal/evaluation.py`의 `temporal_matches`가 비교합니다. 식 결과는 아래 필드로 바뀌어 비교됩니다(`Expect.as_expected()`).
 
 | 필드 | 비교 방법 |
 |---|---|

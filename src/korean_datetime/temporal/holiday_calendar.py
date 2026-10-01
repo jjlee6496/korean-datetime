@@ -3,7 +3,7 @@
 공휴일(대체공휴일, 임시공휴일 등)은 정책으로 정해져 계산할 수 없으므로, 필요한 데이터를 밖에서 넣습니다.
 
     import holidays                                  # 예: python-holidays (이 라이브러리의 의존성 아님)
-    from ko_normalizer import ParseOptions, DateTableHolidays, ChainedHolidays, BuiltinHolidays, parse
+    from korean_datetime import ParseOptions, DateTableHolidays, ChainedHolidays, BuiltinHolidays, parse
 
     kr = DateTableHolidays(holidays.KR(years=range(2025, 2031), language="ko"))
     options = ParseOptions(holidays=ChainedHolidays(kr, BuiltinHolidays()))  # 주입 데이터 우선, 없으면 내장

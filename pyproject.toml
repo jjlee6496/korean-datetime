@@ -3,28 +3,49 @@ requires = ["hatchling>=1.24"]
 build-backend = "hatchling.build"
 
 [project]
-name = "ko-normalizer"
+name = "korean-datetime"
 version = "1.0.0"
-description = "한국어 날짜·시간 표현 추출/정규화 라이브러리 — 표준 라이브러리만 사용"
+description = "Korean temporal expression parser: 한국어 자연어 날짜·시간·기간 표현(다음주 월요일 저녁 7시, 추석 연휴, 3시부터 5시까지)을 datetime 구간으로 변환. 의존성 없음"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
 license = "MIT"
-keywords = ["korean", "nlp", "date", "time", "normalization"]
+keywords = [
+    "korean", "hangul", "nlp", "korean-nlp", "datetime", "date-parser", "time-parser", "dateparser",
+    "natural-language-date", "temporal-expression", "timex", "relative-date", "date-extraction",
+    "한국어", "날짜", "시간", "자연어",
+]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
     "Natural Language :: Korean",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
 ]
 
+[project.urls]
+Homepage = "https://github.com/jjlee6496/korean-datetime"
+Documentation = "https://github.com/jjlee6496/korean-datetime/blob/main/docs/tutorial.md"
+Benchmark = "https://github.com/jjlee6496/korean-datetime/blob/main/docs/benchmark.md"
+Issues = "https://github.com/jjlee6496/korean-datetime/issues"
+
 [project.scripts]
-ko-normalizer = "ko_normalizer.__main__:main"
+korean-datetime = "korean_datetime.__main__:main"
 
 [dependency-groups]
 dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6", "mypy>=1.11"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/ko_normalizer"]
+packages = ["src/korean_datetime"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src"]
@@ -32,7 +53,7 @@ addopts = "-q --doctest-modules -m 'not slow'"
 markers = ["slow: 전체 기준 시각 스윕 (uv run pytest -m slow)"]
 
 [tool.coverage.run]
-source = ["ko_normalizer"]
+source = ["korean_datetime"]
 branch = true
 
 [tool.coverage.report]

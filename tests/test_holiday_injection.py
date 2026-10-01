@@ -8,7 +8,7 @@ from datetime import date
 import pytest
 from helpers import NOW, d
 
-from ko_normalizer import (
+from korean_datetime import (
     BuiltinHolidays,
     ChainedHolidays,
     DateTableHolidays,

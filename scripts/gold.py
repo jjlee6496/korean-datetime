@@ -20,9 +20,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from ko_normalizer import TemporalParser
-from ko_normalizer.temporal.evaluation import temporal_matches
-from ko_normalizer.temporal.expectation import ExpectationError, evaluate_expectation
+from korean_datetime import TemporalParser
+from korean_datetime.temporal.evaluation import temporal_matches
+from korean_datetime.temporal.expectation import ExpectationError, evaluate_expectation
 
 ROOT = Path(__file__).resolve().parent.parent
 GOLD = ROOT / "tests" / "data" / "temporal_gold.jsonl"

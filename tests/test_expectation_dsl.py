@@ -6,7 +6,7 @@ from datetime import datetime
 
 import pytest
 
-from ko_normalizer.temporal.expectation import Expect, ExpectationError, evaluate_expectation
+from korean_datetime.temporal.expectation import Expect, ExpectationError, evaluate_expectation
 
 REF = datetime(2026, 9, 28, 14, 30)  # 월요일
 

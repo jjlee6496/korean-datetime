@@ -11,7 +11,7 @@ from datetime import datetime
 import pytest
 from helpers import NOW, must, p
 
-from ko_normalizer import Ambiguity
+from korean_datetime import Ambiguity
 
 A = Ambiguity
 

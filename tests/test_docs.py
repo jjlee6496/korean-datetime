@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from ko_normalizer.temporal import expectation
+from korean_datetime.temporal import expectation
 
 ROOT = Path(__file__).parent.parent
 DOC = (ROOT / "docs" / "expectation-dsl.md").read_text(encoding="utf-8")

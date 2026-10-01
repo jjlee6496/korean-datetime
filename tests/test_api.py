@@ -8,7 +8,7 @@ from datetime import date, time, timedelta, timezone
 import pytest
 from helpers import NOW, at, days, must
 
-from ko_normalizer import (
+from korean_datetime import (
     Grain,
     Kind,
     TemporalParser,
@@ -18,7 +18,7 @@ from ko_normalizer import (
     parse_datetime,
     parse_time,
 )
-from ko_normalizer.__main__ import main
+from korean_datetime.__main__ import main
 
 
 def test_convenience_functions() -> None:

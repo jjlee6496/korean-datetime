@@ -27,7 +27,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from ko_normalizer import Ambiguity, AmbiguousHour, Cycle, ParseOptions, TemporalExpression, TemporalParser
+from korean_datetime import Ambiguity, AmbiguousHour, Cycle, ParseOptions, TemporalExpression, TemporalParser
 
 FULL = re.compile(r"^(\d{4})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}))?)?)?$")
 PARTIAL = re.compile(r"^XXXX-(\d{2}|XX)(?:-(\d{2}|XX)(?:T(\d{2}):(\d{2}))?)?$")

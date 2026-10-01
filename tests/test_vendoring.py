@@ -9,12 +9,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-PACKAGE = Path(__file__).parent.parent / "src" / "ko_normalizer"
-MODULE_PATH = re.compile(r"ko_normalizer(\.\w+)+")  # 'ko_normalizer.temporal.data' 같은 절대 모듈 경로
+PACKAGE = Path(__file__).parent.parent / "src" / "korean_datetime"
+MODULE_PATH = re.compile(r"korean_datetime(\.\w+)+")  # 'korean_datetime.temporal.data' 같은 절대 모듈 경로
 
 
 def test_package_never_imports_itself_by_absolute_name() -> None:
-    """절대 import('from ko_normalizer…')나 패키지 이름 문자열이 있으면 다른 이름으로 복사했을 때 깨진다"""
+    """절대 import('from korean_datetime…')나 패키지 이름 문자열이 있으면 다른 이름으로 복사했을 때 깨진다"""
     offenders = []
     for path in PACKAGE.rglob("*.py"):
         tree = ast.parse(path.read_text(encoding="utf-8"))
@@ -22,10 +22,10 @@ def test_package_never_imports_itself_by_absolute_name() -> None:
             if (
                 isinstance(node, ast.ImportFrom)
                 and node.level == 0
-                and (node.module or "").startswith("ko_normalizer")
+                and (node.module or "").startswith("korean_datetime")
             ):
                 offenders.append(f"{path.name}:{node.lineno} from {node.module}")
-            if isinstance(node, ast.Import) and any(a.name.startswith("ko_normalizer") for a in node.names):
+            if isinstance(node, ast.Import) and any(a.name.startswith("korean_datetime") for a in node.names):
                 offenders.append(f"{path.name}:{node.lineno} import")
             if (
                 isinstance(node, ast.Constant)

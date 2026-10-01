@@ -9,10 +9,10 @@ from __future__ import annotations
 import pytest
 from references import sampled_references
 
-from ko_normalizer import Cycle, ParseOptions, TemporalParser
-from ko_normalizer.core.evaluation import GoldCase
-from ko_normalizer.temporal.evaluation import evaluate_temporal
-from ko_normalizer.temporal.expectation import evaluate_expectation
+from korean_datetime import Cycle, ParseOptions, TemporalParser
+from korean_datetime.core.evaluation import GoldCase
+from korean_datetime.temporal.evaluation import evaluate_temporal
+from korean_datetime.temporal.expectation import evaluate_expectation
 
 # (문장, 주기를 감쌀 식, 뒤에 붙일 메서드). 주기는 날짜 단위로 고르고 시각은 그 뒤에 붙음
 OMITTED: list[tuple[str, ...]] = [

@@ -1,6 +1,14 @@
-# ko-normalizer
+# korean-datetime
 
-한국어 문장에서 **날짜·시간·날짜+시간 표현**을 찾아 표준 값(구간)으로 바꾸는 라이브러리입니다. **표준 라이브러리만 사용합니다** (Python 3.10+).
+**Korean natural-language date & time parser** — extracts temporal expressions from Korean text
+("다음주 월요일 저녁 7시", "추석 연휴", "3시부터 5시까지") and resolves them to datetime ranges with granularity and ambiguity flags.
+Zero dependencies, Python 3.10+.
+
+한국어 문장에서 **날짜·시간·기간 표현**을 찾아 `[start, end)` datetime 구간으로 바꾸는 파서입니다. 상대 날짜, 오전/오후 추정, 음력 명절, 범위를 다루고, 추정한 부분은 모호성으로 표시합니다. **표준 라이브러리만 사용합니다** (Python 3.10+).
+
+```bash
+pip install git+https://github.com/jjlee6496/korean-datetime
+```
 
 - "다음주 월요일 저녁 7시 반", "추석 연휴", "3시부터 5시까지", "2시간 30분 후", "지난 3일간"
 - 모호하게 추정한 부분은 값과 함께 표시 (오전/오후, 연도 넘김 등)
@@ -10,7 +18,7 @@
 
 ```python
 from datetime import datetime
-from ko_normalizer import parse, parse_all
+from korean_datetime import parse, parse_all
 
 now = datetime(2026, 9, 28, 14, 30)  # 월요일
 
@@ -41,7 +49,7 @@ uv run pytest                    # 테스트 + 정량 평가 리포트만
 | `gold.py add` | 식을 여러 기준 시각에서 계산해 파서와 비교한 뒤 추가. 다르면 거부 (TDD로 먼저 넣을 땐 `--allow-mismatch`) | `gold.py add --category weekday --text "다음 금요일" --expect "next(FRI)"` |
 | `gold.py show` | 한 문장의 파서 값과 식 값을 기준 시각별로 비교 | `gold.py show "3시" --now 2026-09-28T23:50` |
 | `evaluate.py` | 원하는 기준 시각·기간으로 정답셋 리포트 (실패 재현) | `evaluate.py --from 2026-12-25 --to 2027-01-05 --at 23:50` |
-| `vendor.py` | 설치 없이 복사 + 매니페스트, 복사본 수정 여부 검사 | `vendor.py myapp/_vendor`, `vendor.py --check myapp/_vendor/ko_normalizer` |
+| `vendor.py` | 설치 없이 복사 + 매니페스트, 복사본 수정 여부 검사 | `vendor.py myapp/_vendor`, `vendor.py --check myapp/_vendor/korean_datetime` |
 | `aihub_eval.py` | AI허브 시간 표현 탐지 데이터(TIMEX3)로 실제 문장 평가. 데이터는 저장소에 넣지 않음 | `aihub_eval.py <라벨링데이터 폴더> --samples 20` |
 | `aihub_benchmark.py` | 옵션별 × Training/Validation 전체 표를 마크다운으로 (`docs/benchmark.md`) | `aihub_benchmark.py <데이터 루트> > docs/benchmark.md` |
 
@@ -88,7 +96,7 @@ uv run pytest                    # 테스트 + 정량 평가 리포트만
 ```python
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from ko_normalizer import ParseOptions, TemporalParser, parse_time, reference_time
+from korean_datetime import ParseOptions, TemporalParser, parse_time, reference_time
 
 KST = ZoneInfo("Asia/Seoul")  # Windows에서는 pip install tzdata 필요
 
@@ -111,7 +119,7 @@ parser = TemporalParser(ParseOptions(timezone=KST))
 ## 해석 규칙과 옵션
 
 ```python
-from ko_normalizer import AmbiguousHour, Cycle, ParseOptions, TemporalParser
+from korean_datetime import AmbiguousHour, Cycle, ParseOptions, TemporalParser
 
 parser = TemporalParser(ParseOptions(cycle=Cycle.NEAREST, ambiguous_hour=AmbiguousHour.PM))
 ```
@@ -137,7 +145,7 @@ parser = TemporalParser(ParseOptions(cycle=Cycle.NEAREST, ambiguous_hour=Ambiguo
 | 옛 글 다시 처리 | 위 설정 + `now=작성 시각` | "오늘", "지난주"는 글을 쓴 시각 기준이어야 함 |
 
 ```python
-from ko_normalizer import Cycle, ParseOptions, TemporalParser
+from korean_datetime import Cycle, ParseOptions, TemporalParser
 
 news = TemporalParser(ParseOptions(cycle=Cycle.NEAREST))
 news.parse("29일 첫 신청을 받았다", now=datetime(2021, 11, 1)).start   # 2021-10-29 (3일 전이 28일 뒤보다 가까움)
@@ -192,7 +200,7 @@ AI허브 뉴스(Training)에서 `cycle`별 값 정확도: `FUTURE` 0.841, `PAST`
 
 ### 반복형 상대 표현
 
-반복되는 접두어는 표에 하나씩 적지 않고 규칙으로 선언합니다([`temporal/lexicon.py`](src/ko_normalizer/temporal/lexicon.py)의 `RepeatRule`). 반복은 최대 4회까지 인식합니다.
+반복되는 접두어는 표에 하나씩 적지 않고 규칙으로 선언합니다([`temporal/lexicon.py`](src/korean_datetime/temporal/lexicon.py)의 `RepeatRule`). 반복은 최대 4회까지 인식합니다.
 
 | 규칙 | 예 |
 |---|---|
@@ -207,12 +215,12 @@ AI허브 뉴스(Training)에서 `cycle`별 값 정확도: `FUTURE` 0.841, `PAST`
 
 ### 기념일·공휴일 데이터 주입
 
-내장 기념일은 [`temporal/data/holidays.json`](src/ko_normalizer/temporal/data/holidays.json)(양력/음력, 연휴 기간, 다른 기념일 기준 오프셋)에 항목을 추가하면 됩니다.
+내장 기념일은 [`temporal/data/holidays.json`](src/korean_datetime/temporal/data/holidays.json)(양력/음력, 연휴 기간, 다른 기념일 기준 오프셋)에 항목을 추가하면 됩니다.
 대체공휴일·임시공휴일처럼 정책으로 정해지는 날은 계산할 수 없으므로, **외부 데이터를 주입**합니다. 외부 라이브러리는 의존성이 아닙니다.
 
 ```python
 import holidays  # 예: python-holidays. {date: 이름} 매핑이면 무엇이든 가능
-from ko_normalizer import BuiltinHolidays, ChainedHolidays, DateTableHolidays, ParseOptions, parse
+from korean_datetime import BuiltinHolidays, ChainedHolidays, DateTableHolidays, ParseOptions, parse
 
 external = DateTableHolidays(holidays.KR(years=range(2025, 2031), language="ko"),
                              aliases={"창립기념일": ["회사 생일"]})
@@ -312,10 +320,10 @@ uv run python scripts/aihub_eval.py "<…>/Validation/02.라벨링데이터" --c
 ## 명령행
 
 ```bash
-uv run ko-normalizer "내일 저녁 7시" --now 2026-09-28T14:30
+uv run korean-datetime "내일 저녁 7시" --now 2026-09-28T14:30
 {"text": "내일 저녁 7시", "span": [0, 8], "kind": "datetime", "grain": "hour", ...}
 
-uv run ko-normalizer "내일 3시에 보고 모레 5시" --all --ambiguous-hour pm
+uv run korean-datetime "내일 3시에 보고 모레 5시" --all --ambiguous-hour pm
 ```
 
 ## 구조
@@ -325,7 +333,7 @@ docs/
 ├── tutorial.md          # 상황별 사용법 (예시 결과는 tests/test_tutorial.py가 실제로 실행해 확인)
 ├── benchmark.md         # AI허브 데이터 옵션별 벤치마크 (scripts/aihub_benchmark.py가 생성)
 └── expectation-dsl.md   # 기대값 식(DSL) 전체 정리, 정답셋 관리 절차
-src/ko_normalizer/
+src/korean_datetime/
 ├── core/            # 날짜/시간이 쓰는 기반: scanner(경계·조사), numerals(한글 수사), clock(기준 시각), types, evaluation
 ├── temporal/        # 날짜/시간
 │   ├── rules.py         # 정규식 토큰 규칙          (scan)
@@ -345,14 +353,14 @@ src/ko_normalizer/
 
 ## 설치 없이 복사해서 쓰기 (vendoring)
 
-외부 의존성이 없고 모든 import가 상대 경로라서, **`src/ko_normalizer` 폴더를 통째로 복사**하면 됩니다. 이름과 위치는 자유입니다.
+외부 의존성이 없고 모든 import가 상대 경로라서, **`src/korean_datetime` 폴더를 통째로 복사**하면 됩니다. 이름과 위치는 자유입니다.
 
 ```bash
 uv run python scripts/vendor.py <내 프로젝트>/myapp/_vendor              # 복사 + VENDORED.json(버전·파일 해시)
-uv run python scripts/vendor.py --check <내 프로젝트>/myapp/_vendor/ko_normalizer   # 복사본이 수정됐는지
+uv run python scripts/vendor.py --check <내 프로젝트>/myapp/_vendor/korean_datetime   # 복사본이 수정됐는지
 ```
 ```python
-from myapp._vendor.ko_normalizer import parse, reference_time
+from myapp._vendor.korean_datetime import parse, reference_time
 ```
 
 - **필요한 것**: Python 3.10 이상. `temporal/data/holidays.json`을 반드시 같이 복사해야 합니다(폴더째 복사하면 포함됨).

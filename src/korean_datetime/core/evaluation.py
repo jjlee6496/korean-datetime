@@ -1,4 +1,4 @@
-"""정답셋(gold) 기반 정량 평가 — 모든 normalizer 공용
+"""정답셋(gold) 기반 정량 평가 (값 하나를 예측하는 파서 공용)
 
 정답셋은 JSONL입니다. 첫 줄에 `{"_meta": {"now": "..."}}`로 기본 기준 시각을 둘 수 있고,
 각 줄은 `{"category": str, "text": str, "expected": {...} | null, "now"?: str}` 형식입니다.

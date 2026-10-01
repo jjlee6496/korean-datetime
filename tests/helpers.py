@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, time, timedelta
 
-from ko_normalizer import Kind, ParseOptions, TemporalExpression, parse
+from korean_datetime import Kind, ParseOptions, TemporalExpression, parse
 
 # 기준 시각: 2026-09-28 (월요일) 14:30 — 정답셋(tests/data/temporal_gold.jsonl)과 동일
 NOW = datetime(2026, 9, 28, 14, 30)

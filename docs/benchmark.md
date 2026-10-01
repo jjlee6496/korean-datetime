@@ -3,7 +3,7 @@
 데이터 출처: AI허브(한국지능정보사회진흥원) [「시간 표현 탐지 데이터」](https://aihub.or.kr).
 데이터는 이 저장소에 포함하지 않습니다.
 
-ko-normalizer 1.0.0, 2026-10-01 측정. `uv run python scripts/aihub_benchmark.py <데이터 루트> > docs/benchmark.md`로 다시 만듭니다.
+korean-datetime 1.0.0, 2026-10-01 측정. `uv run python scripts/aihub_benchmark.py <데이터 루트> > docs/benchmark.md`로 다시 만듭니다.
 옵션은 하나씩만 바꾸고 나머지는 기본값입니다.
 평가 방식은 `scripts/aihub_eval.py` 머리말에 있습니다.
 Validation은 규칙을 다듬을 때 오류를 본 데이터라,

@@ -7,8 +7,8 @@ from datetime import datetime, timedelta, timezone
 from functools import lru_cache
 from pathlib import Path
 
-from ko_normalizer.core.evaluation import EvaluationReport
-from ko_normalizer.temporal.evaluation import (
+from korean_datetime.core.evaluation import EvaluationReport
+from korean_datetime.temporal.evaluation import (
     AmbiguityReport,
     ambiguity_from_report,
     evaluate_temporal,

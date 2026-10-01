@@ -1,6 +1,6 @@
 """명령행: 날짜/시간 표현을 JSON Lines로 출력
 
-    $ python -m ko_normalizer "내일 저녁 7시" --now 2026-09-28T14:30
+    $ python -m korean_datetime "내일 저녁 7시" --now 2026-09-28T14:30
     {"text": "내일 저녁 7시", ..., "value": "2026-09-29T19:00:00", ...}
 
 인식 결과가 없으면 종료 코드 1.
@@ -18,7 +18,7 @@ from .temporal import AmbiguousHour, Cycle, ParseOptions, TemporalParser
 
 
 def _build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="ko-normalizer", description="한국어 날짜/시간 표현 정규화")
+    parser = argparse.ArgumentParser(prog="korean-datetime", description="한국어 날짜/시간 표현 정규화")
     parser.add_argument("text", nargs="?", help="분석할 텍스트 (생략하면 표준 입력)")
     parser.add_argument("--now", help="기준 시각 (ISO 8601, 예: 2026-09-28T14:30). 기본: 현재 시각")
     parser.add_argument("--all", action="store_true", help="모든 표현 출력 (기본: 첫 표현만)")

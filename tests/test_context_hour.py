@@ -12,7 +12,7 @@ from datetime import datetime
 
 import pytest
 
-from ko_normalizer import Ambiguity, AmbiguousHour, ParseOptions, TemporalParser
+from korean_datetime import Ambiguity, AmbiguousHour, ParseOptions, TemporalParser
 
 NOW = datetime(2026, 10, 1, 9, 0)
 CONTEXT = TemporalParser(ParseOptions(ambiguous_hour=AmbiguousHour.CONTEXT))

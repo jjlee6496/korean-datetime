@@ -1,8 +1,8 @@
 """
-ko_normalizer: 한국어 날짜·시간·혼합 표현 추출·정규화 (표준 라이브러리만 사용)
+korean_datetime: 한국어 날짜·시간·혼합 표현 추출·정규화 (표준 라이브러리만 사용)
 
     >>> from datetime import datetime
-    >>> from ko_normalizer import parse
+    >>> from korean_datetime import parse
     >>> parse("다음주 월요일 저녁 7시 반", now=datetime(2026, 9, 28, 14, 30)).start
     datetime.datetime(2026, 10, 5, 19, 30)
 """

@@ -6,8 +6,8 @@ import re
 
 import pytest
 
-from ko_normalizer.core.numerals import parse_korean_number, parse_native, parse_sino
-from ko_normalizer.core.scanner import Scanner, TokenRule
+from korean_datetime.core.numerals import parse_korean_number, parse_native, parse_sino
+from korean_datetime.core.scanner import Scanner, TokenRule
 
 
 @pytest.mark.parametrize(

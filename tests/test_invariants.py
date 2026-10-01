@@ -12,8 +12,8 @@ from datetime import date, datetime, time, timedelta
 
 import pytest
 
-from ko_normalizer import TemporalExpression, TemporalParser
-from ko_normalizer.temporal.lunar import lunar_to_solar
+from korean_datetime import TemporalExpression, TemporalParser
+from korean_datetime.temporal.lunar import lunar_to_solar
 
 PARSER = TemporalParser()
 REFERENCE_DAYS = [date(2026, 1, 1) + timedelta(days=i) for i in range(730)]

@@ -16,7 +16,7 @@ from pathlib import Path
 
 from aihub_eval import Tally, evaluate
 
-from ko_normalizer import AmbiguousHour, Cycle, ParseOptions, __version__
+from korean_datetime import AmbiguousHour, Cycle, ParseOptions, __version__
 
 SPLITS = ("Training", "Validation")
 DOMAINS = (("news", "뉴스"), ("dialog", "대화"), ("history", "역사"))
@@ -112,7 +112,7 @@ def build(root: Path) -> str:
         "데이터 출처: AI허브(한국지능정보사회진흥원) [「시간 표현 탐지 데이터」](https://aihub.or.kr).",
         "데이터는 이 저장소에 포함하지 않습니다.",
         "",
-        f"ko-normalizer {__version__}, {date.today().isoformat()} 측정. "
+        f"korean-datetime {__version__}, {date.today().isoformat()} 측정. "
         "`uv run python scripts/aihub_benchmark.py <데이터 루트> > docs/benchmark.md`로 다시 만듭니다.",
         "옵션은 하나씩만 바꾸고 나머지는 기본값입니다.",
         "평가 방식은 `scripts/aihub_eval.py` 머리말에 있습니다.",

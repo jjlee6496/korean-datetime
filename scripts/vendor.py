@@ -1,4 +1,4 @@
-"""ko_normalizer를 설치 없이 다른 프로젝트에 복사(vendoring)합니다.
+"""korean_datetime를 설치 없이 다른 프로젝트에 복사(vendoring)합니다.
 
     uv run python scripts/vendor.py <대상 폴더> [--name 이름] [--force]
     uv run python scripts/vendor.py --check <복사본 폴더>
@@ -20,7 +20,7 @@ from collections.abc import Sequence
 from datetime import datetime, timezone
 from pathlib import Path
 
-SOURCE = Path(__file__).resolve().parent.parent / "src" / "ko_normalizer"
+SOURCE = Path(__file__).resolve().parent.parent / "src" / "korean_datetime"
 MANIFEST = "VENDORED.json"
 IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", MANIFEST)
 
@@ -75,7 +75,7 @@ def vendor(target_dir: Path, name: str, force: bool) -> int:
     target_dir.mkdir(parents=True, exist_ok=True)
     shutil.copytree(SOURCE, destination, ignore=IGNORE)
     manifest = {
-        "package": "ko_normalizer",
+        "package": "korean_datetime",
         "vendored_as": name,
         "version": _version(),
         "copied_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -90,11 +90,13 @@ def vendor(target_dir: Path, name: str, force: bool) -> int:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="ko_normalizer를 설치 없이 복사(vendoring)합니다.")
+    parser = argparse.ArgumentParser(description="korean_datetime를 설치 없이 복사(vendoring)합니다.")
     parser.add_argument(
         "target", type=Path, help="복사할 상위 폴더 (예: myapp/_vendor), --check면 복사본 폴더"
     )
-    parser.add_argument("--name", default="ko_normalizer", help="복사본 패키지 이름 (기본: ko_normalizer)")
+    parser.add_argument(
+        "--name", default="korean_datetime", help="복사본 패키지 이름 (기본: korean_datetime)"
+    )
     parser.add_argument("--force", action="store_true", help="수정된 복사본도 덮어씀")
     parser.add_argument("--check", action="store_true", help="복사본이 복사 당시와 같은지 검사")
     args = parser.parse_args(argv)
