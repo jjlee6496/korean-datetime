@@ -1,0 +1,53 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check release tag against package versions
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          python - <<'PY'
+          import ast
+          import os
+          import pathlib
+          import tomllib
+          version = tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version']
+          tree = ast.parse(pathlib.Path('src/korean_datetime/__init__.py').read_text())
+          exported = next(ast.literal_eval(node.value) for node in tree.body
+                          if isinstance(node, ast.Assign)
+                          and any(isinstance(t, ast.Name) and t.id == '__version__' for t in node.targets))
+          assert os.environ['RELEASE_TAG'] == f'v{version}', 'Release tag and package version differ'
+          assert exported == version, '__version__ and package version differ'
+          PY
+
+  checks:
+    needs: validate
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: checks
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/korean-datetime/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -1,5 +1,10 @@
 # korean-datetime
 
+[![CI](https://github.com/jjlee6496/korean-datetime/actions/workflows/ci.yml/badge.svg)](https://github.com/jjlee6496/korean-datetime/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/korean-datetime)](https://pypi.org/project/korean-datetime/)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 **Korean natural-language date & time parser** — extracts temporal expressions from Korean text
 ("다음주 월요일 저녁 7시", "추석 연휴", "3시부터 5시까지") and resolves them to datetime ranges with granularity and ambiguity flags.
 Zero dependencies, Python 3.10+.
@@ -7,12 +12,34 @@ Zero dependencies, Python 3.10+.
 한국어 문장에서 **날짜·시간·기간 표현**을 찾아 `[start, end)` datetime 구간으로 바꾸는 파서입니다. 상대 날짜, 오전/오후 추정, 음력 명절, 범위를 다루고, 추정한 부분은 모호성으로 표시합니다. **표준 라이브러리만 사용합니다** (Python 3.10+).
 
 ```bash
-pip install git+https://github.com/jjlee6496/korean-datetime
+pip install korean-datetime
 ```
 
 - "다음주 월요일 저녁 7시 반", "추석 연휴", "3시부터 5시까지", "2시간 30분 후", "지난 3일간"
 - 모호하게 추정한 부분은 값과 함께 표시 (오전/오후, 연도 넘김 등)
 - 기준 시각에 상관없이 돌아가는 식 기반 정답셋으로 정량 평가
+
+### 외부 데이터에서의 성능
+
+AIHub Training의 유형별 표본 **327개 시간 표현**과 **시간 표현이 없는 200개 문장**을 같은 기준 시각으로 비교했습니다. 아래는 기존 측정 결과이며, 전체 한국어 문장에 대한 정확도 보장은 아닙니다.
+
+| 지표 | korean-datetime | Duckling | dateparser |
+|---|---:|---:|---:|
+| 값까지 맞힌 비율 (미검출 포함) | 76% (뉴스용 `cycle=nearest`: 82%) | 72% | 8% |
+| 위치 검출률 | 94% | 98% | 19% |
+| 시간 표현이 없는 문장의 오탐률 ↓ | 2% | 12% | 6% |
+
+기본 설정끼리 비교했으며 `nearest`만 별도로 표시했습니다. Duckling은 더 많이 검출하고, korean-datetime은 이 표본에서 오탐이 더 적었습니다. **검출 범위와 오탐 사이의 선택**으로 봐 주세요. [비교 방법·실패 사례](docs/comparison.md)
+
+전체 Training의 기본 설정 결과는 다음과 같습니다. 여기서 값 정확도는 **인식한 표현 중 값이 맞은 비율**로, 위 표의 미검출까지 포함한 비율과 분모가 다릅니다.
+
+| 분야 | 재현율 | 정밀도 | 값 정확도 |
+|---|---:|---:|---:|
+| 뉴스 | 0.765 | 0.938 | 0.841 |
+| 대화 | 0.679 | 0.961 | 0.918 |
+| 역사 | 0.662 | 0.968 | 0.864 |
+
+[Training/Validation 전체 결과와 옵션별 차이](docs/benchmark.md). 내부 정답셋의 회귀 성적과 외부 데이터 성능은 구분합니다.
 
 처음이라면 **[튜토리얼](docs/tutorial.md)**부터 보세요. 상황별 문제와 해결, 실제 결과값을 예시로 정리했습니다.
 
@@ -31,6 +58,8 @@ r.start, r.kind, r.grain, r.text
 ```
 
 ## 설치 / 개발
+
+개발 버전은 `pip install git+https://github.com/jjlee6496/korean-datetime`으로 설치합니다. [버전 정책과 배포 절차](docs/releasing.md)를 참고하세요.
 
 ```bash
 uv sync                          # 개발 의존성(pytest, ruff, mypy) 포함
@@ -236,7 +265,9 @@ parse("추석 대체 휴일", options=options)  # python-holidays의 이름 형�
 
 어휘(상대 표현, 시간대, 방향어 등)는 `temporal/lexicon.py`의 표를 고치면 됩니다.
 
-## 정량 평가
+## 회귀 테스트 / 내부 정답셋
+
+이 지표는 **지원하도록 정의한 표현의 회귀 검사**용입니다. `TOTAL = 1.000`은 내부 정답셋을 통과했다는 뜻이며, 한국어 문장 전반에서 정확도 100%라는 뜻이 아닙니다. 실제 문장 성능은 아래 [AIHub benchmark](#벤치마크-실제-문장)를 참고하세요.
 
 정답은 **기준 시각에서 계산하는 식**으로 정의합니다. 그래서 같은 정답셋을 어떤 날짜·시각으로도 돌릴 수 있습니다.
 
