@@ -17,9 +17,12 @@ from __future__ import annotations
 import argparse
 import importlib
 import json
+import platform
 import random
 import re
+import statistics
 import sys
+import time
 import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
@@ -294,6 +297,37 @@ def _score_curated(predictors: dict[str, Predict]) -> dict[str, Counter[str]]:
     return scores
 
 
+# ---------------------------------------------------------------- 속도
+
+
+@dataclass(frozen=True)
+class Speed:
+    median_ms: float
+    p95_ms: float
+    per_second: float
+
+
+def _measure_speed(sentences: list[tuple[str, datetime]], predict: Predict, warmup: int = 10) -> Speed:
+    """문장 하나씩 호출해 걸린 시간. 처음 warmup번은 예열(캐시·연결)로 버림"""
+    for text, now in sentences[:warmup]:
+        predict(text, now)
+    times = []
+    for text, now in sentences:
+        started = time.perf_counter()
+        predict(text, now)
+        times.append(time.perf_counter() - started)
+    ordered = sorted(times)
+    return Speed(
+        median_ms=1000 * ordered[len(ordered) // 2],
+        p95_ms=1000 * ordered[int(len(ordered) * 0.95)],
+        per_second=len(times) / sum(times),
+    )
+
+
+def _platform() -> str:
+    return f"{platform.machine()} · Python {platform.python_version()} · {platform.system()}"
+
+
 # ---------------------------------------------------------------- 표
 
 
@@ -337,6 +371,10 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
     a = _score_aihub(sample, predictors)
     fa = _score_false_alarms(no_time, predictors)
     b = _score_curated(predictors)
+    timed = [(c.text, c.now) for c in sample] + [(text, now) for _, text, now in no_time]
+    speeds = {lib: _measure_speed(timed, predictors[lib]) for lib in LIBRARIES}
+    duckling_floor = _measure_speed([(".", now) for _, now in timed[:200]], predictors["Duckling"])
+    avg_chars = statistics.mean(len(text) for text, _ in timed)
     categories = ["전체", *[name for name, _ in _CATEGORIES]]
     buckets = ["전체", *dict.fromkeys(_CURATED_BUCKETS.values())]
     dateparser_version = importlib.import_module("dateparser").__version__
@@ -389,6 +427,28 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
             "| 오탐률 | " + " | ".join(_pct(fa[lib], len(no_time)) for lib in LIBRARIES) + " |",
             "",
             "이 표본에서 Duckling의 오탐은 대개 숫자나 낱말 조각이었습니다 ('2천 명분'의 2천, '1,573명', '춘천'의 천, '일반', '이후').",
+            "",
+            "## 속도",
+            "",
+            f"A의 문장 {len(timed)}개(평균 {avg_chars:.0f}자)를 하나씩 넣었을 때 문장당 걸린 시간. 처음 10번은 예열로 버립니다.",
+            f"측정 환경: {_platform()}.",
+            "",
+            "| | " + " | ".join(LIBRARIES) + " |",
+            "|---|" + "---:|" * len(LIBRARIES),
+            "| 중앙값 (ms/문장) | " + " | ".join(f"{speeds[lib].median_ms:.2f}" for lib in LIBRARIES) + " |",
+            "| 95번째 백분위 (ms/문장) | "
+            + " | ".join(f"{speeds[lib].p95_ms:.2f}" for lib in LIBRARIES)
+            + " |",
+            "| 처리량 (문장/초) | "
+            + " | ".join(f"{speeds[lib].per_second:,.0f}" for lib in LIBRARIES)
+            + " |",
+            "",
+            "- korean-datetime과 dateparser는 같은 프로세스 안에서 함수로 호출합니다.",
+            "- dateparser는 한국어 문장 대부분에서 아무것도 찾지 못하고 끝나서(검출률 위 표 참고) 빠르게 나옵니다.",
+            f"- Duckling은 별도 서버(Haskell)에 HTTP로 요청하므로 통신 시간이 들어갑니다. 빈 문장('.')만 보내도 중앙값 "
+            f"{duckling_floor.median_ms:.2f}ms가 걸려, 그만큼은 분석이 아닌 고정 비용입니다. 공식 Docker 이미지가 amd64뿐이라",
+            "  arm64 맥에서는 에뮬레이션으로 돌아 실제 서버보다 느리게 나오고 실행마다 흔들립니다(이 환경에서 네 번 재어 3~7ms).",
+            "  같은 조건의 리눅스 amd64에서 다시 재는 것이 공정합니다.",
             "",
             "## B. 구성 표현 (자체 정답셋, korean-datetime에 유리)",
             "",

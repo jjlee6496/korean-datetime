@@ -610,3 +610,10 @@
 {"category": "relative_word", "text": "올 추석", "expect": "year(0).lunar(8, 15)"}
 {"category": "relative_word", "text": "전년대비 12% 증가", "expect": "year(-1)"}
 {"category": "relative_word", "text": "전년동기 대비", "expect": "year(-1)"}
+{"category": "relative_day", "text": "어제만큼 덥나요", "expect": "today - 1d"}
+{"category": "relative_day", "text": "내일부턴 순차적으로 운영", "expect": "today + 1d"}
+{"category": "relative_day", "text": "출시는 당장 오늘부터다", "expect": "today"}
+{"category": "relative_day", "text": "후보등록을 앞두고오늘(28일) 마감", "expect": "today"}
+{"category": "negative", "text": "내일정 확인해줘", "expect": "none"}
+{"category": "negative", "text": "내일상 기록", "expect": "none"}
+{"category": "negative", "text": "오늘다녀왔다", "expect": "none"}

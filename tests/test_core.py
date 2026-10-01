@@ -84,3 +84,12 @@ def test_scanner_rejecting_builder_skips_match() -> None:
 def test_parse_korean_number_rejects_non_decimal_digits() -> None:
     assert parse_korean_number("²") is None
     assert parse_korean_number("１５") == 15  # 전각 숫자
+
+
+def test_attachable_rule_matches_after_hangul_only_when_allowed() -> None:
+    """왼쪽 경계: 앞말에 붙은 위치는 attachable 규칙만 시도 ('앞두고오늘(28일)')"""
+    strict = TokenRule("day", re.compile("오늘"), lambda m: 0)
+    loose = TokenRule("day", re.compile(r"오늘(?=\(\d+일\))"), lambda m: 0, attachable=True)
+    assert [t.text for t in Scanner([strict]).scan("앞두고오늘(28일)")] == []
+    assert [t.text for t in Scanner([strict, loose]).scan("앞두고오늘(28일)")] == ["오늘"]
+    assert [t.text for t in Scanner([strict, loose]).scan("앞두고오늘 마감")] == []

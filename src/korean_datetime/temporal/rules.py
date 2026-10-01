@@ -167,6 +167,13 @@ def _calendar_rules() -> list[TokenRule]:
             lambda m: rel.day_value(m.group()),
             right_boundary=True,
         ),
+        # 뉴스 제목과 본문이 붙은 '앞두고오늘(28일)': 괄호 날짜가 뒤따르면 앞말에 붙어 있어도 상대 일
+        _rule(
+            TK.DAY_REL,
+            r"(?:오늘|금일|어제|내일)(?=\(\s*\d{1,2}\s*일\s*\))",
+            lambda m: rel.day_value(m.group()),
+            attachable=True,
+        ),
         _rule(TK.INVALID, words(lx.ANAPHORA), _invalid, right_boundary=True),
         _rule(
             TK.INVALID,

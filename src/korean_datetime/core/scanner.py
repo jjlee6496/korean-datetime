@@ -48,6 +48,14 @@ PARTICLES: tuple[str, ...] = (
     "랑",
     "이랑",
     "하고",
+    # 비교·한정·서술 ('어제만큼', '내일부턴', '오늘부터다')
+    "만큼",
+    "부턴",
+    "까진",
+    "보단",
+    "처럼",
+    "이다",
+    "다",
     # 비교 기준으로 붙는 말 ('전년대비', '전년동기', '전월비')
     "대비",
     "동기",
@@ -114,6 +122,7 @@ class TokenRule:
         build: 매칭 → 토큰 값. None을 반환하면 매칭을 거부하고, Split을 반환하면 그 토큰들을 그대로 사용
         right_boundary: True면 오른쪽 경계 규칙을 적용
         weak: 문맥이 있어야 의미가 있는 토큰 표시 (해석 단계에서 사용)
+        attachable: True면 앞말에 붙어 있어도 매칭 (왼쪽 경계 예외). 패턴 자체가 충분히 구별될 때만
     """
 
     kind: str
@@ -121,6 +130,7 @@ class TokenRule:
     build: Builder
     right_boundary: bool = False
     weak: bool = False
+    attachable: bool = False
 
 
 class Scanner:
@@ -130,6 +140,7 @@ class Scanner:
         self._rules: tuple[TokenRule, ...] = tuple(rules)
         if not all(isinstance(rule, TokenRule) for rule in self._rules):
             raise TypeError("rules에는 TokenRule만 넣을 수 있습니다")
+        self._has_attachable = any(rule.attachable for rule in self._rules)
 
     @property
     def rules(self) -> tuple[TokenRule, ...]:
@@ -139,10 +150,11 @@ class Scanner:
         tokens: list[Token] = []
         pos, last_end = 0, 0
         while pos < len(text):
-            if not self._left_ok(text, pos, last_end):
+            attached = not self._left_ok(text, pos, last_end)
+            if attached and not self._has_attachable:
                 pos += 1
                 continue
-            best = self._best_match(text, pos)
+            best = self._best_match(text, pos, attached)
             if best is None:
                 pos += 1
                 continue
@@ -150,10 +162,13 @@ class Scanner:
             pos = last_end = best[-1].end
         return tokens
 
-    def _best_match(self, text: str, pos: int) -> Sequence[Token] | None:
+    def _best_match(self, text: str, pos: int, attached: bool = False) -> Sequence[Token] | None:
+        """attached: 앞말에 붙은 위치라 attachable 규칙만 시도"""
         best: Sequence[Token] | None = None
         best_end = pos
         for rule in self._rules:
+            if attached and not rule.attachable:
+                continue
             match = rule.pattern.match(text, pos)
             if match is None or match.end() <= best_end:
                 continue
