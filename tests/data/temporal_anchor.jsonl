@@ -1,0 +1,486 @@
+{"_meta": {"now": "2026-09-28T14:30:00", "note": "기준 시각 2026-09-28(월) 14:30. expected=null은 인식하지 않아야 함"}}
+{"category": "relative_day", "text": "오늘", "expected": {"start": "2026-09-28", "kind": "date"}}
+{"category": "relative_day", "text": "내일", "expected": {"start": "2026-09-29", "kind": "date"}}
+{"category": "relative_day", "text": "낼", "expected": {"start": "2026-09-29", "kind": "date"}}
+{"category": "relative_day", "text": "모레", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "relative_day", "text": "내일모레", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "relative_day", "text": "글피", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "relative_day", "text": "그글피", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "relative_day", "text": "어제", "expected": {"start": "2026-09-27", "kind": "date"}}
+{"category": "relative_day", "text": "그저께", "expected": {"start": "2026-09-26", "kind": "date"}}
+{"category": "relative_day", "text": "그제", "expected": {"start": "2026-09-26", "kind": "date"}}
+{"category": "relative_day", "text": "그끄저께", "expected": {"start": "2026-09-25", "kind": "date"}}
+{"category": "day_offset", "text": "3일 뒤", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "day_offset", "text": "삼일 후", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "day_offset", "text": "99일뒤", "expected": {"start": "2027-01-05", "kind": "date"}}
+{"category": "day_offset", "text": "이틀 후", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "day_offset", "text": "열흘 뒤", "expected": {"start": "2026-10-08", "kind": "date"}}
+{"category": "day_offset", "text": "보름 뒤", "expected": {"start": "2026-10-13", "kind": "date"}}
+{"category": "day_offset", "text": "하루 전", "expected": {"start": "2026-09-27", "kind": "date"}}
+{"category": "day_offset", "text": "사흘 전", "expected": {"start": "2026-09-25", "kind": "date"}}
+{"category": "day_offset", "text": "일주일 후", "expected": {"start": "2026-10-05", "kind": "date"}}
+{"category": "day_offset", "text": "2주 후", "expected": {"start": "2026-10-12", "kind": "date"}}
+{"category": "day_offset", "text": "한 달 뒤", "expected": {"start": "2026-10-28", "kind": "date"}}
+{"category": "day_offset", "text": "3개월 후", "expected": {"start": "2026-12-28", "kind": "date"}}
+{"category": "day_offset", "text": "1년 후", "expected": {"start": "2027-09-28", "kind": "date"}}
+{"category": "weekday", "text": "이번주 금요일", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "weekday", "text": "이번 주 월요일", "expected": {"start": "2026-09-28", "kind": "date"}}
+{"category": "weekday", "text": "다음주 월요일", "expected": {"start": "2026-10-05", "kind": "date"}}
+{"category": "weekday", "text": "다음  주   월요일", "expected": {"start": "2026-10-05", "kind": "date"}}
+{"category": "weekday", "text": "다다음주 수요일", "expected": {"start": "2026-10-14", "kind": "date"}}
+{"category": "weekday", "text": "저번주 금요일", "expected": {"start": "2026-09-25", "kind": "date"}}
+{"category": "weekday", "text": "지지난주 월요일", "expected": {"start": "2026-09-14", "kind": "date"}}
+{"category": "weekday", "text": "차주 화요일", "expected": {"start": "2026-10-06", "kind": "date"}}
+{"category": "weekday", "text": "금요일", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "weekday", "text": "월요일", "expected": {"start": "2026-10-05", "kind": "date"}}
+{"category": "weekday", "text": "일요일", "expected": {"start": "2026-10-04", "kind": "date"}}
+{"category": "weekday", "text": "목욜", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "weekday", "text": "오는 수요일에", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "week_range", "text": "주말", "expected": {"start": "2026-10-03", "end": "2026-10-05", "kind": "date"}}
+{"category": "week_range", "text": "이번 주말", "expected": {"start": "2026-10-03", "end": "2026-10-05", "kind": "date"}}
+{"category": "week_range", "text": "이번주말", "expected": {"start": "2026-10-03", "end": "2026-10-05", "kind": "date"}}
+{"category": "week_range", "text": "오는 주말", "expected": {"start": "2026-10-03", "end": "2026-10-05", "kind": "date"}}
+{"category": "week_range", "text": "다음 주말", "expected": {"start": "2026-10-10", "end": "2026-10-12", "kind": "date"}}
+{"category": "week_range", "text": "저번주 주말", "expected": {"start": "2026-09-26", "end": "2026-09-28", "kind": "date"}}
+{"category": "week_range", "text": "주중", "expected": {"start": "2026-09-28", "end": "2026-10-03", "kind": "date"}}
+{"category": "week_range", "text": "다음주 주중", "expected": {"start": "2026-10-05", "end": "2026-10-10", "kind": "date"}}
+{"category": "week_range", "text": "다음주초", "expected": {"start": "2026-10-05", "end": "2026-10-07", "kind": "date"}}
+{"category": "week_range", "text": "이번주", "expected": {"start": "2026-09-28", "end": "2026-10-05", "kind": "date"}}
+{"category": "week_range", "text": "다음주", "expected": {"start": "2026-10-05", "end": "2026-10-12", "kind": "date"}}
+{"category": "week_range", "text": "저번주", "expected": {"start": "2026-09-21", "end": "2026-09-28", "kind": "date"}}
+{"category": "month_day", "text": "10월 15일", "expected": {"start": "2026-10-15", "kind": "date"}}
+{"category": "month_day", "text": "12월25일", "expected": {"start": "2026-12-25", "kind": "date"}}
+{"category": "month_day", "text": "4 월 14 일", "expected": {"start": "2027-04-14", "kind": "date"}}
+{"category": "month_day", "text": "6월 3일", "expected": {"start": "2027-06-03", "kind": "date"}}
+{"category": "month_day", "text": "9월 28일", "expected": {"start": "2026-09-28", "kind": "date"}}
+{"category": "month_day", "text": "9월 28일 월요일", "expected": {"start": "2026-09-28", "kind": "date"}}
+{"category": "month_day", "text": "4월14일회의", "expected": {"start": "2027-04-14", "kind": "date"}}
+{"category": "month_day", "text": "4월달 14일", "expected": {"start": "2027-04-14", "kind": "date"}}
+{"category": "month_day", "text": "삼월 오일", "expected": {"start": "2027-03-05", "kind": "date"}}
+{"category": "month_day", "text": "사월 삼십일", "expected": {"start": "2027-04-30", "kind": "date"}}
+{"category": "month_day", "text": "4월이십일", "expected": {"start": "2027-04-20", "kind": "date"}}
+{"category": "month_day", "text": "십이월 이십오일", "expected": {"start": "2026-12-25", "kind": "date"}}
+{"category": "month_day", "text": "12월삼십일", "expected": {"start": "2026-12-30", "kind": "date"}}
+{"category": "month_day", "text": "구월 삼십일", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "month_day", "text": "시월 십오일", "expected": {"start": "2026-10-15", "kind": "date"}}
+{"category": "month_day", "text": "일월 일일", "expected": {"start": "2027-01-01", "kind": "date"}}
+{"category": "invalid_date", "text": "2월 30일", "expected": null}
+{"category": "month_day", "text": "15일", "expected": {"start": "2026-10-15", "kind": "date"}}
+{"category": "month_day", "text": "30일", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "month_day", "text": "이십구일", "expected": {"start": "2026-09-29", "kind": "date"}}
+{"category": "formatted", "text": "2026-10-01", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "formatted", "text": "2026.10.1", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "formatted", "text": "2026/10/01", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "formatted", "text": "2026. 10. 1.", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "formatted", "text": "20261101", "expected": {"start": "2026-11-01", "kind": "date"}}
+{"category": "formatted", "text": "25.07.15", "expected": {"start": "2025-07-15", "kind": "date"}}
+{"category": "formatted", "text": "10/15", "expected": {"start": "2026-10-15", "kind": "date"}}
+{"category": "formatted", "text": "7/15", "expected": {"start": "2027-07-15", "kind": "date"}}
+{"category": "formatted", "text": "07-15", "expected": {"start": "2027-07-15", "kind": "date"}}
+{"category": "formatted", "text": "2025년 4월 14일", "expected": {"start": "2025-04-14", "kind": "date"}}
+{"category": "formatted", "text": "2027년 6월 3일", "expected": {"start": "2027-06-03", "kind": "date"}}
+{"category": "formatted", "text": "2026 유월 삼일", "expected": {"start": "2026-06-03", "kind": "date"}}
+{"category": "formatted", "text": "25년 3월 1일", "expected": {"start": "2025-03-01", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 15일", "expected": {"start": "2026-10-15", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 1일", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "month_relative", "text": "다다음달 5일", "expected": {"start": "2026-11-05", "kind": "date"}}
+{"category": "month_relative", "text": "저번달 10일", "expected": {"start": "2026-08-10", "kind": "date"}}
+{"category": "month_relative", "text": "이번달 15일", "expected": {"start": "2026-09-15", "kind": "date"}}
+{"category": "month_relative", "text": "이번달 25일", "expected": {"start": "2026-09-25", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 첫째주 금요일", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 첫째주 금요일에 발표가 있어요", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 첫번째 주 월요일", "expected": {"start": "2026-09-28", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 두번째주 토요일", "expected": {"start": "2026-10-10", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 마지막주 일요일", "expected": {"start": "2026-11-01", "kind": "date"}}
+{"category": "month_relative", "text": "이번달 둘째주 금요일", "expected": {"start": "2026-09-11", "kind": "date"}}
+{"category": "month_relative", "text": "4월 마지막 주 일요일", "expected": {"start": "2027-05-02", "kind": "date"}}
+{"category": "month_relative", "text": "마지막주 금요일", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "month_relative", "text": "둘째주 금요일", "expected": {"start": "2026-10-09", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 수요일", "expected": {"start": "2026-10-07", "kind": "date"}}
+{"category": "month_relative", "text": "저번달 말일", "expected": {"start": "2026-08-31", "kind": "date"}}
+{"category": "month_relative", "text": "이번달 말일", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "month_relative", "text": "말일", "expected": {"start": "2026-09-30", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 첫날", "expected": {"start": "2026-10-01", "kind": "date"}}
+{"category": "month_relative", "text": "3월 첫날", "expected": {"start": "2027-03-01", "kind": "date"}}
+{"category": "month_relative", "text": "2월 말일", "expected": {"start": "2027-02-28", "kind": "date"}}
+{"category": "month_relative", "text": "12월 마지막 날", "expected": {"start": "2026-12-31", "kind": "date"}}
+{"category": "month_year_range", "text": "다음달", "expected": {"start": "2026-10-01", "end": "2026-11-01", "kind": "date"}}
+{"category": "month_year_range", "text": "이번달", "expected": {"start": "2026-09-01", "end": "2026-10-01", "kind": "date"}}
+{"category": "month_year_range", "text": "저번달", "expected": {"start": "2026-08-01", "end": "2026-09-01", "kind": "date"}}
+{"category": "month_year_range", "text": "10월", "expected": {"start": "2026-10-01", "end": "2026-11-01", "kind": "date"}}
+{"category": "month_year_range", "text": "2월", "expected": {"start": "2027-02-01", "end": "2027-03-01", "kind": "date"}}
+{"category": "month_year_range", "text": "내년 3월", "expected": {"start": "2027-03-01", "end": "2027-04-01", "kind": "date"}}
+{"category": "month_year_range", "text": "다음달 초", "expected": {"start": "2026-10-01", "end": "2026-10-11", "kind": "date"}}
+{"category": "month_year_range", "text": "이번달 중순", "expected": {"start": "2026-09-11", "end": "2026-09-21", "kind": "date"}}
+{"category": "month_year_range", "text": "월말", "expected": {"start": "2026-09-21", "end": "2026-10-01", "kind": "date"}}
+{"category": "month_year_range", "text": "12월 둘째주", "expected": {"start": "2026-12-07", "end": "2026-12-14", "kind": "date"}}
+{"category": "month_year_range", "text": "12월 마지막주", "expected": {"start": "2026-12-28", "end": "2027-01-04", "kind": "date"}}
+{"category": "month_year_range", "text": "첫째주", "expected": {"start": "2026-09-28", "end": "2026-10-05", "kind": "date"}}
+{"category": "month_year_range", "text": "10월 셋째주 주말", "expected": {"start": "2026-10-17", "end": "2026-10-19", "kind": "date"}}
+{"category": "month_year_range", "text": "올해", "expected": {"start": "2026-01-01", "end": "2027-01-01", "kind": "date"}}
+{"category": "month_year_range", "text": "내년", "expected": {"start": "2027-01-01", "end": "2028-01-01", "kind": "date"}}
+{"category": "month_year_range", "text": "2028년", "expected": {"start": "2028-01-01", "end": "2029-01-01", "kind": "date"}}
+{"category": "month_year_range", "text": "상반기", "expected": {"start": "2027-01-01", "end": "2027-07-01", "kind": "date"}}
+{"category": "month_year_range", "text": "하반기", "expected": {"start": "2026-07-01", "end": "2027-01-01", "kind": "date"}}
+{"category": "month_year_range", "text": "연말", "expected": {"start": "2026-12-01", "end": "2027-01-01", "kind": "date"}}
+{"category": "month_year_range", "text": "내년 1분기", "expected": {"start": "2027-01-01", "end": "2027-04-01", "kind": "date"}}
+{"category": "month_year_range", "text": "3분기", "expected": {"start": "2026-07-01", "end": "2026-10-01", "kind": "date"}}
+{"category": "month_year_range", "text": "4분기", "expected": {"start": "2026-10-01", "end": "2027-01-01", "kind": "date"}}
+{"category": "holiday", "text": "크리스마스", "expected": {"start": "2026-12-25", "kind": "date"}}
+{"category": "holiday", "text": "성탄절", "expected": {"start": "2026-12-25", "kind": "date"}}
+{"category": "holiday", "text": "크리스마스 이브", "expected": {"start": "2026-12-24", "kind": "date"}}
+{"category": "holiday", "text": "신정", "expected": {"start": "2027-01-01", "kind": "date"}}
+{"category": "holiday", "text": "한글날", "expected": {"start": "2026-10-09", "kind": "date"}}
+{"category": "holiday", "text": "개천절", "expected": {"start": "2026-10-03", "kind": "date"}}
+{"category": "holiday", "text": "현충일", "expected": {"start": "2027-06-06", "kind": "date"}}
+{"category": "holiday", "text": "올해 현충일", "expected": {"start": "2026-06-06", "kind": "date"}}
+{"category": "holiday", "text": "올해 현충일 당일", "expected": {"start": "2026-06-06", "kind": "date"}}
+{"category": "holiday", "text": "작년 크리스마스", "expected": {"start": "2025-12-25", "kind": "date"}}
+{"category": "holiday", "text": "발렌타인데이", "expected": {"start": "2027-02-14", "kind": "date"}}
+{"category": "holiday", "text": "올해 추석", "expected": {"start": "2026-09-25", "kind": "date"}}
+{"category": "holiday", "text": "올해 설날", "expected": {"start": "2026-02-17", "kind": "date"}}
+{"category": "holiday", "text": "올해 추석 연휴", "expected": {"start": "2026-09-24", "end": "2026-09-27", "kind": "date"}}
+{"category": "clock", "text": "3시", "expected": {"start": "2026-09-28T15:00:00", "kind": "time"}}
+{"category": "clock", "text": "3 시", "expected": {"start": "2026-09-28T15:00:00", "kind": "time"}}
+{"category": "clock", "text": "9시", "expected": {"start": "2026-09-28T21:00:00", "kind": "time"}}
+{"category": "clock", "text": "2시", "expected": {"start": "2026-09-29T02:00:00", "kind": "time"}}
+{"category": "clock", "text": "세시 반", "expected": {"start": "2026-09-28T15:30:00", "kind": "time"}}
+{"category": "clock", "text": "열한시 십오분", "expected": {"start": "2026-09-28T23:15:00", "kind": "time"}}
+{"category": "clock", "text": "아홉시십오분", "expected": {"start": "2026-09-28T21:15:00", "kind": "time"}}
+{"category": "clock", "text": "여섯시 삼십분", "expected": {"start": "2026-09-28T18:30:00", "kind": "time"}}
+{"category": "clock", "text": "열두시", "expected": {"start": "2026-09-29T00:00:00", "kind": "time"}}
+{"category": "clock", "text": "한시 반", "expected": {"start": "2026-09-29T01:30:00", "kind": "time"}}
+{"category": "clock", "text": "14시 30분", "expected": {"start": "2026-09-28T14:30:00", "kind": "time"}}
+{"category": "clock", "text": "23시반", "expected": {"start": "2026-09-28T23:30:00", "kind": "time"}}
+{"category": "clock", "text": "15:30", "expected": {"start": "2026-09-28T15:30:00", "kind": "time"}}
+{"category": "clock", "text": "05:00", "expected": {"start": "2026-09-29T05:00:00", "kind": "time"}}
+{"category": "clock", "text": "13시", "expected": {"start": "2026-09-29T13:00:00", "kind": "time"}}
+{"category": "clock", "text": "0시", "expected": {"start": "2026-09-29T00:00:00", "kind": "time"}}
+{"category": "clock", "text": "24시", "expected": {"start": "2026-09-29T00:00:00", "kind": "time"}}
+{"category": "clock", "text": "오후 3시", "expected": {"start": "2026-09-28T15:00:00", "kind": "time"}}
+{"category": "clock", "text": "오후3시30분", "expected": {"start": "2026-09-28T15:30:00", "kind": "time"}}
+{"category": "clock", "text": "오후 다섯시", "expected": {"start": "2026-09-28T17:00:00", "kind": "time"}}
+{"category": "clock", "text": "오전 10시", "expected": {"start": "2026-09-29T10:00:00", "kind": "time"}}
+{"category": "clock", "text": "오후 12시", "expected": {"start": "2026-09-29T12:00:00", "kind": "time"}}
+{"category": "clock", "text": "저녁 7시 반", "expected": {"start": "2026-09-28T19:30:00", "kind": "time"}}
+{"category": "clock", "text": "저녁 열시", "expected": {"start": "2026-09-28T22:00:00", "kind": "time"}}
+{"category": "clock", "text": "밤 11시", "expected": {"start": "2026-09-28T23:00:00", "kind": "time"}}
+{"category": "clock", "text": "밤 11시반", "expected": {"start": "2026-09-28T23:30:00", "kind": "time"}}
+{"category": "clock", "text": "밤 12시", "expected": {"start": "2026-09-29T00:00:00", "kind": "time"}}
+{"category": "clock", "text": "밤 1시", "expected": {"start": "2026-09-29T01:00:00", "kind": "time"}}
+{"category": "clock", "text": "새벽 2시", "expected": {"start": "2026-09-29T02:00:00", "kind": "time"}}
+{"category": "clock", "text": "아침 여덟시 반", "expected": {"start": "2026-09-29T08:30:00", "kind": "time"}}
+{"category": "clock", "text": "3pm", "expected": {"start": "2026-09-28T15:00:00", "kind": "time"}}
+{"category": "clock", "text": "PM 3:30", "expected": {"start": "2026-09-28T15:30:00", "kind": "time"}}
+{"category": "clock", "text": "정오", "expected": {"start": "2026-09-29T12:00:00", "kind": "time"}}
+{"category": "clock", "text": "자정", "expected": {"start": "2026-09-29T00:00:00", "kind": "time"}}
+{"category": "clock", "text": "17시 5분전", "expected": {"start": "2026-09-28T16:55:00", "kind": "time"}}
+{"category": "clock", "text": "다섯시 십분전", "expected": {"start": "2026-09-28T16:50:00", "kind": "time"}}
+{"category": "clock", "text": "9시 10분후", "expected": {"start": "2026-09-28T21:10:00", "kind": "time"}}
+{"category": "period", "text": "저녁", "expected": {"start": "2026-09-28T18:00:00", "end": "2026-09-28T21:00:00", "kind": "time"}}
+{"category": "period", "text": "밤", "expected": {"start": "2026-09-28T21:00:00", "end": "2026-09-29T00:00:00", "kind": "time"}}
+{"category": "period", "text": "아침", "expected": {"start": "2026-09-29T07:00:00", "end": "2026-09-29T10:00:00", "kind": "time"}}
+{"category": "period", "text": "새벽", "expected": {"start": "2026-09-29T03:00:00", "end": "2026-09-29T06:00:00", "kind": "time"}}
+{"category": "period", "text": "점심", "expected": {"start": "2026-09-29T12:00:00", "end": "2026-09-29T13:00:00", "kind": "time"}}
+{"category": "relative_time", "text": "지금", "expected": {"start": "2026-09-28T14:30:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "1시간 후", "expected": {"start": "2026-09-28T15:30:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "1시간 뒤", "expected": {"start": "2026-09-28T15:30:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "30분 전", "expected": {"start": "2026-09-28T14:00:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "10분후", "expected": {"start": "2026-09-28T14:40:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "10분 있다가", "expected": {"start": "2026-09-28T14:40:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "삼십분 후", "expected": {"start": "2026-09-28T15:00:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "2시간 30분 후", "expected": {"start": "2026-09-28T17:00:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "한 시간 반 뒤", "expected": {"start": "2026-09-28T16:00:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "두 시간 전", "expected": {"start": "2026-09-28T12:30:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "10시간 후", "expected": {"start": "2026-09-29T00:30:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "30초 후", "expected": {"start": "2026-09-28T14:30:30", "kind": "datetime"}}
+{"category": "datetime", "text": "내일 오후 3시", "expected": {"start": "2026-09-29T15:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "내일 3시", "expected": {"start": "2026-09-29T15:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "내일 9시", "expected": {"start": "2026-09-29T09:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "오늘 3시", "expected": {"start": "2026-09-28T15:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "오늘 2시", "expected": {"start": "2026-09-28T14:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "오늘 새벽 2시", "expected": {"start": "2026-09-28T02:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "오늘 밤 12시", "expected": {"start": "2026-09-29T00:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "다음주 월요일 저녁 7시", "expected": {"start": "2026-10-05T19:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "다음주 월요일에 저녁 7시에 만나자", "expected": {"start": "2026-10-05T19:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "다음주 월요일 아침 9시", "expected": {"start": "2026-10-05T09:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "다다음주 월요일 오후 3시 30분", "expected": {"start": "2026-10-12T15:30:00", "kind": "datetime"}}
+{"category": "datetime", "text": "4월 15일 저녁 7시 30분", "expected": {"start": "2027-04-15T19:30:00", "kind": "datetime"}}
+{"category": "datetime", "text": "10월 15일 저녁 7시 30분", "expected": {"start": "2026-10-15T19:30:00", "kind": "datetime"}}
+{"category": "datetime", "text": "12월 24일 밤 11시", "expected": {"start": "2026-12-24T23:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "삼월 오일 오전 아홉시 삼십분", "expected": {"start": "2027-03-05T09:30:00", "kind": "datetime"}}
+{"category": "datetime", "text": "3일 후 오전 10시", "expected": {"start": "2026-10-01T10:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "한달 후 저녁 7시", "expected": {"start": "2026-10-28T19:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "이번달 마지막주 금요일 오후 6시", "expected": {"start": "2026-10-02T18:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "크리스마스 이브 자정", "expected": {"start": "2026-12-25T00:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "2026-10-01 19:30", "expected": {"start": "2026-10-01T19:30:00", "kind": "datetime"}}
+{"category": "datetime", "text": "내일 퇴근하고", "expected": {"start": "2026-09-29T18:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "오늘저녁때", "expected": {"start": "2026-09-28T18:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "내일아침일찍", "expected": {"start": "2026-09-29T06:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "그글피 해뜰 무렵", "expected": {"start": "2026-10-02T05:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "아흐레 뒤에 저녁 무렵", "expected": {"start": "2026-10-07T18:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "일주일 뒤 점심시간", "expected": {"start": "2026-10-05T12:00:00", "end": "2026-10-05T13:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "내일 아침", "expected": {"start": "2026-09-29T07:00:00", "end": "2026-09-29T10:00:00", "kind": "datetime"}}
+{"category": "range", "text": "3시부터 5시까지", "expected": {"start": "2026-09-28T15:00:00", "end": "2026-09-28T17:00:00"}}
+{"category": "range", "text": "오후 3시~5시", "expected": {"start": "2026-09-28T15:00:00", "end": "2026-09-28T17:00:00"}}
+{"category": "range", "text": "3~5시", "expected": {"start": "2026-09-28T15:00:00", "end": "2026-09-28T17:00:00"}}
+{"category": "range", "text": "내일 3시부터 5시", "expected": {"start": "2026-09-29T15:00:00", "end": "2026-09-29T17:00:00"}}
+{"category": "range", "text": "밤 11시부터 새벽 1시까지", "expected": {"start": "2026-09-28T23:00:00", "end": "2026-09-29T01:00:00"}}
+{"category": "range", "text": "내일부터 모레까지", "expected": {"start": "2026-09-29T00:00:00", "end": "2026-10-01T00:00:00"}}
+{"category": "range", "text": "10월 3일부터 5일까지", "expected": {"start": "2026-10-03T00:00:00", "end": "2026-10-06T00:00:00"}}
+{"category": "range", "text": "10월 1일 ~ 10월 3일", "expected": {"start": "2026-10-01T00:00:00", "end": "2026-10-04T00:00:00"}}
+{"category": "range", "text": "12월 30일부터 1월 2일까지", "expected": {"start": "2026-12-30T00:00:00", "end": "2027-01-03T00:00:00"}}
+{"category": "negative", "text": "보고 싶어", "expected": null}
+{"category": "negative", "text": "오일 교환하러 가", "expected": null}
+{"category": "negative", "text": "낮은 가격", "expected": null}
+{"category": "negative", "text": "전화해줘", "expected": null}
+{"category": "negative", "text": "초등학교", "expected": null}
+{"category": "negative", "text": "한시적으로 운영", "expected": null}
+{"category": "negative", "text": "1234", "expected": null}
+{"category": "negative", "text": "15", "expected": null}
+{"category": "negative", "text": "3", "expected": null}
+{"category": "negative", "text": "123", "expected": null}
+{"category": "negative", "text": "백이십삼", "expected": null}
+{"category": "negative", "text": "십오", "expected": null}
+{"category": "negative", "text": "삼", "expected": null}
+{"category": "negative", "text": "두", "expected": null}
+{"category": "negative", "text": "반", "expected": null}
+{"category": "negative", "text": "일", "expected": null}
+{"category": "negative", "text": "월", "expected": null}
+{"category": "negative", "text": "주", "expected": null}
+{"category": "negative", "text": "시", "expected": null}
+{"category": "negative", "text": "시간", "expected": null}
+{"category": "negative", "text": "전", "expected": null}
+{"category": "negative", "text": "후", "expected": null}
+{"category": "negative", "text": "첫날", "expected": null}
+{"category": "negative", "text": "중순", "expected": null}
+{"category": "negative", "text": "2주", "expected": null}
+{"category": "negative", "text": "하루", "expected": null}
+{"category": "negative", "text": "이틀", "expected": null}
+{"category": "negative", "text": "일주일", "expected": null}
+{"category": "negative", "text": "한달", "expected": null}
+{"category": "negative", "text": "1시간", "expected": null}
+{"category": "negative", "text": "15분", "expected": null}
+{"category": "negative", "text": "십오분", "expected": null}
+{"category": "negative", "text": "30분", "expected": null}
+{"category": "negative", "text": "2026", "expected": null}
+{"category": "negative", "text": "13월", "expected": null}
+{"category": "negative", "text": "13월 1일", "expected": null}
+{"category": "negative", "text": "12월 99일", "expected": null}
+{"category": "negative", "text": "32일", "expected": null}
+{"category": "negative", "text": "25시", "expected": null}
+{"category": "negative", "text": "24시간 형식", "expected": null}
+{"category": "negative", "text": "삼시", "expected": null}
+{"category": "negative", "text": "일일", "expected": null}
+{"category": "negative", "text": "매핑 실패: 요일을 찾을 수 없음", "expected": null}
+{"category": "negative", "text": "그룹에서 상대적 일 오프셋 정보 추출", "expected": null}
+{"category": "negative", "text": "시간 정보를 추출할 수 없습니다.", "expected": null}
+{"category": "negative", "text": "캐시 히트율 측정", "expected": null}
+{"category": "negative", "text": "청크를 처리하는 내부 함수", "expected": null}
+{"category": "negative", "text": "주 단위 표현 테스트", "expected": null}
+{"category": "negative", "text": "테스트 시작...", "expected": null}
+{"category": "negative", "text": "N일 뒤/후", "expected": null}
+{"category": "negative", "text": "~욜", "expected": null}
+{"category": "negative", "text": "일$", "expected": null}
+{"category": "negative", "text": "cal_2 weekday", "expected": null}
+{"category": "negative", "text": "이번", "expected": null}
+{"category": "negative", "text": "뒤/후", "expected": null}
+{"category": "negative", "text": "상대적 일/주/월 패턴 처리", "expected": null}
+{"category": "negative", "text": "0715", "expected": null}
+{"category": "negative", "text": "261015", "expected": null}
+{"category": "weekday_modifier", "text": "지난 금요일에 뭐 했어?", "expected": {"start": "2026-09-25", "kind": "date"}}
+{"category": "weekday_modifier", "text": "지난 월요일", "expected": {"start": "2026-09-21", "kind": "date"}}
+{"category": "weekday_modifier", "text": "저번 수요일", "expected": {"start": "2026-09-23", "kind": "date"}}
+{"category": "weekday_modifier", "text": "이번 금요일", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "weekday_modifier", "text": "다음 금요일", "expected": {"start": "2026-10-02", "kind": "date"}}
+{"category": "weekday_modifier", "text": "오는 토요일", "expected": {"start": "2026-10-03", "kind": "date"}}
+{"category": "weekday_modifier", "text": "지난 추석", "expected": {"start": "2026-09-25", "kind": "date"}}
+{"category": "weekday_modifier", "text": "지난 크리스마스", "expected": {"start": "2025-12-25", "kind": "date"}}
+{"category": "weekday_modifier", "text": "마지막 금요일", "expected": {"start": "2026-10-30", "kind": "date"}}
+{"category": "separator", "text": "10월 5일(월) 오후 2시", "expected": {"start": "2026-10-05T14:00:00", "kind": "datetime"}}
+{"category": "separator", "text": "10/5(월) 14:00", "expected": {"start": "2026-10-05T14:00:00", "kind": "datetime"}}
+{"category": "separator", "text": "2026-10-05T14:00", "expected": {"start": "2026-10-05T14:00:00", "kind": "datetime"}}
+{"category": "range", "text": "작년 12월 30일부터 1월 2일까지", "expected": {"start": "2025-12-30T00:00:00", "end": "2026-01-03T00:00:00"}}
+{"category": "range", "text": "25일부터 3일까지", "expected": {"start": "2026-10-25T00:00:00", "end": "2026-11-04T00:00:00"}}
+{"category": "range_rejected", "text": "10월 5일부터 10월 3일까지", "expected": {"start": "2026-10-05T00:00:00", "end": "2026-10-06T00:00:00"}}
+{"category": "range_rejected", "text": "3시부터 3시까지", "expected": {"start": "2026-09-28T15:00:00", "end": "2026-09-28T16:00:00"}}
+{"category": "invalid_date", "text": "2026-02-30", "expected": null}
+{"category": "invalid_date", "text": "4월 31일", "expected": null}
+{"category": "invalid_date", "text": "이달 31일", "expected": null}
+{"category": "invalid_date", "text": "2026년 2월 29일", "expected": null}
+{"category": "invalid_date", "text": "31일", "expected": {"start": "2026-10-31", "kind": "date"}}
+{"category": "invalid_date", "text": "2월 29일", "expected": {"start": "2028-02-29", "kind": "date"}}
+{"category": "duration_not_date", "text": "3일간 휴가", "expected": null}
+{"category": "duration_not_date", "text": "3일 연속 올랐다", "expected": null}
+{"category": "duration_not_date", "text": "7일 이내", "expected": null}
+{"category": "duration_not_date", "text": "30일 내로", "expected": null}
+{"category": "duration_not_date", "text": "1일 1식", "expected": null}
+{"category": "duration_not_date", "text": "30분 동안", "expected": null}
+{"category": "duration_not_date", "text": "열흘간", "expected": null}
+{"category": "duration_not_date", "text": "오늘부터 3일간", "expected": {"start": "2026-09-28T00:00:00", "end": "2026-09-29T00:00:00"}}
+{"category": "formatted", "text": "99년 3월 1일", "expected": {"start": "1999-03-01", "kind": "date"}}
+{"category": "formatted", "text": "99.03.01", "expected": {"start": "1999-03-01", "kind": "date"}}
+{"category": "relative_day", "text": "내일", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:00:00", "end": "2028-01-02T00:00:00", "kind": "date"}}
+{"category": "relative_day", "text": "모레", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-02T00:00:00", "kind": "date"}}
+{"category": "relative_day", "text": "어제", "now": "2027-12-31T23:10:00", "expected": {"start": "2027-12-30T00:00:00", "kind": "date"}}
+{"category": "weekday", "text": "다음주 월요일", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-03T00:00:00", "kind": "date"}}
+{"category": "week_range", "text": "이번 주말", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:00:00", "end": "2028-01-03T00:00:00", "kind": "date"}}
+{"category": "week_range", "text": "다음 주말", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-08T00:00:00", "end": "2028-01-10T00:00:00", "kind": "date"}}
+{"category": "weekday", "text": "금요일", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-07T00:00:00", "kind": "date"}}
+{"category": "weekday_modifier", "text": "지난 금요일", "now": "2027-12-31T23:10:00", "expected": {"start": "2027-12-24T00:00:00", "kind": "date"}}
+{"category": "month_year_range", "text": "다음달", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:00:00", "end": "2028-02-01T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 첫째주 금요일", "now": "2027-12-31T23:10:00", "expected": {"start": "2027-12-31T00:00:00", "kind": "date"}}
+{"category": "month_day", "text": "15일", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-15T00:00:00", "kind": "date"}}
+{"category": "month_day", "text": "12월25일", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-12-25T00:00:00", "kind": "date"}}
+{"category": "holiday", "text": "신정", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:00:00", "kind": "date"}}
+{"category": "month_year_range", "text": "연말", "now": "2027-12-31T23:10:00", "expected": {"start": "2027-12-01T00:00:00", "end": "2028-01-01T00:00:00", "kind": "date"}}
+{"category": "month_year_range", "text": "내년", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:00:00", "end": "2029-01-01T00:00:00", "kind": "date"}}
+{"category": "month_year_range", "text": "올해 마지막 날", "now": "2027-12-31T23:10:00", "expected": {"start": "2027-12-31T00:00:00", "end": "2028-01-01T00:00:00", "kind": "date"}}
+{"category": "day_offset", "text": "한 달 뒤", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-31T00:00:00", "kind": "date"}}
+{"category": "invalid_date", "text": "2월 29일", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-02-29T00:00:00", "kind": "date"}}
+{"category": "relative_time", "text": "1시간 후", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:10:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "30분 전", "now": "2027-12-31T23:10:00", "expected": {"start": "2027-12-31T22:40:00", "kind": "datetime"}}
+{"category": "clock", "text": "3시", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T03:00:00", "kind": "time"}}
+{"category": "clock", "text": "자정", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:00:00", "kind": "time"}}
+{"category": "datetime", "text": "오늘 밤 11시", "now": "2027-12-31T23:10:00", "expected": {"start": "2027-12-31T23:00:00", "kind": "datetime"}}
+{"category": "period", "text": "저녁", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T18:00:00", "end": "2028-01-01T21:00:00", "kind": "time"}}
+{"category": "relative_day", "text": "내일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-01T00:00:00", "kind": "date"}}
+{"category": "relative_day", "text": "어제", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-28T00:00:00", "kind": "date"}}
+{"category": "day_offset", "text": "1년 후", "now": "2028-02-29T08:05:00", "expected": {"start": "2029-02-28T00:00:00", "kind": "date"}}
+{"category": "day_offset", "text": "한 달 뒤", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-29T00:00:00", "kind": "date"}}
+{"category": "weekday", "text": "이번주 금요일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-03T00:00:00", "kind": "date"}}
+{"category": "weekday", "text": "월요일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-06T00:00:00", "kind": "date"}}
+{"category": "weekday_modifier", "text": "지난 월요일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-28T00:00:00", "kind": "date"}}
+{"category": "week_range", "text": "주말", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-04T00:00:00", "end": "2028-03-06T00:00:00", "kind": "date"}}
+{"category": "week_range", "text": "주중", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-28T00:00:00", "end": "2028-03-04T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "이번달 말일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 말일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-31T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "저번달 말일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-01-31T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음달 첫번째 주 월요일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-06T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "마지막주 금요일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-03T00:00:00", "kind": "date"}}
+{"category": "invalid_date", "text": "2월 29일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T00:00:00", "kind": "date"}}
+{"category": "invalid_date", "text": "2월 30일", "now": "2028-02-29T08:05:00", "expected": null}
+{"category": "month_day", "text": "29일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T00:00:00", "kind": "date"}}
+{"category": "month_day", "text": "30일", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-30T00:00:00", "kind": "date"}}
+{"category": "month_year_range", "text": "상반기", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-01-01T00:00:00", "end": "2028-07-01T00:00:00", "kind": "date"}}
+{"category": "month_year_range", "text": "1분기", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-01-01T00:00:00", "end": "2028-04-01T00:00:00", "kind": "date"}}
+{"category": "clock", "text": "9시", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T09:00:00", "kind": "time"}}
+{"category": "clock", "text": "8시", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T20:00:00", "kind": "time"}}
+{"category": "clock", "text": "오전 8시", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-01T08:00:00", "kind": "time"}}
+{"category": "period", "text": "점심", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T12:00:00", "end": "2028-02-29T13:00:00", "kind": "time"}}
+{"category": "relative_time", "text": "지금", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T08:05:00", "kind": "datetime"}}
+{"category": "relative_time", "text": "90분 후", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T09:35:00", "kind": "datetime"}}
+{"category": "datetime", "text": "내일 3시", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-03-01T15:00:00", "kind": "datetime"}}
+{"category": "datetime", "text": "오늘 3시", "now": "2028-02-29T08:05:00", "expected": {"start": "2028-02-29T15:00:00", "kind": "datetime"}}
+{"category": "month_relative", "text": "다음 달 셋째 주 토요일", "expected": {"start": "2026-10-17", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 둘째 주 주말", "expected": {"start": "2026-10-10", "end": "2026-10-12", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 셋째 토요일", "expected": {"start": "2026-10-17", "kind": "date"}}
+{"category": "month_relative", "text": "저번달 마지막주 일요일", "expected": {"start": "2026-09-06", "kind": "date"}}
+{"category": "weekday", "text": "이번 주 월요일", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-09-28T00:00:00+09:00", "end": "2026-09-29T00:00:00+09:00", "kind": "date"}, "source": "B001"}
+{"category": "weekday", "text": "이번 주 월요일", "now": "2026-10-05T00:00:00+09:00", "expected": {"start": "2026-10-05T00:00:00+09:00", "end": "2026-10-06T00:00:00+09:00", "kind": "date"}, "source": "B002"}
+{"category": "weekday", "text": "이번주 일요일", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-10-04T00:00:00+09:00", "end": "2026-10-05T00:00:00+09:00", "kind": "date"}, "source": "B003"}
+{"category": "weekday", "text": "다음주 화요일", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-10-06T00:00:00+09:00", "end": "2026-10-07T00:00:00+09:00", "kind": "date"}, "source": "B004"}
+{"category": "weekday", "text": "다음주 화요일", "now": "2026-10-05T00:00:00+09:00", "expected": {"start": "2026-10-13T00:00:00+09:00", "end": "2026-10-14T00:00:00+09:00", "kind": "date"}, "source": "B005"}
+{"category": "weekday", "text": "일요일", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-10-11T00:00:00+09:00", "end": "2026-10-12T00:00:00+09:00", "kind": "date"}, "source": "B006"}
+{"category": "weekday_modifier", "text": "지난 일요일", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-09-27T00:00:00+09:00", "end": "2026-09-28T00:00:00+09:00", "kind": "date"}, "source": "B007"}
+{"category": "weekday_modifier", "text": "지난 월요일", "now": "2026-10-05T00:00:00+09:00", "expected": {"start": "2026-09-28T00:00:00+09:00", "end": "2026-09-29T00:00:00+09:00", "kind": "date"}, "source": "B008"}
+{"category": "week_range", "text": "이번 주 주중", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-09-28T00:00:00+09:00", "end": "2026-10-03T00:00:00+09:00", "kind": "date"}, "source": "B009"}
+{"category": "week_range", "text": "주초", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-10-05T00:00:00+09:00", "end": "2026-10-07T00:00:00+09:00", "kind": "date"}, "source": "B010"}
+{"category": "week_range", "text": "주말 일정", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-10-03T00:00:00+09:00", "end": "2026-10-05T00:00:00+09:00", "kind": "date"}, "source": "B011"}
+{"category": "week_range", "text": "주말 일정", "now": "2026-10-05T00:00:00+09:00", "expected": {"start": "2026-10-10T00:00:00+09:00", "end": "2026-10-12T00:00:00+09:00", "kind": "date"}, "source": "B012"}
+{"category": "month_day", "text": "다가오는 31일", "now": "2026-10-30T23:59:00+09:00", "expected": {"start": "2026-10-31T00:00:00+09:00", "end": "2026-11-01T00:00:00+09:00", "kind": "date"}, "source": "B013"}
+{"category": "month_day", "text": "다가오는 31일", "now": "2026-10-31T23:59:00+09:00", "expected": {"start": "2026-10-31T00:00:00+09:00", "end": "2026-11-01T00:00:00+09:00", "kind": "date"}, "source": "B014"}
+{"category": "month_day", "text": "다가오는 31일", "now": "2026-11-01T00:00:00+09:00", "expected": {"start": "2026-12-31T00:00:00+09:00", "end": "2027-01-01T00:00:00+09:00", "kind": "date"}, "source": "B015"}
+{"category": "invalid_date", "text": "이번 달 31일", "now": "2026-10-31T23:59:00+09:00", "expected": {"start": "2026-10-31T00:00:00+09:00", "end": "2026-11-01T00:00:00+09:00", "kind": "date"}, "source": "B016"}
+{"category": "invalid_date", "text": "이번 달 31일", "now": "2026-11-01T00:00:00+09:00", "expected": null, "source": "B017"}
+{"category": "invalid_date", "text": "다음달 31일", "now": "2026-10-31T23:59:00+09:00", "expected": null, "source": "B018"}
+{"category": "invalid_date", "text": "다음달 31일", "now": "2026-11-01T00:00:00+09:00", "expected": {"start": "2026-12-31T00:00:00+09:00", "end": "2027-01-01T00:00:00+09:00", "kind": "date"}, "source": "B019"}
+{"category": "month_relative", "text": "다음 달 다섯째 토요일", "now": "2026-09-28T14:30:00+09:00", "expected": {"start": "2026-10-31T00:00:00+09:00", "end": "2026-11-01T00:00:00+09:00", "kind": "date"}, "source": "B020"}
+{"category": "month_relative", "text": "다음 달 다섯째 토요일", "now": "2026-10-31T23:59:00+09:00", "expected": null, "source": "B021"}
+{"category": "month_relative", "text": "다음달 다섯째 주 일요일", "now": "2026-01-31T14:30:00+09:00", "expected": {"start": "2026-03-01T00:00:00+09:00", "end": "2026-03-02T00:00:00+09:00", "kind": "date"}, "source": "B022"}
+{"category": "month_relative", "text": "다음달 다섯째 주 일요일", "now": "2026-02-28T14:30:00+09:00", "expected": {"start": "2026-03-29T00:00:00+09:00", "end": "2026-03-30T00:00:00+09:00", "kind": "date"}, "source": "B023"}
+{"category": "month_relative", "text": "이번 달 둘째 토요일", "now": "2026-10-15T14:30:00+09:00", "expected": {"start": "2026-10-10T00:00:00+09:00", "end": "2026-10-11T00:00:00+09:00", "kind": "date"}, "source": "B024"}
+{"category": "month_relative", "text": "이번 달 둘째 주 토요일", "now": "2026-10-15T14:30:00+09:00", "expected": {"start": "2026-10-10T00:00:00+09:00", "end": "2026-10-11T00:00:00+09:00", "kind": "date"}, "source": "B025"}
+{"category": "month_relative", "text": "다음 달의 말일", "now": "2027-01-31T14:30:00+09:00", "expected": {"start": "2027-02-28T00:00:00+09:00", "end": "2027-03-01T00:00:00+09:00", "kind": "date"}, "source": "B026"}
+{"category": "month_relative", "text": "다음 달의 말일", "now": "2028-01-31T14:30:00+09:00", "expected": {"start": "2028-02-29T00:00:00+09:00", "end": "2028-03-01T00:00:00+09:00", "kind": "date"}, "source": "B027"}
+{"category": "day_offset", "text": "오늘로부터 한 달 후", "now": "2027-01-31T14:30:00+09:00", "expected": {"start": "2027-02-28T00:00:00+09:00", "end": "2027-03-01T00:00:00+09:00", "kind": "date"}, "source": "B028"}
+{"category": "day_offset", "text": "오늘로부터 한 달 후", "now": "2028-01-31T14:30:00+09:00", "expected": {"start": "2028-02-29T00:00:00+09:00", "end": "2028-03-01T00:00:00+09:00", "kind": "date"}, "source": "B029"}
+{"category": "day_offset", "text": "오늘로부터 두 달 후", "now": "2027-01-31T14:30:00+09:00", "expected": {"start": "2027-03-31T00:00:00+09:00", "end": "2027-04-01T00:00:00+09:00", "kind": "date"}, "source": "B030"}
+{"category": "day_offset", "text": "오늘부터 일 년 뒤", "now": "2028-02-29T14:30:00+09:00", "expected": {"start": "2029-02-28T00:00:00+09:00", "end": "2029-03-01T00:00:00+09:00", "kind": "date"}, "source": "B031"}
+{"category": "day_offset", "text": "오늘부터 일 년 전", "now": "2028-02-29T14:30:00+09:00", "expected": {"start": "2027-02-28T00:00:00+09:00", "end": "2027-03-01T00:00:00+09:00", "kind": "date"}, "source": "B032"}
+{"category": "month_day", "text": "2월 29일에", "now": "2028-02-29T23:59:00+09:00", "expected": {"start": "2028-02-29T00:00:00+09:00", "end": "2028-03-01T00:00:00+09:00", "kind": "date"}, "source": "B033"}
+{"category": "month_day", "text": "2월 29일에", "now": "2028-03-01T00:00:00+09:00", "expected": {"start": "2032-02-29T00:00:00+09:00", "end": "2032-03-01T00:00:00+09:00", "kind": "date"}, "source": "B034"}
+{"category": "invalid_date", "text": "내년 2월 29일", "now": "2027-12-31T23:59:00+09:00", "expected": {"start": "2028-02-29T00:00:00+09:00", "end": "2028-03-01T00:00:00+09:00", "kind": "date"}, "source": "B035"}
+{"category": "invalid_date", "text": "내년 2월 29일", "now": "2028-01-01T00:00:00+09:00", "expected": null, "source": "B036"}
+{"category": "month_day", "text": "다가오는 12월 31일", "now": "2026-12-31T23:59:00+09:00", "expected": {"start": "2026-12-31T00:00:00+09:00", "end": "2027-01-01T00:00:00+09:00", "kind": "date"}, "source": "B037"}
+{"category": "month_day", "text": "다가오는 12월 31일", "now": "2027-01-01T00:00:00+09:00", "expected": {"start": "2027-12-31T00:00:00+09:00", "end": "2028-01-01T00:00:00+09:00", "kind": "date"}, "source": "B038"}
+{"category": "clock", "text": "17시 5분 전", "now": "2026-09-28T16:54:00+09:00", "expected": {"start": "2026-09-28T16:55:00+09:00", "kind": "time", "shape": "instant"}, "source": "B039"}
+{"category": "clock", "text": "17시 5분 전", "now": "2026-09-28T16:55:00+09:00", "expected": {"start": "2026-09-28T16:55:00+09:00", "kind": "time", "shape": "instant"}, "source": "B040"}
+{"category": "clock", "text": "17시 5분 전", "now": "2026-09-28T16:57:00+09:00", "expected": {"start": "2026-09-29T16:55:00+09:00", "kind": "time", "shape": "instant"}, "source": "B041"}
+{"category": "clock", "text": "오후 3시 10분 전", "now": "2026-09-28T14:49:00+09:00", "expected": {"start": "2026-09-28T14:50:00+09:00", "kind": "time", "shape": "instant"}, "source": "B042"}
+{"category": "clock", "text": "오후 3시 10분 전", "now": "2026-09-28T14:51:00+09:00", "expected": {"start": "2026-09-29T14:50:00+09:00", "kind": "time", "shape": "instant"}, "source": "B043"}
+{"category": "period", "text": "저녁 시간", "now": "2026-09-28T20:59:00+09:00", "expected": {"start": "2026-09-28T18:00:00+09:00", "end": "2026-09-28T21:00:00+09:00", "kind": "time"}, "source": "B044"}
+{"category": "period", "text": "저녁 시간", "now": "2026-09-28T21:00:00+09:00", "expected": {"start": "2026-09-29T18:00:00+09:00", "end": "2026-09-29T21:00:00+09:00", "kind": "time"}, "source": "B045"}
+{"category": "period", "text": "지난 저녁", "now": "2026-09-28T20:59:00+09:00", "expected": {"start": "2026-09-27T18:00:00+09:00", "end": "2026-09-27T21:00:00+09:00", "kind": "time"}, "source": "B046"}
+{"category": "datetime", "text": "오늘 오후 3시", "now": "2026-09-28T16:00:00+09:00", "expected": {"start": "2026-09-28T15:00:00+09:00", "kind": "datetime", "shape": "instant"}, "source": "B047"}
+{"category": "clock", "text": "오전 0시", "now": "2026-09-28T23:59:00+09:00", "expected": {"start": "2026-09-29T00:00:00+09:00", "kind": "time", "shape": "instant"}, "source": "B048"}
+{"category": "datetime", "text": "내일 0시", "now": "2026-09-28T23:59:00+09:00", "expected": {"start": "2026-09-29T00:00:00+09:00", "kind": "datetime", "shape": "instant"}, "source": "B049"}
+{"category": "datetime", "text": "내일 24시", "now": "2026-09-28T23:59:00+09:00", "expected": {"start": "2026-09-30T00:00:00+09:00", "kind": "datetime", "shape": "instant"}, "source": "B050"}
+{"category": "range", "text": "밤 11시부터 새벽 1시까지", "now": "2026-09-28T22:00:00+09:00", "expected": {"start": "2026-09-28T23:00:00+09:00", "end": "2026-09-29T01:00:00+09:00", "kind": "time"}, "source": "B051"}
+{"category": "range", "text": "밤 11시부터 새벽 1시까지", "now": "2026-09-28T23:30:00+09:00", "expected": {"start": "2026-09-29T23:00:00+09:00", "end": "2026-09-30T01:00:00+09:00", "kind": "time"}, "source": "B052"}
+{"category": "range", "text": "지난달 말일부터 이번달 첫날까지", "now": "2026-09-28T14:30:00+09:00", "expected": {"start": "2026-08-31T00:00:00+09:00", "end": "2026-09-02T00:00:00+09:00", "kind": "date"}, "source": "B053"}
+{"category": "range", "text": "이번달 말일부터 다음달 첫날까지", "now": "2026-09-28T14:30:00+09:00", "expected": {"start": "2026-09-30T00:00:00+09:00", "end": "2026-10-02T00:00:00+09:00", "kind": "date"}, "source": "B054"}
+{"category": "range", "text": "이번 주 금요일부터 일요일까지", "now": "2026-10-04T23:59:00+09:00", "expected": {"start": "2026-10-02T00:00:00+09:00", "end": "2026-10-05T00:00:00+09:00", "kind": "date"}, "source": "B055"}
+{"category": "range", "text": "이번 달 말일 밤 11시 50분부터 다음 달 첫날 0시 10분까지", "now": "2026-10-31T23:59:00", "expected": {"start": "2026-10-31T23:50:00", "end": "2026-11-01T00:10:00", "kind": "datetime"}}
+{"category": "range", "text": "이번 달 말일 밤 11시 50분부터 다음 달 첫날 0시 10분까지", "now": "2026-11-01T00:00:00", "expected": {"start": "2026-11-30T23:50:00", "end": "2026-12-01T00:10:00", "kind": "datetime"}}
+{"category": "range", "text": "이번 달 말일 23시 50분부터 30분 뒤까지", "now": "2026-10-31T23:59:00", "expected": {"start": "2026-10-31T23:50:00", "end": "2026-11-01T00:20:00", "kind": "datetime"}}
+{"category": "range", "text": "이번 달 말일 23시 50분부터 30분 뒤까지", "now": "2028-02-29T23:59:00", "expected": {"start": "2028-02-29T23:50:00", "end": "2028-03-01T00:20:00", "kind": "datetime"}}
+{"category": "range", "text": "이번 주 금요일 밤 11시부터 다음 주 월요일 새벽 1시까지", "now": "2026-10-04T23:59:00", "expected": {"start": "2026-10-02T23:00:00", "end": "2026-10-05T01:00:00", "kind": "datetime"}}
+{"category": "range", "text": "이번 주 금요일 밤 11시부터 다음 주 월요일 새벽 1시까지", "now": "2026-10-05T00:00:00", "expected": {"start": "2026-10-09T23:00:00", "end": "2026-10-12T01:00:00", "kind": "datetime"}}
+{"category": "range", "text": "다가오는 금요일 밤 11시부터 그다음 월요일 새벽 1시까지", "now": "2026-10-02T23:59:00", "expected": {"start": "2026-10-09T23:00:00", "end": "2026-10-12T01:00:00", "kind": "datetime"}}
+{"category": "range", "text": "다가오는 금요일 밤 11시부터 그다음 월요일 새벽 1시까지", "now": "2026-10-08T23:59:00", "expected": {"start": "2026-10-09T23:00:00", "end": "2026-10-12T01:00:00", "kind": "datetime"}}
+{"category": "range", "text": "이번 주 일요일 23시 59분부터 다음 주 월요일 0시 1분까지", "now": "2026-10-04T23:59:00", "expected": {"start": "2026-10-04T23:59:00", "end": "2026-10-05T00:01:00", "kind": "datetime"}}
+{"category": "range", "text": "이번 주 일요일 23시 59분부터 다음 주 월요일 0시 1분까지", "now": "2026-10-05T00:00:00", "expected": {"start": "2026-10-11T23:59:00", "end": "2026-10-12T00:01:00", "kind": "datetime"}}
+{"category": "month_relative", "text": "다음 달 마지막 금요일의 다음 날", "now": "2026-09-30T23:59:00", "expected": {"start": "2026-10-31T00:00:00", "end": "2026-11-01T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 마지막 금요일의 다음 날", "now": "2026-10-01T00:00:00", "expected": {"start": "2026-11-28T00:00:00", "end": "2026-11-29T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 마지막 금요일에서 이틀 뒤", "now": "2026-09-30T23:59:00", "expected": {"start": "2026-11-01T00:00:00", "end": "2026-11-02T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 마지막 금요일에서 이틀 뒤", "now": "2026-10-01T00:00:00", "expected": {"start": "2026-11-29T00:00:00", "end": "2026-11-30T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 첫째 주 일요일", "now": "2026-09-30T23:59:00", "expected": {"start": "2026-10-04T00:00:00", "end": "2026-10-05T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 첫째 주 일요일", "now": "2026-10-01T00:00:00", "expected": {"start": "2026-11-01T00:00:00", "end": "2026-11-02T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 첫 번째 일요일", "now": "2026-09-30T23:59:00", "expected": {"start": "2026-10-04T00:00:00", "end": "2026-10-05T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 첫 번째 일요일", "now": "2026-10-01T00:00:00", "expected": {"start": "2026-11-01T00:00:00", "end": "2026-11-02T00:00:00", "kind": "date"}}
+{"category": "range", "text": "올해 마지막 금요일부터 내년 첫 월요일까지", "now": "2026-12-31T23:59:00", "expected": {"start": "2026-12-25T00:00:00", "end": "2027-01-05T00:00:00", "kind": "date"}}
+{"category": "range", "text": "올해 마지막 금요일부터 내년 첫 월요일까지", "now": "2027-01-01T00:00:00", "expected": {"start": "2027-12-31T00:00:00", "end": "2028-01-04T00:00:00", "kind": "date"}}
+{"category": "range", "text": "올해 마지막 날 23시 59분부터 내년 첫날 0시 1분까지", "now": "2026-12-31T23:59:00", "expected": {"start": "2026-12-31T23:59:00", "end": "2027-01-01T00:01:00", "kind": "datetime"}}
+{"category": "range", "text": "올해 마지막 날 23시 59분부터 내년 첫날 0시 1분까지", "now": "2027-01-01T00:00:00", "expected": {"start": "2027-12-31T23:59:00", "end": "2028-01-01T00:01:00", "kind": "datetime"}}
+{"category": "month_day", "text": "내년 2월의 마지막 토요일", "now": "2026-12-31T23:59:00", "expected": {"start": "2027-02-27T00:00:00", "end": "2027-02-28T00:00:00", "kind": "date"}}
+{"category": "month_day", "text": "내년 2월의 마지막 토요일", "now": "2027-01-01T00:00:00", "expected": {"start": "2028-02-26T00:00:00", "end": "2028-02-27T00:00:00", "kind": "date"}}
+{"category": "month_day", "text": "내년 2월 29일 오전 9시", "now": "2026-12-31T23:59:00", "expected": null}
+{"category": "month_day", "text": "내년 2월 29일 오전 9시", "now": "2027-01-01T00:00:00", "expected": {"start": "2028-02-29T09:00:00", "kind": "datetime"}}
+{"category": "month_day", "text": "다가오는 2월 29일 오후 3시", "now": "2028-02-29T14:59:00", "expected": {"start": "2028-02-29T15:00:00", "kind": "datetime"}}
+{"category": "month_day", "text": "다가오는 2월 29일 오후 3시", "now": "2028-02-29T15:01:00", "expected": {"start": "2032-02-29T15:00:00", "kind": "datetime"}}
+{"category": "month_day", "text": "다가오는 매월 31일 오전 9시", "now": "2027-01-31T08:59:00", "expected": {"start": "2027-01-31T09:00:00", "kind": "datetime"}}
+{"category": "month_day", "text": "다가오는 매월 31일 오전 9시", "now": "2027-01-31T09:01:00", "expected": {"start": "2027-03-31T09:00:00", "kind": "datetime"}}
+{"category": "clock", "text": "매달 말일 자정 10분 전", "now": "2027-01-31T23:49:00", "expected": {"start": "2027-01-31T23:50:00", "kind": "datetime"}}
+{"category": "clock", "text": "매달 말일 자정 10분 전", "now": "2027-01-31T23:51:00", "expected": {"start": "2027-02-28T23:50:00", "kind": "datetime"}}
+{"category": "clock", "text": "매달 말일 자정 10분 후", "now": "2027-01-31T23:59:00", "expected": {"start": "2027-02-01T00:10:00", "kind": "datetime"}}
+{"category": "clock", "text": "매달 말일 자정 10분 후", "now": "2027-02-01T00:11:00", "expected": {"start": "2027-03-01T00:10:00", "kind": "datetime"}}
+{"category": "range", "text": "오늘 밤 11시 55분부터 내일 새벽 0시 5분까지", "now": "2026-12-31T23:59:00", "expected": {"start": "2026-12-31T23:55:00", "end": "2027-01-01T00:05:00", "kind": "datetime"}}
+{"category": "range", "text": "오늘 밤 11시 55분부터 내일 새벽 0시 5분까지", "now": "2027-01-01T00:00:00", "expected": {"start": "2027-01-01T23:55:00", "end": "2027-01-02T00:05:00", "kind": "datetime"}}
+{"category": "day_offset", "text": "다가오는 1월 31일에서 한 달 뒤", "now": "2026-12-31T23:59:00", "expected": {"start": "2027-02-28T00:00:00", "end": "2027-03-01T00:00:00", "kind": "date"}}
+{"category": "day_offset", "text": "다가오는 1월 31일에서 한 달 뒤", "now": "2027-01-31T23:59:00", "expected": {"start": "2027-02-28T00:00:00", "end": "2027-03-01T00:00:00", "kind": "date"}}
+{"category": "day_offset", "text": "다가오는 1월 31일에서 한 달 뒤", "now": "2028-01-31T23:59:00", "expected": {"start": "2028-02-29T00:00:00", "end": "2028-03-01T00:00:00", "kind": "date"}}
+{"category": "day_offset", "text": "다가오는 1월 31일에서 두 달 뒤", "now": "2027-01-31T23:59:00", "expected": {"start": "2027-03-31T00:00:00", "end": "2027-04-01T00:00:00", "kind": "date"}}
+{"category": "day_offset", "text": "다가오는 1월 31일에서 두 달 뒤", "now": "2028-01-31T23:59:00", "expected": {"start": "2028-03-31T00:00:00", "end": "2028-04-01T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "올해 마지막 월요일에서 일주일 뒤", "now": "2026-12-31T23:59:00", "expected": {"start": "2027-01-04T00:00:00", "end": "2027-01-05T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "올해 마지막 월요일에서 일주일 뒤", "now": "2027-01-01T00:00:00", "expected": {"start": "2028-01-03T00:00:00", "end": "2028-01-04T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "이번 달 마지막 금요일 밤 11시에서 두 시간 뒤", "now": "2026-10-30T23:59:00", "expected": {"start": "2026-10-31T01:00:00", "kind": "datetime"}}
+{"category": "month_relative", "text": "이번 달 마지막 금요일 밤 11시에서 두 시간 뒤", "now": "2026-11-01T00:00:00", "expected": {"start": "2026-11-28T01:00:00", "kind": "datetime"}}
+{"category": "clock", "text": "다가오는 오후 5시 5분 전부터 두 시간 후까지", "now": "2026-09-28T16:54:00", "expected": {"start": "2026-09-28T16:55:00", "end": "2026-09-28T18:55:00", "kind": "time"}}
+{"category": "clock", "text": "다가오는 오후 5시 5분 전부터 두 시간 후까지", "now": "2026-09-28T16:56:00", "expected": {"start": "2026-09-29T16:55:00", "end": "2026-09-29T18:55:00", "kind": "time"}}
+{"category": "range", "text": "지난주 일요일 23시 59분부터 이번 주 월요일 0시 1분까지", "now": "2026-10-04T23:59:00", "expected": {"start": "2026-09-27T23:59:00", "end": "2026-09-28T00:01:00", "kind": "datetime"}}
+{"category": "range", "text": "지난주 일요일 23시 59분부터 이번 주 월요일 0시 1분까지", "now": "2026-10-05T00:00:00", "expected": {"start": "2026-10-04T23:59:00", "end": "2026-10-05T00:01:00", "kind": "datetime"}}
+{"category": "month_relative", "text": "다음 주 화요일의 전날 오후 11시 30분", "now": "2026-10-04T23:59:00", "expected": {"start": "2026-10-05T23:30:00", "kind": "datetime"}}
+{"category": "month_relative", "text": "다음 주 화요일의 전날 오후 11시 30분", "now": "2026-10-05T00:00:00", "expected": {"start": "2026-10-12T23:30:00", "kind": "datetime"}}
+{"category": "month_relative", "text": "다음 달 말일 전날부터 말일까지", "now": "2027-01-31T23:59:00", "expected": {"start": "2027-02-27T00:00:00", "end": "2027-03-01T00:00:00", "kind": "date"}}
+{"category": "month_relative", "text": "다음 달 말일 전날부터 말일까지", "now": "2027-02-01T00:00:00", "expected": {"start": "2027-03-30T00:00:00", "end": "2027-04-01T00:00:00", "kind": "date"}}

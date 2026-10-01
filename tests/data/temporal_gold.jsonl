@@ -1,0 +1,612 @@
+{"_meta": {"note": "기대값 식(temporal/expectation.py)으로 정의한 기준 시각 무관 정답셋"}}
+{"category": "relative_day", "text": "오늘", "expect": "today"}
+{"category": "relative_day", "text": "내일", "expect": "today + 1d"}
+{"category": "relative_day", "text": "낼", "expect": "today + 1d"}
+{"category": "relative_day", "text": "모레", "expect": "today + 2d"}
+{"category": "relative_day", "text": "내일모레", "expect": "today + 2d"}
+{"category": "relative_day", "text": "글피", "expect": "today + 3d"}
+{"category": "relative_day", "text": "그글피", "expect": "today + 4d"}
+{"category": "relative_day", "text": "어제", "expect": "today - 1d"}
+{"category": "relative_day", "text": "그저께", "expect": "today - 2d"}
+{"category": "relative_day", "text": "그제", "expect": "today - 2d"}
+{"category": "relative_day", "text": "그끄저께", "expect": "today - 3d"}
+{"category": "relative_word", "text": "금일", "expect": "today"}
+{"category": "relative_word", "text": "명일", "expect": "today + 1d"}
+{"category": "relative_word", "text": "익일", "expect": "today + 1d"}
+{"category": "relative_word", "text": "명후일", "expect": "today + 2d"}
+{"category": "relative_word", "text": "익익일", "expect": "today + 2d"}
+{"category": "relative_word", "text": "작일", "expect": "today - 1d"}
+{"category": "relative_word", "text": "전일", "expect": "today - 1d"}
+{"category": "relative_word", "text": "그그제", "expect": "today - 3d"}
+{"category": "relative_word", "text": "그그그제", "expect": "today - 4d"}
+{"category": "relative_word", "text": "그그글피", "expect": "today + 5d"}
+{"category": "relative_word", "text": "금주", "expect": "week(0)"}
+{"category": "relative_word", "text": "내주", "expect": "week(1)"}
+{"category": "relative_word", "text": "익주", "expect": "week(1)"}
+{"category": "relative_word", "text": "다다다음주", "expect": "week(3)"}
+{"category": "relative_word", "text": "다다담주", "expect": "week(3)"}
+{"category": "relative_word", "text": "저저저번주", "expect": "week(-3)"}
+{"category": "relative_word", "text": "지지지난주", "expect": "week(-3)"}
+{"category": "relative_word", "text": "전전주", "expect": "week(-2)"}
+{"category": "relative_word", "text": "전전전주", "expect": "week(-3)"}
+{"category": "relative_word", "text": "다다다음달", "expect": "month(3)"}
+{"category": "relative_word", "text": "전전달", "expect": "month(-2)"}
+{"category": "relative_word", "text": "전전월", "expect": "month(-2)"}
+{"category": "relative_word", "text": "지지지난달", "expect": "month(-3)"}
+{"category": "relative_word", "text": "익월", "expect": "month(1)"}
+{"category": "relative_word", "text": "후년", "expect": "year(2)"}
+{"category": "relative_word", "text": "후후년", "expect": "year(3)"}
+{"category": "relative_word", "text": "재재작년", "expect": "year(-3)"}
+{"category": "relative_word", "text": "익년", "expect": "year(1)"}
+{"category": "relative_word", "text": "지지난해", "expect": "year(-2)"}
+{"category": "relative_word", "text": "다다다음주 금요일", "expect": "week(3).weekday(FRI)"}
+{"category": "relative_word", "text": "저저번달 말일", "expect": "month(-2).last()"}
+{"category": "relative_word", "text": "재작년 크리스마스", "expect": "year(-2).month(12).day(25)"}
+{"category": "relative_word", "text": "전주에 다녀왔다", "expect": "none"}
+{"category": "relative_word", "text": "내내후년", "expect": "none"}
+{"category": "relative_word", "text": "다다다다다다음주", "expect": "none"}
+{"category": "relative_word", "text": "당일치기", "expect": "none"}
+{"category": "day_offset", "text": "3일 뒤", "expect": "today + 3d"}
+{"category": "day_offset", "text": "삼일 후", "expect": "today + 3d"}
+{"category": "day_offset", "text": "99일뒤", "expect": "today + 99d"}
+{"category": "day_offset", "text": "이틀 후", "expect": "today + 2d"}
+{"category": "day_offset", "text": "열흘 뒤", "expect": "today + 10d"}
+{"category": "day_offset", "text": "보름 뒤", "expect": "today + 15d"}
+{"category": "day_offset", "text": "하루 전", "expect": "today - 1d"}
+{"category": "day_offset", "text": "사흘 전", "expect": "today - 3d"}
+{"category": "day_offset", "text": "일주일 후", "expect": "today + 1w"}
+{"category": "day_offset", "text": "2주 후", "expect": "today + 2w"}
+{"category": "day_offset", "text": "한 달 뒤", "expect": "today + 1mo"}
+{"category": "day_offset", "text": "3개월 후", "expect": "today + 3mo"}
+{"category": "day_offset", "text": "1년 후", "expect": "today + 1y"}
+{"category": "weekday", "text": "이번주 금요일", "expect": "week(0).weekday(FRI)"}
+{"category": "weekday", "text": "이번 주 월요일", "expect": "week(0).weekday(MON)"}
+{"category": "weekday", "text": "다음주 월요일", "expect": "week(1).weekday(MON)"}
+{"category": "weekday", "text": "다음  주   월요일", "expect": "week(1).weekday(MON)"}
+{"category": "weekday", "text": "다다음주 수요일", "expect": "week(2).weekday(WED)"}
+{"category": "weekday", "text": "저번주 금요일", "expect": "week(-1).weekday(FRI)"}
+{"category": "weekday", "text": "지지난주 월요일", "expect": "week(-2).weekday(MON)"}
+{"category": "weekday", "text": "차주 화요일", "expect": "week(1).weekday(TUE)"}
+{"category": "weekday", "text": "금요일", "expect": "next(FRI)"}
+{"category": "weekday", "text": "월요일", "expect": "next(MON)"}
+{"category": "weekday", "text": "일요일", "expect": "next(SUN)"}
+{"category": "weekday", "text": "목욜", "expect": "next(THU)"}
+{"category": "weekday", "text": "오는 수요일에", "expect": "next(WED)"}
+{"category": "weekday_modifier", "text": "지난 금요일에 뭐 했어?", "expect": "prev(FRI)"}
+{"category": "weekday_modifier", "text": "지난 월요일", "expect": "prev(MON)"}
+{"category": "weekday_modifier", "text": "저번 수요일", "expect": "prev(WED)"}
+{"category": "weekday_modifier", "text": "이번 금요일", "expect": "week(0).weekday(FRI)"}
+{"category": "weekday_modifier", "text": "다음 금요일", "expect": "next(FRI)"}
+{"category": "weekday_modifier", "text": "오는 토요일", "expect": "next(SAT)"}
+{"category": "weekday_modifier", "text": "지난 추석", "expect": "past(lunar(8, 15))"}
+{"category": "weekday_modifier", "text": "지난 크리스마스", "expect": "past(md(12, 25))"}
+{"category": "weekday_modifier", "text": "마지막 금요일", "expect": "future(month(0).nth(-1, FRI))"}
+{"category": "week_range", "text": "주말", "expect": "week(0).weekend()"}
+{"category": "week_range", "text": "이번 주말", "expect": "week(0).weekend()"}
+{"category": "week_range", "text": "이번주말", "expect": "week(0).weekend()"}
+{"category": "week_range", "text": "오는 주말", "expect": "week(0).weekend()"}
+{"category": "week_range", "text": "다음 주말", "expect": "week(1).weekend()", "ambiguous": ["next_weekend"]}
+{"category": "week_range", "text": "저번주 주말", "expect": "week(-1).weekend()"}
+{"category": "week_range", "text": "주중", "expect": "future(week(0).weekdays())"}
+{"category": "week_range", "text": "다음주 주중", "expect": "week(1).weekdays()"}
+{"category": "week_range", "text": "다음주초", "expect": "week(1).early()"}
+{"category": "week_range", "text": "이번주", "expect": "week(0)"}
+{"category": "week_range", "text": "다음주", "expect": "week(1)"}
+{"category": "week_range", "text": "저번주", "expect": "week(-1)"}
+{"category": "month_day", "text": "10월 15일", "expect": "future(md(10, 15))"}
+{"category": "month_day", "text": "12월25일", "expect": "future(md(12, 25))"}
+{"category": "month_day", "text": "4 월 14 일", "expect": "future(md(4, 14))"}
+{"category": "month_day", "text": "6월 3일", "expect": "future(md(6, 3))"}
+{"category": "month_day", "text": "9월 28일", "expect": "future(md(9, 28))"}
+{"category": "month_day", "text": "9월 28일 월요일", "expect": "future(md(9, 28))"}
+{"category": "month_day", "text": "4월14일회의", "expect": "future(md(4, 14))"}
+{"category": "month_day", "text": "4월달 14일", "expect": "future(md(4, 14))"}
+{"category": "month_day", "text": "삼월 오일", "expect": "future(md(3, 5))"}
+{"category": "month_day", "text": "사월 삼십일", "expect": "future(md(4, 30))"}
+{"category": "month_day", "text": "4월이십일", "expect": "future(md(4, 20))"}
+{"category": "month_day", "text": "십이월 이십오일", "expect": "future(md(12, 25))"}
+{"category": "month_day", "text": "12월삼십일", "expect": "future(md(12, 30))"}
+{"category": "month_day", "text": "구월 삼십일", "expect": "future(md(9, 30))"}
+{"category": "month_day", "text": "시월 십오일", "expect": "future(md(10, 15))"}
+{"category": "month_day", "text": "일월 일일", "expect": "future(md(1, 1))"}
+{"category": "month_day", "text": "15일", "expect": "future(day(15))"}
+{"category": "month_day", "text": "30일", "expect": "future(day(30))"}
+{"category": "month_day", "text": "이십구일", "expect": "future(day(29))"}
+{"category": "invalid_date", "text": "2월 30일", "expect": "none"}
+{"category": "invalid_date", "text": "2026-02-30", "expect": "none"}
+{"category": "invalid_date", "text": "4월 31일", "expect": "none"}
+{"category": "invalid_date", "text": "이달 31일", "expect": "month(0).day(31)"}
+{"category": "invalid_date", "text": "2026년 2월 29일", "expect": "none"}
+{"category": "invalid_date", "text": "31일", "expect": "future(day(31))"}
+{"category": "invalid_date", "text": "2월 29일", "expect": "future(md(2, 29))"}
+{"category": "formatted", "text": "2026-10-01", "expect": "ymd(2026, 10, 1)"}
+{"category": "formatted", "text": "2026.10.1", "expect": "ymd(2026, 10, 1)"}
+{"category": "formatted", "text": "2026/10/01", "expect": "ymd(2026, 10, 1)"}
+{"category": "formatted", "text": "2026. 10. 1.", "expect": "ymd(2026, 10, 1)"}
+{"category": "formatted", "text": "20261101", "expect": "ymd(2026, 11, 1)"}
+{"category": "formatted", "text": "25.07.15", "expect": "ymd(2025, 7, 15)", "ambiguous": ["two_digit_year"]}
+{"category": "formatted", "text": "10/15", "expect": "future(md(10, 15))"}
+{"category": "formatted", "text": "7/15", "expect": "future(md(7, 15))"}
+{"category": "formatted", "text": "07-15", "expect": "future(md(7, 15))"}
+{"category": "formatted", "text": "2025년 4월 14일", "expect": "ymd(2025, 4, 14)"}
+{"category": "formatted", "text": "2027년 6월 3일", "expect": "ymd(2027, 6, 3)"}
+{"category": "formatted", "text": "2026 유월 삼일", "expect": "ymd(2026, 6, 3)"}
+{"category": "formatted", "text": "25년 3월 1일", "expect": "ymd(2025, 3, 1)", "ambiguous": ["two_digit_year"]}
+{"category": "formatted", "text": "99년 3월 1일", "expect": "ymd(1999, 3, 1)", "ambiguous": ["two_digit_year"]}
+{"category": "formatted", "text": "99.03.01", "expect": "ymd(1999, 3, 1)", "ambiguous": ["two_digit_year"]}
+{"category": "month_relative", "text": "다음달 15일", "expect": "month(1).day(15)"}
+{"category": "month_relative", "text": "다음달 1일", "expect": "month(1).day(1)"}
+{"category": "month_relative", "text": "다다음달 5일", "expect": "month(2).day(5)"}
+{"category": "month_relative", "text": "저번달 10일", "expect": "month(-1).day(10)"}
+{"category": "month_relative", "text": "이번달 15일", "expect": "month(0).day(15)"}
+{"category": "month_relative", "text": "이번달 25일", "expect": "month(0).day(25)"}
+{"category": "month_relative", "text": "다음달 첫째주 금요일", "expect": "month(1).row(1).weekday(FRI)"}
+{"category": "month_relative", "text": "다음달 첫째주 금요일에 발표가 있어요", "expect": "month(1).row(1).weekday(FRI)"}
+{"category": "month_relative", "text": "다음달 첫번째 주 월요일", "expect": "month(1).row(1).weekday(MON)"}
+{"category": "month_relative", "text": "다음달 두번째주 토요일", "expect": "month(1).row(2).weekday(SAT)"}
+{"category": "month_relative", "text": "다음달 마지막주 일요일", "expect": "month(1).row(-1).weekday(SUN)"}
+{"category": "month_relative", "text": "이번달 둘째주 금요일", "expect": "month(0).row(2).weekday(FRI)"}
+{"category": "month_relative", "text": "4월 마지막 주 일요일", "expect": "future(mon(4).row(-1).weekday(SUN))"}
+{"category": "month_relative", "text": "마지막주 금요일", "expect": "future(month(0).row(-1).weekday(FRI))"}
+{"category": "month_relative", "text": "둘째주 금요일", "expect": "future(month(0).row(2).weekday(FRI))"}
+{"category": "month_relative", "text": "다음달 수요일", "expect": "month(1).nth(1, WED)"}
+{"category": "month_relative", "text": "저번달 말일", "expect": "month(-1).last()"}
+{"category": "month_relative", "text": "이번달 말일", "expect": "month(0).last()"}
+{"category": "month_relative", "text": "말일", "expect": "month(0).last()"}
+{"category": "month_relative", "text": "다음달 첫날", "expect": "month(1).first()"}
+{"category": "month_relative", "text": "3월 첫날", "expect": "future(mon(3).first())"}
+{"category": "month_relative", "text": "2월 말일", "expect": "future(mon(2).last())"}
+{"category": "month_relative", "text": "12월 마지막 날", "expect": "future(mon(12).last())"}
+{"category": "month_year_range", "text": "다음달", "expect": "month(1)"}
+{"category": "month_year_range", "text": "이번달", "expect": "month(0)"}
+{"category": "month_year_range", "text": "저번달", "expect": "month(-1)"}
+{"category": "month_year_range", "text": "10월", "expect": "future(mon(10))"}
+{"category": "month_year_range", "text": "2월", "expect": "future(mon(2))"}
+{"category": "month_year_range", "text": "내년 3월", "expect": "year(1).month(3)"}
+{"category": "month_year_range", "text": "다음달 초", "expect": "month(1).part(early)"}
+{"category": "month_year_range", "text": "이번달 중순", "expect": "month(0).part(mid)"}
+{"category": "month_year_range", "text": "월말", "expect": "month(0).part(late)"}
+{"category": "month_year_range", "text": "12월 둘째주", "expect": "future(mon(12).row(2))"}
+{"category": "month_year_range", "text": "12월 마지막주", "expect": "future(mon(12).row(-1))"}
+{"category": "month_year_range", "text": "첫째주", "expect": "future(month(0).row(1))"}
+{"category": "month_year_range", "text": "10월 셋째주 주말", "expect": "future(mon(10).row(3).weekend())"}
+{"category": "month_year_range", "text": "올해", "expect": "year(0)"}
+{"category": "month_year_range", "text": "내년", "expect": "year(1)"}
+{"category": "month_year_range", "text": "2028년", "expect": "yr(2028)"}
+{"category": "month_year_range", "text": "상반기", "expect": "future(year(0).half(1))"}
+{"category": "month_year_range", "text": "하반기", "expect": "future(year(0).half(2))"}
+{"category": "month_year_range", "text": "연말", "expect": "future(year(0).month(12))"}
+{"category": "month_year_range", "text": "내년 1분기", "expect": "year(1).quarter(1)"}
+{"category": "month_year_range", "text": "3분기", "expect": "future(year(0).quarter(3))"}
+{"category": "month_year_range", "text": "4분기", "expect": "future(year(0).quarter(4))"}
+{"category": "holiday", "text": "크리스마스", "expect": "future(md(12, 25))"}
+{"category": "holiday", "text": "성탄절", "expect": "future(md(12, 25))"}
+{"category": "holiday", "text": "크리스마스 이브", "expect": "future(md(12, 24))"}
+{"category": "holiday", "text": "신정", "expect": "future(md(1, 1))"}
+{"category": "holiday", "text": "한글날", "expect": "future(md(10, 9))"}
+{"category": "holiday", "text": "개천절", "expect": "future(md(10, 3))"}
+{"category": "holiday", "text": "현충일", "expect": "future(md(6, 6))"}
+{"category": "holiday", "text": "올해 현충일", "expect": "year(0).month(6).day(6)"}
+{"category": "holiday", "text": "올해 현충일 당일", "expect": "year(0).month(6).day(6)"}
+{"category": "holiday", "text": "작년 크리스마스", "expect": "year(-1).month(12).day(25)"}
+{"category": "holiday", "text": "발렌타인데이", "expect": "future(md(2, 14))"}
+{"category": "holiday", "text": "올해 추석", "expect": "year(0).lunar(8, 15)"}
+{"category": "holiday", "text": "올해 설날", "expect": "year(0).lunar(1, 1)"}
+{"category": "holiday", "text": "올해 추석 연휴", "expect": "year(0).lunar(8, 15).around(1, 1)"}
+{"category": "holiday", "text": "추석", "expect": "future(lunar(8, 15))"}
+{"category": "holiday", "text": "설날", "expect": "future(lunar(1, 1))"}
+{"category": "holiday", "text": "부처님 오신 날", "expect": "future(lunar(4, 8))"}
+{"category": "clock", "text": "3시", "expect": "nearest(3:00)"}
+{"category": "clock", "text": "3 시", "expect": "nearest(3:00)"}
+{"category": "clock", "text": "9시", "expect": "nearest(9:00)"}
+{"category": "clock", "text": "2시", "expect": "nearest(2:00)"}
+{"category": "clock", "text": "세시 반", "expect": "nearest(3:30)"}
+{"category": "clock", "text": "열한시 십오분", "expect": "nearest(11:15)"}
+{"category": "clock", "text": "아홉시십오분", "expect": "nearest(9:15)"}
+{"category": "clock", "text": "여섯시 삼십분", "expect": "nearest(6:30)"}
+{"category": "clock", "text": "열두시", "expect": "nearest(12:00)"}
+{"category": "clock", "text": "한시 반", "expect": "nearest(1:30)"}
+{"category": "clock", "text": "14시 30분", "expect": "future(at(14:30))"}
+{"category": "clock", "text": "23시반", "expect": "future(at(23:30))"}
+{"category": "clock", "text": "15:30", "expect": "future(at(15:30))"}
+{"category": "clock", "text": "05:00", "expect": "future(at(5:00))"}
+{"category": "clock", "text": "13시", "expect": "future(at(13:00))"}
+{"category": "clock", "text": "0시", "expect": "future(at(0:00))"}
+{"category": "clock", "text": "24시", "expect": "future(at(24:00))"}
+{"category": "clock", "text": "오후 3시", "expect": "future(at(15:00))"}
+{"category": "clock", "text": "오후3시30분", "expect": "future(at(15:30))"}
+{"category": "clock", "text": "오후 다섯시", "expect": "future(at(17:00))"}
+{"category": "clock", "text": "오전 10시", "expect": "future(at(10:00))"}
+{"category": "clock", "text": "오후 12시", "expect": "future(at(12:00))"}
+{"category": "clock", "text": "저녁 7시 반", "expect": "future(at(19:30))"}
+{"category": "clock", "text": "저녁 열시", "expect": "future(at(22:00))"}
+{"category": "clock", "text": "밤 11시", "expect": "future(at(23:00))"}
+{"category": "clock", "text": "밤 11시반", "expect": "future(at(23:30))"}
+{"category": "clock", "text": "밤 12시", "expect": "future(at(24:00))"}
+{"category": "clock", "text": "밤 1시", "expect": "future(at(25:00))"}
+{"category": "clock", "text": "새벽 2시", "expect": "future(at(2:00))"}
+{"category": "clock", "text": "아침 여덟시 반", "expect": "future(at(8:30))"}
+{"category": "clock", "text": "3pm", "expect": "future(at(15:00))"}
+{"category": "clock", "text": "PM 3:30", "expect": "future(at(15:30))"}
+{"category": "clock", "text": "정오", "expect": "future(at(12:00))"}
+{"category": "clock", "text": "자정", "expect": "future(at(24:00))"}
+{"category": "clock", "text": "17시 5분전", "expect": "future(at(17:00) - 5min)"}
+{"category": "clock", "text": "다섯시 십분전", "expect": "nearest(4:50)"}
+{"category": "clock", "text": "9시 10분후", "expect": "nearest(9:10)"}
+{"category": "period", "text": "저녁", "expect": "future(period(18, 21))"}
+{"category": "period", "text": "밤", "expect": "future(period(21, 24))"}
+{"category": "period", "text": "아침", "expect": "future(period(7, 10))"}
+{"category": "period", "text": "새벽", "expect": "future(period(3, 6))"}
+{"category": "period", "text": "점심", "expect": "future(period(12, 13))"}
+{"category": "relative_time", "text": "지금", "expect": "now"}
+{"category": "relative_time", "text": "1시간 후", "expect": "now + 1h"}
+{"category": "relative_time", "text": "1시간 뒤", "expect": "now + 1h"}
+{"category": "relative_time", "text": "30분 전", "expect": "now - 30min"}
+{"category": "relative_time", "text": "10분후", "expect": "now + 10min"}
+{"category": "relative_time", "text": "10분 있다가", "expect": "now + 10min"}
+{"category": "relative_time", "text": "삼십분 후", "expect": "now + 30min"}
+{"category": "relative_time", "text": "2시간 30분 후", "expect": "now + 150min"}
+{"category": "relative_time", "text": "한 시간 반 뒤", "expect": "now + 90min"}
+{"category": "relative_time", "text": "두 시간 전", "expect": "now - 2h"}
+{"category": "relative_time", "text": "10시간 후", "expect": "now + 10h"}
+{"category": "relative_time", "text": "30초 후", "expect": "now + 30s"}
+{"category": "datetime", "text": "내일 오후 3시", "expect": "(today + 1d).at(15:00)"}
+{"category": "datetime", "text": "내일 3시", "expect": "(today + 1d).hour(3)"}
+{"category": "datetime", "text": "내일 9시", "expect": "(today + 1d).hour(9)"}
+{"category": "datetime", "text": "오늘 3시", "expect": "today.hour(3)"}
+{"category": "datetime", "text": "오늘 2시", "expect": "today.hour(2)"}
+{"category": "datetime", "text": "오늘 새벽 2시", "expect": "today.at(2:00)"}
+{"category": "datetime", "text": "오늘 밤 12시", "expect": "today.at(24:00)"}
+{"category": "datetime", "text": "다음주 월요일 저녁 7시", "expect": "week(1).weekday(MON).at(19:00)"}
+{"category": "datetime", "text": "다음주 월요일에 저녁 7시에 만나자", "expect": "week(1).weekday(MON).at(19:00)"}
+{"category": "datetime", "text": "다음주 월요일 아침 9시", "expect": "week(1).weekday(MON).at(9:00)"}
+{"category": "datetime", "text": "다다음주 월요일 오후 3시 30분", "expect": "week(2).weekday(MON).at(15:30)"}
+{"category": "datetime", "text": "4월 15일 저녁 7시 30분", "expect": "future(md(4, 15)).at(19:30)"}
+{"category": "datetime", "text": "10월 15일 저녁 7시 30분", "expect": "future(md(10, 15)).at(19:30)"}
+{"category": "datetime", "text": "12월 24일 밤 11시", "expect": "future(md(12, 24)).at(23:00)"}
+{"category": "datetime", "text": "삼월 오일 오전 아홉시 삼십분", "expect": "future(md(3, 5)).at(9:30)"}
+{"category": "datetime", "text": "3일 후 오전 10시", "expect": "(today + 3d).at(10:00)"}
+{"category": "datetime", "text": "한달 후 저녁 7시", "expect": "(today + 1mo).at(19:00)"}
+{"category": "datetime", "text": "이번달 마지막주 금요일 오후 6시", "expect": "month(0).row(-1).weekday(FRI).at(18:00)"}
+{"category": "datetime", "text": "크리스마스 이브 자정", "expect": "future(md(12, 24)).at(24:00)"}
+{"category": "datetime", "text": "2026-10-01 19:30", "expect": "ymd(2026, 10, 1).at(19:30)"}
+{"category": "datetime", "text": "내일 퇴근하고", "expect": "(today + 1d).period(18, 21)"}
+{"category": "datetime", "text": "오늘저녁때", "expect": "today.period(18, 21)"}
+{"category": "datetime", "text": "내일아침일찍", "expect": "(today + 1d).period(6, 8)"}
+{"category": "datetime", "text": "그글피 해뜰 무렵", "expect": "(today + 4d).period(5, 7)"}
+{"category": "datetime", "text": "아흐레 뒤에 저녁 무렵", "expect": "(today + 9d).period(18, 21)"}
+{"category": "datetime", "text": "일주일 뒤 점심시간", "expect": "(today + 1w).period(12, 13)"}
+{"category": "datetime", "text": "내일 아침", "expect": "(today + 1d).period(7, 10)"}
+{"category": "separator", "text": "10월 5일(월) 오후 2시", "expect": "future(md(10, 5)).at(14:00)"}
+{"category": "separator", "text": "10/5(월) 14:00", "expect": "future(md(10, 5)).at(14:00)"}
+{"category": "separator", "text": "2026-10-05T14:00", "expect": "ymd(2026, 10, 5).at(14:00)"}
+{"category": "range", "text": "3시부터 5시까지", "expect": "nearest(3:00).to_after(nearest(5:00))"}
+{"category": "range", "text": "오후 3시~5시", "expect": "future(at(15:00)).to_after(at(17:00))"}
+{"category": "range", "text": "3~5시", "expect": "nearest(3:00).to_after(nearest(5:00))"}
+{"category": "range", "text": "내일 3시부터 5시", "expect": "(today + 1d).hour(3).to_after(nearest(5:00))"}
+{"category": "range", "text": "밤 11시부터 새벽 1시까지", "expect": "future(at(23:00)).to_after(future(at(1:00)))"}
+{"category": "range", "text": "내일부터 모레까지", "expect": "(today + 1d).to(today + 2d)"}
+{"category": "range", "text": "10월 3일부터 5일까지", "expect": "future(md(10, 3)).to_after(future(day(5)))"}
+{"category": "range", "text": "10월 1일 ~ 10월 3일", "expect": "future(md(10, 1)).to_after(future(md(10, 3)))"}
+{"category": "range", "text": "12월 30일부터 1월 2일까지", "expect": "future(md(12, 30)).to_after(future(md(1, 2)))"}
+{"category": "range", "text": "작년 12월 30일부터 1월 2일까지", "expect": "year(-1).month(12).day(30).to_after(future(md(1, 2)))"}
+{"category": "range", "text": "25일부터 3일까지", "expect": "future(day(25)).to_after(future(day(3)))"}
+{"category": "range_rejected", "text": "10월 5일부터 10월 3일까지", "expect": "future(md(10, 5))"}
+{"category": "range_rejected", "text": "3시부터 3시까지", "expect": "nearest(3:00)"}
+{"category": "duration_not_date", "text": "3일간 휴가", "expect": "none"}
+{"category": "duration_not_date", "text": "3일 연속 올랐다", "expect": "none"}
+{"category": "duration_not_date", "text": "7일 이내", "expect": "none"}
+{"category": "duration_not_date", "text": "30일 내로", "expect": "none"}
+{"category": "duration_not_date", "text": "1일 1식", "expect": "none"}
+{"category": "duration_not_date", "text": "30분 동안", "expect": "none"}
+{"category": "duration_not_date", "text": "열흘간", "expect": "none"}
+{"category": "duration_not_date", "text": "오늘부터 3일간", "expect": "today"}
+{"category": "negative", "text": "보고 싶어", "expect": "none"}
+{"category": "negative", "text": "오일 교환하러 가", "expect": "none"}
+{"category": "negative", "text": "낮은 가격", "expect": "none"}
+{"category": "negative", "text": "전화해줘", "expect": "none"}
+{"category": "negative", "text": "초등학교", "expect": "none"}
+{"category": "negative", "text": "한시적으로 운영", "expect": "none"}
+{"category": "negative", "text": "1234", "expect": "none"}
+{"category": "negative", "text": "15", "expect": "none"}
+{"category": "negative", "text": "3", "expect": "none"}
+{"category": "negative", "text": "123", "expect": "none"}
+{"category": "negative", "text": "백이십삼", "expect": "none"}
+{"category": "negative", "text": "십오", "expect": "none"}
+{"category": "negative", "text": "삼", "expect": "none"}
+{"category": "negative", "text": "두", "expect": "none"}
+{"category": "negative", "text": "반", "expect": "none"}
+{"category": "negative", "text": "일", "expect": "none"}
+{"category": "negative", "text": "월", "expect": "none"}
+{"category": "negative", "text": "주", "expect": "none"}
+{"category": "negative", "text": "시", "expect": "none"}
+{"category": "negative", "text": "시간", "expect": "none"}
+{"category": "negative", "text": "전", "expect": "none"}
+{"category": "negative", "text": "후", "expect": "none"}
+{"category": "negative", "text": "첫날", "expect": "none"}
+{"category": "negative", "text": "중순", "expect": "none"}
+{"category": "negative", "text": "2주", "expect": "none"}
+{"category": "negative", "text": "하루", "expect": "none"}
+{"category": "negative", "text": "이틀", "expect": "none"}
+{"category": "negative", "text": "일주일", "expect": "none"}
+{"category": "negative", "text": "한달", "expect": "none"}
+{"category": "negative", "text": "1시간", "expect": "none"}
+{"category": "negative", "text": "15분", "expect": "none"}
+{"category": "negative", "text": "십오분", "expect": "none"}
+{"category": "negative", "text": "30분", "expect": "none"}
+{"category": "negative", "text": "2026", "expect": "none"}
+{"category": "negative", "text": "13월", "expect": "none"}
+{"category": "negative", "text": "13월 1일", "expect": "none"}
+{"category": "negative", "text": "12월 99일", "expect": "none"}
+{"category": "negative", "text": "32일", "expect": "none"}
+{"category": "negative", "text": "25시", "expect": "none"}
+{"category": "negative", "text": "24시간 형식", "expect": "none"}
+{"category": "negative", "text": "삼시", "expect": "none"}
+{"category": "negative", "text": "일일", "expect": "none"}
+{"category": "negative", "text": "매핑 실패: 요일을 찾을 수 없음", "expect": "none"}
+{"category": "negative", "text": "그룹에서 상대적 일 오프셋 정보 추출", "expect": "none"}
+{"category": "negative", "text": "시간 정보를 추출할 수 없습니다.", "expect": "none"}
+{"category": "negative", "text": "캐시 히트율 측정", "expect": "none"}
+{"category": "negative", "text": "청크를 처리하는 내부 함수", "expect": "none"}
+{"category": "negative", "text": "주 단위 표현 테스트", "expect": "none"}
+{"category": "negative", "text": "테스트 시작...", "expect": "none"}
+{"category": "negative", "text": "N일 뒤/후", "expect": "none"}
+{"category": "negative", "text": "~욜", "expect": "none"}
+{"category": "negative", "text": "일$", "expect": "none"}
+{"category": "negative", "text": "cal_2 weekday", "expect": "none"}
+{"category": "negative", "text": "이번", "expect": "none"}
+{"category": "negative", "text": "뒤/후", "expect": "none"}
+{"category": "negative", "text": "상대적 일/주/월 패턴 처리", "expect": "none"}
+{"category": "negative", "text": "0715", "expect": "none"}
+{"category": "negative", "text": "261015", "expect": "none"}
+{"category": "relative_day", "text": "오늘 날짜", "expect": "today"}
+{"category": "relative_day", "text": "내일은", "expect": "today + 1d"}
+{"category": "relative_day", "text": "사흘 뒤", "expect": "today + 3d"}
+{"category": "relative_day", "text": "이틀 전", "expect": "today - 2d"}
+{"category": "relative_word", "text": "다다음 주", "expect": "week(2)"}
+{"category": "relative_word", "text": "다음다음 주", "expect": "week(2)"}
+{"category": "relative_word", "text": "지지난주", "expect": "week(-2)"}
+{"category": "relative_word", "text": "다다음 달", "expect": "month(2)"}
+{"category": "relative_word", "text": "지지난달", "expect": "month(-2)"}
+{"category": "relative_word", "text": "내후년", "expect": "year(2)"}
+{"category": "relative_word", "text": "재작년", "expect": "year(-2)"}
+{"category": "day_offset", "text": "11일 뒤", "expect": "today + 11d"}
+{"category": "day_offset", "text": "2주 뒤", "expect": "today + 2w"}
+{"category": "day_offset", "text": "3주 전", "expect": "today - 3w"}
+{"category": "day_offset", "text": "두 달 전", "expect": "today - 2mo"}
+{"category": "day_offset", "text": "1년 뒤", "expect": "today + 1y"}
+{"category": "day_offset", "text": "1년 2개월 뒤", "expect": "today + 14mo"}
+{"category": "day_offset", "text": "2주 3일 뒤", "expect": "today + 2w + 3d"}
+{"category": "weekday", "text": "토요일", "expect": "next(SAT)"}
+{"category": "weekday", "text": "이번 주 금요일", "expect": "week(0).weekday(FRI)"}
+{"category": "weekday", "text": "이번주 토요일", "expect": "week(0).weekday(SAT)"}
+{"category": "weekday", "text": "다음 주 월요일", "expect": "week(1).weekday(MON)"}
+{"category": "weekday", "text": "다음주 일요일", "expect": "week(1).weekday(SUN)"}
+{"category": "weekday", "text": "다다음 주 수요일", "expect": "week(2).weekday(WED)"}
+{"category": "weekday", "text": "지난주 금요일", "expect": "week(-1).weekday(FRI)"}
+{"category": "weekday", "text": "지지난 주 수요일", "expect": "week(-2).weekday(WED)"}
+{"category": "weekday_modifier", "text": "지난 금요일", "expect": "prev(FRI)"}
+{"category": "weekday_modifier", "text": "저번 토요일", "expect": "prev(SAT)"}
+{"category": "weekday_modifier", "text": "다음 일요일", "expect": "next(SUN)"}
+{"category": "weekday_modifier", "text": "다가오는 크리스마스", "expect": "future(md(12, 25))"}
+{"category": "week_range", "text": "이번 주", "expect": "week(0)"}
+{"category": "week_range", "text": "다음 주", "expect": "week(1)"}
+{"category": "week_range", "text": "지난주", "expect": "week(-1)"}
+{"category": "week_range", "text": "이번 주 주말", "expect": "week(0).weekend()"}
+{"category": "week_range", "text": "다음 주 주말", "expect": "week(1).weekend()"}
+{"category": "week_range", "text": "다음주 주말", "expect": "week(1).weekend()"}
+{"category": "week_range", "text": "지난 주 주말", "expect": "week(-1).weekend()"}
+{"category": "week_range", "text": "이번주 평일", "expect": "week(0).weekdays()"}
+{"category": "week_range", "text": "다음 주 평일", "expect": "week(1).weekdays()"}
+{"category": "week_range", "text": "다음주 초", "expect": "week(1).early()"}
+{"category": "month_day", "text": "12월 31일", "expect": "future(md(12, 31))"}
+{"category": "month_day", "text": "1월 1일", "expect": "future(md(1, 1))"}
+{"category": "month_day", "text": "3일", "expect": "future(day(3))"}
+{"category": "month_relative", "text": "이번 달 말일", "expect": "month(0).last()"}
+{"category": "month_relative", "text": "지난달 말일", "expect": "month(-1).last()"}
+{"category": "month_relative", "text": "다음 달 15일", "expect": "month(1).day(15)"}
+{"category": "month_relative", "text": "다다음 달 3일", "expect": "month(2).day(3)"}
+{"category": "month_relative", "text": "다음 달 첫째 토요일", "expect": "month(1).nth(1, SAT)"}
+{"category": "month_relative", "text": "다음달 셋째 토요일", "expect": "month(1).nth(3, SAT)"}
+{"category": "month_relative", "text": "다음 달 마지막 토요일", "expect": "month(1).nth(-1, SAT)"}
+{"category": "month_relative", "text": "지난달 마지막 일요일", "expect": "month(-1).nth(-1, SUN)"}
+{"category": "month_relative", "text": "다음 달 세 번째 금요일", "expect": "month(1).nth(3, FRI)"}
+{"category": "month_relative", "text": "다음 달 셋째 주말", "expect": "month(1).nthweekend(3)"}
+{"category": "month_year_range", "text": "다음 달", "expect": "month(1)"}
+{"category": "month_year_range", "text": "지난달", "expect": "month(-1)"}
+{"category": "month_year_range", "text": "다음 달 초순", "expect": "month(1).part(early)"}
+{"category": "month_year_range", "text": "지난달 중순", "expect": "month(-1).part(mid)"}
+{"category": "month_year_range", "text": "이번 달 하순", "expect": "month(0).part(late)"}
+{"category": "month_year_range", "text": "재작년 한 해", "expect": "year(-2)"}
+{"category": "month_year_range", "text": "내년 상반기", "expect": "year(1).half(1)"}
+{"category": "month_year_range", "text": "내년 3분기", "expect": "year(1).quarter(3)"}
+{"category": "month_year_range", "text": "올해 마지막 날", "expect": "year(0).month(12).last()"}
+{"category": "month_year_range", "text": "내년 2월 말일", "expect": "year(1).month(2).last()"}
+{"category": "relative_time", "text": "한 시간 뒤", "expect": "now + 1h"}
+{"category": "relative_time", "text": "90분 후", "expect": "now + 90min"}
+{"category": "relative_time", "text": "45분 전", "expect": "now - 45min"}
+{"category": "relative_time", "text": "내일 이 시각", "expect": "now + 1d"}
+{"category": "datetime", "text": "내일 오전 3시", "expect": "(today + 1d).at(3:00)"}
+{"category": "datetime", "text": "내일 오전 세시", "expect": "(today + 1d).at(3:00)"}
+{"category": "datetime", "text": "모레 새벽 4시", "expect": "(today + 2d).at(4:00)"}
+{"category": "datetime", "text": "글피 오후 4시 30분", "expect": "(today + 3d).at(16:30)"}
+{"category": "datetime", "text": "이번 주 금요일 오후 5시", "expect": "week(0).weekday(FRI).at(17:00)"}
+{"category": "datetime", "text": "다음주 월요일 오전 9시", "expect": "week(1).weekday(MON).at(9:00)"}
+{"category": "datetime", "text": "다음달 첫째 토요일 오전 10시", "expect": "month(1).nth(1, SAT).at(10:00)"}
+{"category": "datetime", "text": "이번 달 마지막 금요일 오후 6시", "expect": "month(0).nth(-1, FRI).at(18:00)"}
+{"category": "datetime", "text": "내년 2월 마지막 일요일 오전 11시", "expect": "year(1).month(2).nth(-1, SUN).at(11:00)"}
+{"category": "datetime", "text": "2주 뒤 오전 9시", "expect": "(today + 2w).at(9:00)"}
+{"category": "datetime", "text": "어제 이 시각", "expect": "now - 1d"}
+{"category": "range", "text": "오늘부터 글피까지", "expect": "today.to(today + 3d)"}
+{"category": "range", "text": "다음주 월요일부터 금요일까지", "expect": "week(1).weekday(MON).to(week(1).weekday(FRI))"}
+{"category": "range", "text": "다음 달 3일부터 5일까지", "expect": "month(1).day(3).to_after(day(5))"}
+{"category": "range", "text": "내일 오후 3시부터 5시까지", "expect": "(today + 1d).at(15:00).to_after(at(17:00))"}
+{"category": "range", "text": "오늘 밤 11시부터 내일 새벽 2시까지", "expect": "today.at(23:00).to((today + 1d).at(2:00))"}
+{"category": "duration_not_date", "text": "3일간", "expect": "none"}
+{"category": "duration_not_date", "text": "2주 동안", "expect": "none"}
+{"category": "duration_not_date", "text": "한 달 내내", "expect": "none"}
+{"category": "negative", "text": "오늘의집 가구", "expect": "none"}
+{"category": "negative", "text": "내일신문 구독", "expect": "none"}
+{"category": "negative", "text": "주말농장 분양", "expect": "none"}
+{"category": "datetime", "text": "오늘 밤 11시", "expect": "today.at(23:00)"}
+{"category": "clock", "text": "8시", "expect": "nearest(8:00)"}
+{"category": "clock", "text": "오전 8시", "expect": "future(at(8:00))"}
+{"category": "month_relative", "text": "다음달 말일", "expect": "month(1).last()"}
+{"category": "month_day", "text": "29일", "expect": "future(day(29))"}
+{"category": "month_year_range", "text": "1분기", "expect": "future(year(0).quarter(1))"}
+{"category": "month_relative", "text": "다음 달 셋째 주 토요일", "expect": "month(1).row(3).weekday(SAT)"}
+{"category": "month_relative", "text": "다음 달 둘째 주 주말", "expect": "month(1).row(2).weekend()"}
+{"category": "datetime", "text": "다음 달 셋째 주 토요일 오후 2시", "expect": "month(1).row(3).weekday(SAT).at(14:00)"}
+{"category": "month_relative", "text": "저번달 마지막주 일요일", "expect": "month(-1).row(-1).weekday(SUN)"}
+{"category": "ambiguity", "text": "이번 주말 오후 3시", "expect": "week(0).weekend().at(15:00)"}
+{"category": "ambiguity", "text": "다음주 오후 3시", "expect": "week(1).at(15:00)"}
+{"category": "ambiguity", "text": "심야", "expect": "future(period(24, 27))"}
+{"category": "ambiguity", "text": "오늘 자정", "expect": "today.at(24:00)"}
+{"category": "ambiguity", "text": "다음주말", "expect": "week(1).weekend()", "ambiguous": ["next_weekend"]}
+{"category": "ambiguity", "text": "다음 월요일", "expect": "next(MON)"}
+{"category": "day_offset", "text": "오늘로부터 한 달 후", "expect": "today + 1mo"}
+{"category": "day_offset", "text": "오늘로부터 두 달 후", "expect": "today + 2mo"}
+{"category": "day_offset", "text": "오늘부터 일 년 뒤", "expect": "today + 1y"}
+{"category": "day_offset", "text": "오늘부터 일 년 전", "expect": "today - 1y"}
+{"category": "weekday", "text": "이번주 일요일", "expect": "week(0).weekday(SUN)"}
+{"category": "weekday", "text": "다음주 화요일", "expect": "week(1).weekday(TUE)"}
+{"category": "weekday", "text": "다다음주 월요일", "expect": "week(2).weekday(MON)"}
+{"category": "weekday", "text": "지난주 일요일", "expect": "week(-1).weekday(SUN)"}
+{"category": "weekday_modifier", "text": "지난 일요일", "expect": "prev(SUN)"}
+{"category": "weekday_modifier", "text": "다가오는 월요일", "expect": "next(MON)"}
+{"category": "week_range", "text": "이번 주 주중", "expect": "week(0).weekdays()"}
+{"category": "week_range", "text": "이번 주초", "expect": "week(0).early()"}
+{"category": "week_range", "text": "주초", "expect": "future(week(0).early())"}
+{"category": "week_range", "text": "주말 일정", "expect": "future(week(0).weekend())"}
+{"category": "invalid_date", "text": "이번 달 31일", "expect": "month(0).day(31)"}
+{"category": "invalid_date", "text": "이번달 29일", "expect": "month(0).day(29)"}
+{"category": "invalid_date", "text": "다음달 31일", "expect": "month(1).day(31)"}
+{"category": "invalid_date", "text": "올해 2월 29일", "expect": "year(0).month(2).day(29)"}
+{"category": "invalid_date", "text": "내년 2월 29일", "expect": "year(1).month(2).day(29)"}
+{"category": "month_day", "text": "2월 29일에", "expect": "future(md(2, 29))"}
+{"category": "month_day", "text": "다가오는 12월 31일", "expect": "future(md(12, 31))"}
+{"category": "month_day", "text": "다가오는 1월 1일", "expect": "future(md(1, 1))"}
+{"category": "month_day", "text": "다가오는 31일", "expect": "future(day(31))"}
+{"category": "month_relative", "text": "다음 달 다섯째 토요일", "expect": "month(1).nth(5, SAT)"}
+{"category": "month_relative", "text": "다음달 다섯째 주 일요일", "expect": "month(1).row(5).weekday(SUN)"}
+{"category": "month_relative", "text": "이번 달 둘째 토요일", "expect": "month(0).nth(2, SAT)"}
+{"category": "month_relative", "text": "이번 달 둘째 주 토요일", "expect": "month(0).row(2).weekday(SAT)"}
+{"category": "month_relative", "text": "이번 달 마지막 월요일", "expect": "month(0).nth(-1, MON)"}
+{"category": "month_relative", "text": "다음 달의 말일", "expect": "month(1).last()"}
+{"category": "month_relative", "text": "올해 마지막 날인 12월 31일", "expect": "year(0).month(12).last()"}
+{"category": "month_relative", "text": "작년 마지막 날", "expect": "year(-1).month(12).last()"}
+{"category": "month_relative", "text": "다음 해 첫날", "expect": "year(1).month(1).first()"}
+{"category": "clock", "text": "오전 0시", "expect": "future(at(0:00))"}
+{"category": "clock", "text": "오후 11시 59분", "expect": "future(at(23:59))"}
+{"category": "clock", "text": "17시 5분 전", "expect": "future(at(17:00) - 5min)"}
+{"category": "clock", "text": "오후 3시 10분 전", "expect": "future(at(15:00) - 10min)"}
+{"category": "relative_time", "text": "11시간 59분 뒤", "expect": "now + 11h + 59min"}
+{"category": "relative_time", "text": "23시간 59분 뒤", "expect": "now + 23h + 59min"}
+{"category": "relative_time", "text": "1시간 30분 전", "expect": "now - 1h - 30min"}
+{"category": "relative_time", "text": "하루 전 같은 시각", "expect": "now - 1d"}
+{"category": "period", "text": "저녁 시간", "expect": "future(period(18, 21))"}
+{"category": "period", "text": "지난 저녁", "expect": "past(period(18, 21))"}
+{"category": "datetime", "text": "오늘 오후 3시", "expect": "today.at(15:00)"}
+{"category": "datetime", "text": "내일 0시", "expect": "(today + 1d).at(0:00)"}
+{"category": "datetime", "text": "내일 24시", "expect": "(today + 1d).at(24:00)"}
+{"category": "datetime", "text": "다음 달 마지막 날 밤 11시", "expect": "month(1).last().at(23:00)"}
+{"category": "range", "text": "오늘 밤 11시부터 내일 새벽 1시까지", "expect": "today.at(23:00).to((today + 1d).at(1:00))"}
+{"category": "range", "text": "다음주 토요일부터 다음주 일요일까지", "expect": "week(1).weekday(SAT).to(week(1).weekday(SUN))"}
+{"category": "range", "text": "지난달 말일부터 이번달 첫날까지", "expect": "month(-1).last().to(month(0).first())"}
+{"category": "range", "text": "이번달 말일부터 다음달 첫날까지", "expect": "month(0).last().to(month(1).first())"}
+{"category": "range", "text": "이번 주 금요일부터 일요일까지", "expect": "week(0).weekday(FRI).to(week(0).weekday(SUN))"}
+{"category": "month_day", "text": "지난 3일", "expect": "past(day(3))"}
+{"category": "month_day", "text": "지난 15일", "expect": "past(day(15))"}
+{"category": "month_day", "text": "지난 31일", "expect": "past(day(31))"}
+{"category": "day_offset", "text": "지난 3일간", "expect": "(today - 3d).to(today - 1d)"}
+{"category": "day_offset", "text": "지난 3일 동안", "expect": "(today - 3d).to(today - 1d)"}
+{"category": "day_offset", "text": "지난 2주간", "expect": "(today - 2w).to(today - 1d)"}
+{"category": "day_offset", "text": "지난 한 달간", "expect": "(today - 1mo).to(today - 1d)"}
+{"category": "datetime", "text": "뉴욕 시간 내일 오전 3시", "expect": "(today + 1d).at(3:00)"}
+{"category": "range", "text": "이번 달 말일 밤 11시 50분부터 다음 달 첫날 0시 10분까지", "expect": "month(0).last().at(23:50).to(month(1).first().at(0:10))"}
+{"category": "range", "text": "이번 달 말일 23시 50분부터 30분 뒤까지", "expect": "month(0).last().at(23:50).to_after(now + 30min)"}
+{"category": "range", "text": "이번 주 금요일 밤 11시부터 다음 주 월요일 새벽 1시까지", "expect": "week(0).weekday(FRI).at(23:00).to(week(1).weekday(MON).at(1:00))"}
+{"category": "range", "text": "다가오는 금요일 밤 11시부터 그다음 월요일 새벽 1시까지", "expect": "next(FRI).at(23:00).to_after(next(MON).at(1:00))"}
+{"category": "range", "text": "이번 주 일요일 23시 59분부터 다음 주 월요일 0시 1분까지", "expect": "week(0).weekday(SUN).at(23:59).to(week(1).weekday(MON).at(0:01))"}
+{"category": "month_relative", "text": "다음 달 마지막 금요일의 다음 날", "expect": "month(1).nth(-1, FRI) + 1d"}
+{"category": "month_relative", "text": "다음 달 마지막 금요일에서 이틀 뒤", "expect": "month(1).nth(-1, FRI) + 2d"}
+{"category": "month_relative", "text": "다음 달 첫째 주 일요일", "expect": "month(1).row(1).weekday(SUN)"}
+{"category": "month_relative", "text": "다음 달 첫 번째 일요일", "expect": "month(1).nth(1, SUN)"}
+{"category": "range", "text": "올해 마지막 금요일부터 내년 첫 월요일까지", "expect": "year(0).month(12).nth(-1, FRI).to(year(1).month(1).nth(1, MON))"}
+{"category": "range", "text": "올해 마지막 날 23시 59분부터 내년 첫날 0시 1분까지", "expect": "year(0).month(12).last().at(23:59).to(year(1).month(1).first().at(0:01))"}
+{"category": "month_day", "text": "내년 2월의 마지막 토요일", "expect": "year(1).month(2).nth(-1, SAT)"}
+{"category": "month_day", "text": "내년 2월 29일 오전 9시", "expect": "year(1).month(2).day(29).at(9:00)"}
+{"category": "month_day", "text": "다가오는 2월 29일 오후 3시", "expect": "future(md(2, 29).at(15:00))"}
+{"category": "month_day", "text": "다가오는 매월 31일 오전 9시", "expect": "future(day(31).at(9:00))"}
+{"category": "clock", "text": "매달 말일 자정 10분 전", "expect": "future(month(0).last().at(24:00) - 10min)"}
+{"category": "clock", "text": "매달 말일 자정 10분 후", "expect": "future(month(0).last().at(24:00) + 10min)"}
+{"category": "range", "text": "오늘 밤 11시 55분부터 내일 새벽 0시 5분까지", "expect": "today.at(23:55).to((today + 1d).at(0:05))"}
+{"category": "day_offset", "text": "다가오는 1월 31일에서 한 달 뒤", "expect": "future(md(1, 31)) + 1mo"}
+{"category": "day_offset", "text": "다가오는 1월 31일에서 두 달 뒤", "expect": "future(md(1, 31)) + 2mo"}
+{"category": "month_relative", "text": "올해 마지막 월요일에서 일주일 뒤", "expect": "year(0).month(12).nth(-1, MON) + 1w"}
+{"category": "month_relative", "text": "이번 달 마지막 금요일 밤 11시에서 두 시간 뒤", "expect": "month(0).nth(-1, FRI).at(23:00) + 2h"}
+{"category": "clock", "text": "다가오는 오후 5시 5분 전부터 두 시간 후까지", "expect": "future(at(17:00) - 5min).to_after(now + 2h)"}
+{"category": "range", "text": "지난주 일요일 23시 59분부터 이번 주 월요일 0시 1분까지", "expect": "week(-1).weekday(SUN).at(23:59).to(week(0).weekday(MON).at(0:01))"}
+{"category": "month_relative", "text": "다음 주 화요일의 전날 오후 11시 30분", "expect": "(week(1).weekday(TUE) - 1d).at(23:30)"}
+{"category": "month_relative", "text": "다음 달 말일 전날부터 말일까지", "expect": "(month(1).last() - 1d).to(month(1).last())"}
+{"category": "datetime", "text": "내일 오전 3시가 아니라 내일 오후 3시로 바꿔", "expect": "(today + 1d).at(15:00)"}
+{"category": "relative_day", "text": "내일이 아니라 모레", "expect": "today + 2d"}
+{"category": "weekday_modifier", "text": "다음 주 화요일과 그다음 날 오전 9시에 각각 만나자", "expect": "week(1).weekday(TUE)"}
+{"category": "month_relative", "text": "크리스마스 전날", "expect": "future(md(12, 25)) - 1d"}
+{"category": "month_relative", "text": "다음 달 첫날 다음 날", "expect": "month(1).first() + 1d"}
+{"category": "month_relative", "text": "올해 첫 월요일", "expect": "year(0).month(1).nth(1, MON)"}
+{"category": "month_relative", "text": "내년 마지막 금요일", "expect": "year(1).month(12).nth(-1, FRI)"}
+{"category": "month_relative", "text": "올해 첫째 주", "expect": "year(0).month(1).row(1)"}
+{"category": "month_relative", "text": "내년 마지막 주 금요일", "expect": "year(1).month(12).row(-1).weekday(FRI)"}
+{"category": "month_day", "text": "오는 15일 오후 3시", "expect": "future(day(15).at(15:00))"}
+{"category": "month_day", "text": "매달 15일", "expect": "future(day(15))"}
+{"category": "weekday", "text": "매주 월요일 오전 9시", "expect": "next(MON).at(9:00)"}
+{"category": "range", "text": "내일부터 3일 뒤까지", "expect": "(today + 1d).to(today + 4d)"}
+{"category": "range", "text": "지금부터 두 시간 후까지", "expect": "now.to_after(now + 2h)"}
+{"category": "range", "text": "오후 3시부터 30분 뒤까지", "expect": "future(at(15:00)).to_after(now + 30min)"}
+{"category": "negative", "text": "그 전날 같은 시간에 미리 전화해줘", "expect": "none"}
+{"category": "negative", "text": "거기서 세 시간 지나면 몇 시야", "expect": "none"}
+{"category": "negative", "text": "그날 오전 9시와 전날 오후 6시에 알림을 줘", "expect": "none"}
+{"category": "negative", "text": "그다음 주 토요일에 마쳐", "expect": "none"}
+{"category": "negative", "text": "마감 하루 전날 오전 10시로 알림을 줘", "expect": "none"}
+{"category": "negative", "text": "이번 달 마지막 영업일 오후 3시에 보내줘", "expect": "none"}
+{"category": "negative", "text": "3영업일 이내에 처리", "expect": "none"}
+{"category": "negative", "text": "올해 다섯째 금요일", "expect": "none"}
+{"category": "clock", "text": "이따 5시쯤 전화할게", "expect": "nearest(5:00)"}
+{"category": "clock", "text": "좀 있다가 3시 반에 보자", "expect": "nearest(3:30)"}
+{"category": "period", "text": "이따 저녁에 봐", "expect": "future(period(18, 21))"}
+{"category": "relative_time", "text": "이따 봐", "expect": "now"}
+{"category": "relative_word", "text": "작년 이맘때", "expect": "today - 1y"}
+{"category": "relative_word", "text": "내년 이맘때", "expect": "today + 1y"}
+{"category": "relative_word", "text": "지난달 이맘때", "expect": "today - 1mo"}
+{"category": "relative_word", "text": "다음 주 이맘때", "expect": "today + 1w"}
+{"category": "relative_time", "text": "작년 이 시각", "expect": "now - 1y"}
+{"category": "negative", "text": "경영실적 공시를 통해 밝혔다", "expect": "none"}
+{"category": "negative", "text": "유류세 한시 인하 방침", "expect": "none"}
+{"category": "negative", "text": "갤럭시 S22 시리즈 출시", "expect": "none"}
+{"category": "negative", "text": "갤럭시Z4 시리즈", "expect": "none"}
+{"category": "negative", "text": "임상 2/3상 진행 중", "expect": "none"}
+{"category": "negative", "text": "3-4명이 왔다", "expect": "none"}
+{"category": "negative", "text": "시너지를 낼 수 있다", "expect": "none"}
+{"category": "negative", "text": "차주의 채무 부담", "expect": "none"}
+{"category": "negative", "text": "금주를 한 환자", "expect": "none"}
+{"category": "negative", "text": "신경 전달 물질", "expect": "none"}
+{"category": "negative", "text": "메시지를 전달했다", "expect": "none"}
+{"category": "negative", "text": "곧 출시된다", "expect": "none"}
+{"category": "negative", "text": "당장 해야 한다", "expect": "none"}
+{"category": "clock", "text": "한시에 보자", "expect": "nearest(1:00)"}
+{"category": "clock", "text": "3시도 괜찮아", "expect": "nearest(3:00)"}
+{"category": "relative_day", "text": "낼 봐", "expect": "today + 1d"}
+{"category": "month_day", "text": "11월 9일 이후 단계적으로 시작", "expect": "future(md(11, 9))"}
+{"category": "month_relative", "text": "지난달 22일 이후 처음", "expect": "month(-1).day(22)"}
+{"category": "month_day", "text": "10월 3일 전까지 신청", "expect": "future(md(10, 3))"}
+{"category": "weekday_modifier", "text": "지난 12월 승인을 받았다", "expect": "past(mon(12))"}
+{"category": "weekday_modifier", "text": "지난 5월 3일", "expect": "past(md(5, 3))"}
+{"category": "weekday_modifier", "text": "오는 3월 출시", "expect": "future(mon(3))"}
+{"category": "month_year_range", "text": "지난해 11월과 12월에는", "expect": "year(-1).month(11)"}
+{"category": "period", "text": "어젯밤 늦게까지", "expect": "(today - 1d).period(21, 24)"}
+{"category": "period", "text": "간밤에 눈이 왔다", "expect": "(today - 1d).period(21, 24)"}
+{"category": "relative_word", "text": "올 3월", "expect": "year(0).month(3)"}
+{"category": "relative_word", "text": "올 추석", "expect": "year(0).lunar(8, 15)"}
+{"category": "relative_word", "text": "전년대비 12% 증가", "expect": "year(-1)"}
+{"category": "relative_word", "text": "전년동기 대비", "expect": "year(-1)"}

@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ko-normalizer"
+version = "1.0.0"
+description = "한국어 날짜·시간 표현 추출/정규화 라이브러리 — 표준 라이브러리만 사용"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+license = "MIT"
+keywords = ["korean", "nlp", "date", "time", "normalization"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Natural Language :: Korean",
+    "Typing :: Typed",
+]
+
+[project.scripts]
+ko-normalizer = "ko_normalizer.__main__:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6", "mypy>=1.11"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ko_normalizer"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src"]
+addopts = "-q --doctest-modules -m 'not slow'"
+markers = ["slow: 전체 기준 시각 스윕 (uv run pytest -m slow)"]
+
+[tool.coverage.run]
+source = ["ko_normalizer"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # 한글/전각 문자 허용
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["src", "scripts"]
