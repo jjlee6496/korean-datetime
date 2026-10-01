@@ -20,6 +20,9 @@ class AmbiguousHour(str, Enum):
     """1~11시는 항상 오후"""
     AS_IS = "as_is"
     """숫자 그대로 (3시 → 03:00)"""
+    CONTEXT = "context"
+    """같은 텍스트 안의 단서로 정함: 앞에 오전/오후가 정해진 시각이 있으면 그 뒤로 이어지는 쪽,
+    없으면 가장 가까운 시간대 말('저녁 먹으러 8시' → 20시), 둘 다 없으면 DAYTIME (context_hour 모듈)"""
 
 
 class Cycle(str, Enum):

@@ -18,10 +18,11 @@ from functools import lru_cache
 
 from ..core.scanner import Scanner
 from ..core.types import require_text, to_datetime
+from .context_hour import apply_context_hours
 from .frame import Frame, apply_corrections, build_frames, link_alternatives, link_day_shifts
 from .holiday_calendar import BUILTIN_HOLIDAYS
 from .model import Kind, TemporalExpression
-from .options import DEFAULT_OPTIONS, Cycle, ParseOptions
+from .options import DEFAULT_OPTIONS, AmbiguousHour, Cycle, ParseOptions
 from .postprocess import postprocess
 from .ranges import merge_ranges
 from .resolve import resolve
@@ -57,6 +58,8 @@ class TemporalParser:
         frames = apply_corrections(build_frames(tokens, text), text)
         frames = link_day_shifts(link_alternatives(frames, text), text)
         resolved = [(frame, result) for frame in frames if (result := self._resolve(frame, text, reference))]
+        if self.options.ambiguous_hour is AmbiguousHour.CONTEXT:
+            resolved = apply_context_hours(resolved, text, reference, self.options.cycle is Cycle.FUTURE)
         return merge_ranges(resolved, text, lambda frame, ref, cycle: self._resolve(frame, text, ref, cycle))
 
     def parse(self, text: str, now: datetime | date | None = None) -> TemporalExpression | None:

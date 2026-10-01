@@ -101,6 +101,23 @@ pm = ParseOptions(ambiguous_hour=AmbiguousHour.PM)
 parse("내일 9시", now=NOW, options=pm).start   # → 2026-10-02 21:00:00
 ```
 
+**대화 기록**처럼 실시간이 아닌 글이라면 "가장 가까운 미래"가 의미가 없습니다. 이때는 `CONTEXT`로 **같은 텍스트 안의 단서**를 씁니다.
+
+```python
+ctx = ParseOptions(ambiguous_hour=AmbiguousHour.CONTEXT)
+[x.start.hour for x in parse_all("오후 6시에 끝나고 8시 영화 보자", now=NOW, options=ctx)]   # → [18, 20]
+parse_all("어제 저녁 먹으러 8시쯤 갔어요", now=NOW, options=ctx)[-1].start                # → 2026-10-01 20:00:00
+parse("8시에 보자", now=NOW, options=ctx).start                                         # → 2026-10-02 08:00:00
+```
+
+1. 앞에 오전/오후가 정해진 시각이 있으면 그 뒤로 이어지는 쪽 (오후 6시 다음의 8시 → 20시)
+2. 없으면 가장 가까운 시간대 말 ("저녁" 근처의 8시 → 20시)
+3. 둘 다 없으면 낮 시간 규칙 (7~11시 오전, 1~6시 오후)
+
+AI허브 대화 데이터에서 오전/오후 일치율은 `CONTEXT` 0.753, `DAYTIME` 0.681, `PM` 0.631이었습니다(Training 695건).
+앞 대화의 시각은 쓰지 않습니다. 같은 입력이면 항상 같은 결과가 나오게 하려는 것입니다. 앞 턴까지 쓰고 싶다면 대화를 이어 붙여 한 번에 넘기세요.
+값을 정해도 `meridiem` 표시는 남습니다.
+
 ## 4. 기준 시각: "내일"은 언제 기준인가
 
 **문제 1: 서버가 UTC입니다.** 한국 시각 10월 1일 01:00(UTC 9월 30일 16:00)에 "내일"이라고 하면 10월 2일이어야 합니다.
