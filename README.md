@@ -52,6 +52,7 @@ uv run pytest                    # 테스트 + 정량 평가 리포트만
 | `vendor.py` | 설치 없이 복사 + 매니페스트, 복사본 수정 여부 검사 | `vendor.py myapp/_vendor`, `vendor.py --check myapp/_vendor/korean_datetime` |
 | `aihub_eval.py` | AI허브 시간 표현 탐지 데이터(TIMEX3)로 실제 문장 평가. 데이터는 저장소에 넣지 않음 | `aihub_eval.py <라벨링데이터 폴더> --samples 20` |
 | `aihub_benchmark.py` | 옵션별 × Training/Validation 전체 표를 마크다운으로 (`docs/benchmark.md`) | `aihub_benchmark.py <데이터 루트> > docs/benchmark.md` |
+| `compare_libraries.py` | Duckling·dateparser와 같은 문장으로 비교 (`docs/comparison.md`). 비교 라이브러리는 이 스크립트에서만 씀 | `uv run --with dateparser python scripts/compare_libraries.py --aihub <데이터 루트>` |
 
 일회성 작업(데이터 한 번 변환 등)은 저장소에 넣지 않고, 반복해서 쓰는 작업만 `scripts/`에 둡니다.
 
@@ -293,6 +294,21 @@ TOTAL                 31822     0     0      1.000   1.000
 
 **전체 표: [docs/benchmark.md](docs/benchmark.md)** (옵션별 × Training/Validation × 뉴스/대화/역사)
 
+### 다른 라이브러리와 비교
+
+같은 문장, 같은 기준 시각으로 [Duckling](https://github.com/facebook/duckling)(`ko_KR`), [dateparser](https://github.com/scrapinghub/dateparser)(`ko`)와 비교했습니다. 표현 유형별 표와 방법은 **[docs/comparison.md](docs/comparison.md)**에 있습니다.
+AI허브 Training에서 표현 유형별로 뽑은 327개 표현과, 시간 표현이 없는 문장 200개를 썼습니다. 세 라이브러리 모두 기본 설정입니다.
+
+| | korean-datetime | Duckling | dateparser |
+|---|---:|---:|---:|
+| 값까지 맞힌 비율 | **76%** (`cycle=nearest` 82%) | 72% | 8% |
+| 위치만 찾은 비율 | 94% | **98%** | 19% |
+| 시간 표현이 없는 문장의 오탐률 (낮을수록 좋음) | **2%** | 12% | 6% |
+
+- korean-datetime은 위치를 덜 찾습니다. 놓친 것은 대부분 혼자 쓴 "전날", "이튿날"로, 앞 문장을 가리켜서 일부러 비워 두는 표현입니다.
+- 대신 찾은 것의 값이 더 정확하고 오탐이 적습니다. Duckling은 "2천 명분", "춘천" 같은 숫자와 낱말 조각을 시간으로 잡는 경우가 있습니다.
+- Microsoft Recognizers-Text는 한국어 DateTime 모델이 아직 등록되지 않아 비교에서 뺐습니다.
+
 기본 설정, Training(뉴스 98,545 · 대화 91,876 · 역사 26,330개 표현):
 
 | 분야 | 재현율 | 정밀도 | 값 정확도 |
@@ -332,6 +348,7 @@ uv run korean-datetime "내일 3시에 보고 모레 5시" --all --ambiguous-hou
 docs/
 ├── tutorial.md          # 상황별 사용법 (예시 결과는 tests/test_tutorial.py가 실제로 실행해 확인)
 ├── benchmark.md         # AI허브 데이터 옵션별 벤치마크 (scripts/aihub_benchmark.py가 생성)
+├── comparison.md        # Duckling·dateparser 비교 (scripts/compare_libraries.py가 생성)
 └── expectation-dsl.md   # 기대값 식(DSL) 전체 정리, 정답셋 관리 절차
 src/korean_datetime/
 ├── core/            # 날짜/시간이 쓰는 기반: scanner(경계·조사), numerals(한글 수사), clock(기준 시각), types, evaluation
