@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-02",
+  "duckling_commit": "59a13ff87b1aa8be6b93d387244f8636b26185c5",
+  "project_commit": "2715ec49c287234cea63f0d60e068fde8d43ebdb",
+  "environment": "Docker Debian bookworm Linux aarch64 on Apple M4 Pro; 12 vCPUs and 8 GB RAM; native architecture, not amd64 emulation",
+  "ghc": "9.0.2",
+  "ghc_options": "-O2 -threaded -rtsopts -XOverloadedStrings; harness disables full laziness and CSE; runtime +RTS -N1",
+  "timezone_sources": {
+    "timezone-series": "0.1.13",
+    "timezone-olson": "0.2.0"
+  },
+  "locale": "LANG=C.UTF-8; LC_ALL=C.UTF-8",
+  "python": "3.11.2",
+  "dateparser": "1.4.3",
+  "korean_datetime": "1.0.0",
+  "input_sha256": "c839ef13e678085320432faf421c16bf4d3fa54ae2c9737df74187e86f68365d",
+  "sample": {
+    "positive_expressions": 327,
+    "negative_sentences": 200,
+    "sampling_seed": 20261001,
+    "shuffle_seed": "20261002 + round"
+  },
+  "warmup": "1 full pass (527 requests), discarded",
+  "measured_rounds": 5,
+  "timing": {
+    "parse_ns": "parse plus materialized JSON-ready output (Python to_dict / Duckling force . toJSON), excluding request decode, reference-time setup, JSON encoding and I/O",
+    "ns": "parse_ns plus JSON byte serialization; HTTP row measures urllib request, HTTP transport and response JSON decode"
+  },
+  "validation": "All 3769 direct/HTTP response JSON objects exactly equal (3162 external including warmup + 607 curated); every repeated normalized prediction deterministic; parser rules unchanged.",
+  "limits": [
+    "Shared development machine, not dedicated benchmark hardware",
+    "Native Docker Linux environment is still virtualized",
+    "Libraries emit different output schemas; this is API-result generation latency, not isolated core-algorithm cost",
+    "Earlier 3–7 ms measurement differs in source/build, architecture and transport path; difference cannot be attributed to network alone",
+    "Accuracy figures use a sampled Training set, not overall-language accuracy"
+  ],
+  "run": "complete comparison including default and nearest; supersedes initial default-only run",
+  "settings": {
+    "korean-datetime": "default (cycle=future)",
+    "korean-datetime-nearest": "ParseOptions(cycle=Cycle.NEAREST), all other defaults",
+    "Duckling": "KO, Time, Options False, Asia/Seoul, +RTS -N1",
+    "dateparser": "languages=['ko'], RELATIVE_BASE, PREFER_DATES_FROM='future'"
+  },
+  "curated": {
+    "cases": 607,
+    "reference": "2026-10-01T14:30:00+09:00",
+    "round": -1,
+    "included_in_speed": false,
+    "scoring": "existing default-policy gold expectations; nearest is scored against the same expectations"
+  },
+  "execution_order": [
+    "Duckling direct",
+    "korean-datetime default",
+    "korean-datetime nearest",
+    "dateparser",
+    "Duckling HTTP"
+  ],
+  "replay_validation": "Fresh AIHub extraction with prepare.py reproduced corpus, curated and requests byte-for-byte."
+}

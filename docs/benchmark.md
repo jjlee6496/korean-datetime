@@ -9,6 +9,8 @@ korean-datetime 1.0.0, 2026-10-01 측정. `uv run python scripts/aihub_benchmark
 Validation은 규칙을 다듬을 때 오류를 본 데이터라,
 처음 보는 데이터인 **Training 수치가 실제 성능에 가깝습니다**.
 
+라이브러리 간 표본 비교와 2026-10-02 native 속도 재측정은 [별도 비교 문서](comparison.md)에 있습니다. 이 문서의 전체 데이터·옵션별 점수는 2026-10-01 결과를 유지합니다.
+
 ## 데이터 규모 (DATE·TIME 정답 표현 수)
 
 | 분야 | Training 정답 수 | Validation 정답 수 |

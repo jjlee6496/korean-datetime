@@ -33,15 +33,15 @@ pip install korean-datetime
 
 ### 외부 데이터에서의 성능
 
-AIHub Training의 유형별 표본 **327개 시간 표현**과 **시간 표현이 없는 200개 문장**을 같은 기준 시각으로 비교했습니다. 아래는 기존 측정 결과이며, 전체 한국어 문장에 대한 정확도 보장은 아닙니다.
+AIHub Training의 유형별 표본 **327개 시간 표현**과 **시간 표현이 없는 200개 문장**을 같은 기준 시각으로 비교했습니다. 2026-10-02 같은 Linux arm64 환경에서 네 항목을 재측정한 결과이며, 전체 한국어 문장에 대한 정확도 보장은 아닙니다.
 
-| 지표 | korean-datetime | Duckling | dateparser |
-|---|---:|---:|---:|
-| 값까지 맞힌 비율 (미검출 포함) | 76% (뉴스용 `cycle=nearest`: 82%) | 72% | 8% |
-| 위치 검출률 | 94% | 98% | 19% |
-| 시간 표현이 없는 문장의 오탐률 ↓ | 2% | 12% | 6% |
+| 지표 | korean-datetime default | korean-datetime nearest | Duckling | dateparser |
+|---|---:|---:|---:|---:|
+| 값까지 정답 (미검출 포함) | 76.5% | 82.3% | 72.2% | 7.6% |
+| 위치 검출률 | 94.5% | 94.5% | 98.2% | 19.3% |
+| 비시간 문장 오탐률 ↓ | 2.5% | 2.5% | 12.5% | 5.5% |
 
-기본 설정끼리 비교했으며 `nearest`만 별도로 표시했습니다. Duckling은 더 많이 검출하고, korean-datetime은 이 표본에서 오탐이 더 적었습니다. **검출 범위와 오탐 사이의 선택**으로 봐 주세요. [비교 방법·실패 사례](docs/comparison.md)
+네 항목을 같은 조건으로 재측정했습니다. `nearest`는 뉴스처럼 생략된 날짜를 가까운 과거로 해석할 수 있는 별도 설정이며 기본값과 분리했습니다. Duckling은 더 많이 검출하고 korean-datetime은 이 표본에서 오탐이 더 적었습니다. **검출 범위와 오탐 사이의 선택**으로 봐 주세요. [유형별 결과·비교 방법·실패 사례](docs/comparison.md)
 
 전체 Training의 기본 설정 결과는 다음과 같습니다. 여기서 값 정확도는 **인식한 표현 중 값이 맞은 비율**로, 위 표의 미검출까지 포함한 비율과 분모가 다릅니다.
 
@@ -93,7 +93,7 @@ uv run pytest                    # 테스트 + 정량 평가 리포트만
 | `vendor.py` | 설치 없이 복사 + 매니페스트, 복사본 수정 여부 검사 | `vendor.py myapp/_vendor`, `vendor.py --check myapp/_vendor/korean_datetime` |
 | `aihub_eval.py` | AI허브 시간 표현 탐지 데이터(TIMEX3)로 실제 문장 평가. 데이터는 저장소에 넣지 않음 | `aihub_eval.py <라벨링데이터 폴더> --samples 20` |
 | `aihub_benchmark.py` | 옵션별 × Training/Validation 전체 표를 마크다운으로 (`docs/benchmark.md`) | `aihub_benchmark.py <데이터 루트> > docs/benchmark.md` |
-| `compare_libraries.py` | Duckling·dateparser와 같은 문장으로 비교 (`docs/comparison.md`). 비교 라이브러리는 이 스크립트에서만 씀 | `uv run --with dateparser python scripts/compare_libraries.py --aihub <데이터 루트>` |
+| `compare_libraries.py` | default·nearest·Duckling·dateparser의 HTTP 기반 비교 리포트. native 측정은 [재현 절차](docs/benchmarks/2026-10-02-native/README.md) 참고 | `uv run --with dateparser python scripts/compare_libraries.py --aihub <데이터 루트>` |
 
 일회성 작업(데이터 한 번 변환 등)은 저장소에 넣지 않고, 반복해서 쓰는 작업만 `scripts/`에 둡니다.
 
@@ -339,22 +339,18 @@ TOTAL                 31822     0     0      1.000   1.000
 
 ### 다른 라이브러리와 비교
 
-같은 문장, 같은 기준 시각으로 [Duckling](https://github.com/facebook/duckling)(`ko_KR`), [dateparser](https://github.com/scrapinghub/dateparser)(`ko`)와 비교했습니다. 표현 유형별 표와 방법은 **[docs/comparison.md](docs/comparison.md)**에 있습니다.
-AI허브 Training에서 표현 유형별로 뽑은 327개 표현과, 시간 표현이 없는 문장 200개를 썼습니다. 세 라이브러리 모두 기본 설정입니다.
+2026-10-02, 같은 Linux arm64 컨테이너에서 AIHub Training 표본 327개 시간 표현과 비시간 문장 200개로 비교했습니다. `default`와 `nearest`를 모두 정확도·검출률·오탐률·속도에서 별도 항목으로 측정했습니다.
 
-| | korean-datetime | Duckling | dateparser |
-|---|---:|---:|---:|
-| 값까지 맞힌 비율 | **76%** (`cycle=nearest` 82%) | 72% | 8% |
-| 위치만 찾은 비율 | 94% | **98%** | 19% |
-| 시간 표현이 없는 문장의 오탐률 (낮을수록 좋음) | **2%** | 12% | 6% |
-| 문장당 시간 (중앙값) | 0.22ms | 3~7ms ¹ | 0.2ms ² |
+| 지표 | korean-datetime default | korean-datetime nearest | Duckling | dateparser |
+|---|---:|---:|---:|---:|
+| 값까지 정답 (미검출 포함) | 76.5% | 82.3% | 72.2% | 7.6% |
+| 위치 검출률 | 94.5% | 94.5% | 98.2% | 19.3% |
+| 비시간 문장 오탐률 ↓ | 2.5% | 2.5% | 12.5% | 5.5% |
+| 직접 파싱·결과 생성 중앙값 | 0.163ms | 0.173ms | 0.218ms | 0.199ms |
 
-¹ HTTP 서버 호출이고, arm64 맥에서 amd64 이미지를 에뮬레이션으로 돌린 값이라 실행마다 3~7ms로 흔들립니다(네 번 측정). 빈 문장만 보내도 1ms 안팎이 걸립니다. 리눅스 amd64에서 다시 재는 것이 공정합니다.
-² 한국어 문장 대부분에서 아무것도 찾지 못해 빨리 끝납니다.
+속도는 HTTP 없이 527건 전체 예열 후 5회 반복한 값입니다. Duckling의 HTTP 호출은 별도로 중앙값 **0.450ms**였습니다. 기존 3~7ms는 통신·빌드·아키텍처 조건이 달라 이 직접 호출 시간으로 대체했습니다. 라이브러리별 결과 구조와 미검출 비율도 달라 순수 핵심 알고리즘 비용으로 해석하지 않습니다.
 
-- korean-datetime은 위치를 덜 찾습니다. 놓친 것은 대부분 혼자 쓴 "전날", "이튿날"로, 앞 문장을 가리켜서 일부러 비워 두는 표현입니다.
-- 대신 찾은 것의 값이 더 정확하고 오탐이 적습니다. Duckling은 "2천 명분", "춘천" 같은 숫자와 낱말 조각을 시간으로 잡는 경우가 있습니다.
-- Microsoft Recognizers-Text는 한국어 DateTime 모델이 아직 등록되지 않아 비교에서 뺐습니다.
+`nearest`는 외부 표본에서 값 정답률이 높았지만, 기본 해석 정책을 기준으로 만든 자체 정답셋에서는 `default` 100%, `nearest` 93.2%였습니다. 용도에 맞는 설정을 선택해야 합니다. [유형별 결과·p95·설정·재현 방법](docs/comparison.md)
 
 기본 설정, Training(뉴스 98,545 · 대화 91,876 · 역사 26,330개 표현):
 
@@ -395,7 +391,8 @@ uv run korean-datetime "내일 3시에 보고 모레 5시" --all --ambiguous-hou
 docs/
 ├── tutorial.md          # 상황별 사용법 (예시 결과는 tests/test_tutorial.py가 실제로 실행해 확인)
 ├── benchmark.md         # AI허브 데이터 옵션별 벤치마크 (scripts/aihub_benchmark.py가 생성)
-├── comparison.md        # Duckling·dateparser 비교 (scripts/compare_libraries.py가 생성)
+├── comparison.md        # default·nearest·Duckling·dateparser 비교
+├── benchmarks/          # native 측정 환경·재현 절차·기록
 └── expectation-dsl.md   # 기대값 식(DSL) 전체 정리, 정답셋 관리 절차
 src/korean_datetime/
 ├── core/            # 날짜/시간이 쓰는 기반: scanner(경계·조사), numerals(한글 수사), clock(기준 시각), types, evaluation

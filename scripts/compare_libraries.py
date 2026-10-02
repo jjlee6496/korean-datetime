@@ -2,7 +2,10 @@
 """korean-datetime · Duckling · dateparser를 같은 한국어 문장으로 비교해 마크다운 표 만들기
 
     docker run -d -p 8000:8000 rasa/duckling          # Duckling 서버
-    uv run --with dateparser python scripts/compare_libraries.py --aihub <데이터 루트> > docs/comparison.md
+    uv run --with dateparser python scripts/compare_libraries.py --aihub <데이터 루트> > /tmp/comparison-http.md
+
+직접 호출 속도 재현은 scripts/native_benchmark/와 docs/benchmarks/2026-10-02-native/README.md 참고.
+이 스크립트의 속도 표는 Duckling HTTP 호출을 포함하므로 native 속도 표를 덮어쓰지 않습니다.
 
 비교 라이브러리는 이 스크립트에서만 쓰며 korean-datetime의 의존성이 아닙니다.
 두 갈래로 나눠 셉니다:
@@ -365,6 +368,7 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
         "dateparser": dateparser_predict(),
         NEWS_SETTING: korean_datetime_predict(ParseOptions(cycle=Cycle.NEAREST)),
     }
+    compared = tuple(predictors)
     pool, empty = _aihub_pool(aihub_root)
     sample = _stratified(pool, per_category, seed)
     no_time = random.Random(seed).sample(empty, min(negatives, len(empty)))
@@ -372,7 +376,7 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
     fa = _score_false_alarms(no_time, predictors)
     b = _score_curated(predictors)
     timed = [(c.text, c.now) for c in sample] + [(text, now) for _, text, now in no_time]
-    speeds = {lib: _measure_speed(timed, predictors[lib]) for lib in LIBRARIES}
+    speeds = {lib: _measure_speed(timed, predictors[lib]) for lib in compared}
     duckling_floor = _measure_speed([(".", now) for _, now in timed[:200]], predictors["Duckling"])
     avg_chars = statistics.mean(len(text) for text, _ in timed)
     categories = ["전체", *[name for name, _ in _CATEGORIES]]
@@ -385,7 +389,7 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
             "데이터 출처: AI허브(한국지능정보사회진흥원) [「시간 표현 탐지 데이터」](https://aihub.or.kr) Training.",
             "데이터는 이 저장소에 포함하지 않습니다.",
             "",
-            f"비교 대상: [Duckling](https://github.com/facebook/duckling) (`rasa/duckling` Docker, `ko_KR`), "
+            f"비교 대상: [Duckling](https://github.com/facebook/duckling) (HTTP 서버, `ko_KR`), "
             f"[dateparser](https://github.com/scrapinghub/dateparser) {dateparser_version} (`languages=['ko']`). "
             "Microsoft Recognizers-Text는 한국어 DateTime이 아직 등록되지 않아 제외했습니다.",
             "",
@@ -414,7 +418,12 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
             "",
             "검출률 (값과 상관없이 위치만)",
             "",
-            *_table(categories, lambda lib, c: _pct(a[lib][f"{c}.found"], a[lib][f"{c}.n"]), "유형"),
+            *_table(
+                categories,
+                lambda lib, c: _pct(a[lib][f"{c}.found"], a[lib][f"{c}.n"]),
+                "유형",
+                extra=(NEWS_SETTING,),
+            ),
             "",
             "이 표본에서 korean-datetime이 놓친 표현은 대부분 혼자 쓴 '전날', '하루 전날', '이튿날'입니다.",
             "앞 문장을 가리키는 말이라 일부러 인식하지 않는데, 뉴스에서는 대개 기사 전날이라 Duckling이 점수를 얻습니다.",
@@ -422,9 +431,14 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
             "",
             f"오탐률: 시간 표현이 하나도 없는 문장 {len(no_time)}개에서 무언가를 시간으로 낸 비율 (낮을수록 좋음)",
             "",
-            "| | " + " | ".join(LIBRARIES) + " |",
-            "|---|" + "---:|" * len(LIBRARIES),
-            "| 오탐률 | " + " | ".join(_pct(fa[lib], len(no_time)) for lib in LIBRARIES) + " |",
+            "| | " + " | ".join(compared) + " |",
+            "|---|" + "---:|" * len(compared),
+            "| 오탐률 | "
+            + " | ".join(
+                f"{fa[lib] / len(no_time):.1%} ({fa[lib]}/{len(no_time)})" if no_time else "—"
+                for lib in compared
+            )
+            + " |",
             "",
             "이 표본에서 Duckling의 오탐은 대개 숫자나 낱말 조각이었습니다 ('2천 명분'의 2천, '1,573명', '춘천'의 천, '일반', '이후').",
             "",
@@ -439,28 +453,26 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
             "| `춘천`의 `천`, `일반` | Duckling이 낱말 조각을 시간으로 검출한 오탐이 있었습니다. | 한국어 단어 경계가 정밀도에 영향을 줍니다. |",
             "| 연·월이 생략된 뉴스 날짜 | korean-datetime 기본 `FUTURE`는 지난 일을 미래로 해석할 수 있습니다. | `NEAREST` 열을 기본값과 분리해 비교하고, 실제 용도에 맞게 설정합니다. |",
             "",
-            "korean-datetime도 비시간 문장 오탐률이 2%로, 오탐이 없는 파서는 아닙니다. 이 표본은 Training에서 추출했으며 독립적인 미공개 테스트셋 성능으로 해석하지 않습니다.",
+            "korean-datetime도 오탐이 없는 파서는 아닙니다. 이 표본은 Training에서 추출했으며 독립적인 미공개 테스트셋 성능으로 해석하지 않습니다.",
             "## 속도",
             "",
             f"A의 문장 {len(timed)}개(평균 {avg_chars:.0f}자)를 하나씩 넣었을 때 문장당 걸린 시간. 처음 10번은 예열로 버립니다.",
             f"측정 환경: {_platform()}.",
             "",
-            "| | " + " | ".join(LIBRARIES) + " |",
-            "|---|" + "---:|" * len(LIBRARIES),
-            "| 중앙값 (ms/문장) | " + " | ".join(f"{speeds[lib].median_ms:.2f}" for lib in LIBRARIES) + " |",
+            "| | " + " | ".join(compared) + " |",
+            "|---|" + "---:|" * len(compared),
+            "| 중앙값 (ms/문장) | " + " | ".join(f"{speeds[lib].median_ms:.2f}" for lib in compared) + " |",
             "| 95번째 백분위 (ms/문장) | "
-            + " | ".join(f"{speeds[lib].p95_ms:.2f}" for lib in LIBRARIES)
+            + " | ".join(f"{speeds[lib].p95_ms:.2f}" for lib in compared)
             + " |",
-            "| 처리량 (문장/초) | "
-            + " | ".join(f"{speeds[lib].per_second:,.0f}" for lib in LIBRARIES)
-            + " |",
+            "| 처리량 (문장/초) | " + " | ".join(f"{speeds[lib].per_second:,.0f}" for lib in compared) + " |",
             "",
             "- korean-datetime과 dateparser는 같은 프로세스 안에서 함수로 호출합니다.",
             "- dateparser는 한국어 문장 대부분에서 아무것도 찾지 못하고 끝나서(검출률 위 표 참고) 빠르게 나옵니다.",
             f"- Duckling은 별도 서버(Haskell)에 HTTP로 요청하므로 통신 시간이 들어갑니다. 빈 문장('.')만 보내도 중앙값 "
-            f"{duckling_floor.median_ms:.2f}ms가 걸려, 그만큼은 분석이 아닌 고정 비용입니다. 공식 Docker 이미지가 amd64뿐이라",
-            "  arm64 맥에서는 에뮬레이션으로 돌아 실제 서버보다 느리게 나오고 실행마다 흔들립니다(이 환경에서 네 번 재어 3~7ms).",
-            "  같은 조건의 리눅스 amd64에서 다시 재는 것이 공정합니다.",
+            f"{duckling_floor.median_ms:.2f}ms가 걸렸습니다. 이 값에도 서버의 분석·직렬화 비용이 포함되므로 순수 통신 비용으로 빼지 않습니다.",
+            "  Python 직접 호출과 Duckling HTTP 호출의 시간을 파서 자체 속도로 비교하지 않습니다.",
+            "  native 직접 호출 비교는 docs/benchmarks/2026-10-02-native/README.md를 참고하세요.",
             "",
             "## B. 구성 표현 (자체 정답셋, korean-datetime에 유리)",
             "",
@@ -475,6 +487,7 @@ def build(aihub_root: Path, duckling_url: str, per_category: int, negatives: int
                 lambda lib, c: _pct(b[lib][f"{c}.ok"], b[lib][f"{c}.n"]),
                 "유형 (문장 수)",
                 label=lambda c: f"{c} ({b['Duckling'][f'{c}.n']})",
+                extra=(NEWS_SETTING,),
             ),
             "",
         ]
