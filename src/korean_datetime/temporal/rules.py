@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Callable, Iterable, Mapping
+from datetime import time
 from typing import Any
 
 from ..core.numerals import NATIVE, SINO, parse_korean_number, parse_native, parse_sino, syllable_count
@@ -14,7 +15,9 @@ from ..core.scanner import Split, Token, TokenRule
 from . import lexicon as lx
 from . import relative as rel
 from .holiday_calendar import HolidayCalendar
-from .tokens import TK, Clock, DateTriple, HolidayRef, MonthPart, NumUnit, Offset
+from .lexicon import HourMode, Period
+from .options import Terms
+from .tokens import TK, Clock, DateTriple, HolidayRef, Lookback, MonthPart, NumUnit, Offset
 
 Match = re.Match[str]
 _RANGE_SEP = r"[~∼〜\-–]"
@@ -122,6 +125,12 @@ def _last_night(match: Match) -> Split:
     return Split((_tok(TK.DAY_REL, -1, match, day), _tok(TK.PERIOD, lx.PERIODS[match[part]], match, part)))
 
 
+def _business_steps(match: Match) -> int | None:
+    """'3거래일 전' → -3, '2영업일 후' → 2"""
+    amount = parse_korean_number(match["num"])
+    return None if not amount else (-amount if match["dir"] == "전" else amount)
+
+
 def _calendar_rules() -> list[TokenRule]:
     month_rel = f"({rel.prefix_pattern(lx.MONTH_PREFIX_FIXED)})\\s*달"
     return [
@@ -175,6 +184,18 @@ def _calendar_rules() -> list[TokenRule]:
             attachable=True,
         ),
         _rule(TK.INVALID, words(lx.ANAPHORA), _invalid, right_boundary=True),
+        _rule(
+            TK.BUSINESS_DAY,
+            rf"(?P<num>\d{{1,3}}|{SINO}|{NATIVE})\s*(?:{words(lx.BUSINESS_DAY_WORDS)})\s*(?P<dir>전|후|뒤)",
+            _business_steps,
+            right_boundary=True,
+        ),
+        _rule(
+            TK.BUSINESS_DAY,
+            rf"({words(lx.BUSINESS_DAY_STEP)})\s*(?:{words(lx.BUSINESS_DAY_WORDS)})",
+            lambda m: lookup(lx.BUSINESS_DAY_STEP, m[1]),
+            right_boundary=True,
+        ),
         _rule(
             TK.INVALID,
             rf"(?:(?:{words(lx.WEEK_NTH)})\s*)?(?:{words(lx.CALENDAR_DEPENDENT)})",
@@ -345,22 +366,40 @@ def _sino_num(match: Match) -> NumUnit | None:
     return NumUnit(amount, match[2])
 
 
-def _past_span(match: Match) -> Offset | None:
-    """'지난 3일간', '지난 한 달 동안' → 되돌아갈 기간"""
+def _lookback(match: Match) -> Lookback | None:
+    """'최근 3개월', '지난 3일간', '향후 2주', '최근 4분기' → 방향과 길이.
+    '지난 3일'(간·동안 없음)은 '가장 최근의 3일'이라는 날짜라 여기서 받지 않음"""
     amount = parse_korean_number(match["num"])
-    if not amount:
+    direction = lx.LOOKBACK_WORDS[re.sub(r"\s+", "", match["dir"])]
+    unit = match["unit"]
+    if not amount or (direction == "past" and unit == "일" and not match["span"]):
         return None
-    months, days, _ = lx.DURATION_UNITS[match["unit"]]
-    return Offset(months * amount, days * amount)
+    if unit == "분기":
+        return Lookback(direction, quarters=amount)
+    months, days, seconds = lx.DURATION_UNITS[unit]
+    return Lookback(direction, offset=Offset(months * amount, days * amount, seconds * amount))
 
 
 def _duration_rules() -> list[TokenRule]:
     past_number = rf"(?P<num>\d{{1,4}}|{SINO}|{NATIVE})"
     return [
         _rule(
-            TK.PAST_SPAN,
-            rf"지난\s*{past_number}\s*(?P<unit>개월|주일|주|일|달|년|해)\s*(?:간|동안)",
-            _past_span,
+            TK.LOOKBACK,
+            rf"(?P<dir>{words(lx.LOOKBACK_WORDS)})\s*{past_number}\s*"
+            r"(?P<unit>개월|주일|주|일|달|년|해|분기|시간|분)(?P<span>\s*(?:간|동안))?",
+            _lookback,
+            right_boundary=True,
+        ),
+        _rule(
+            TK.QUARTER_REL,
+            rf"({words(lx.QUARTER_REL)})\s*분기",
+            lambda m: lookup(lx.QUARTER_REL, m[1]),
+            right_boundary=True,
+        ),
+        _rule(
+            TK.TO_DATE,
+            r"(?:연초|년초|올해|금년)\s*(?:이후|이래|들어)|(?:이달|이번\s*달|월초|당월)\s*(?:이후|이래|들어)",
+            lambda m: "month" if re.match(r"이달|이번|월초|당월", m.group()) else "year",
             right_boundary=True,
         ),
         _rule(
@@ -411,7 +450,7 @@ def _holiday_rules(calendar: HolidayCalendar) -> list[TokenRule]:
     return [
         _rule(
             TK.MODIFIER,
-            # '지난 3일' = 오늘 이전 가장 최근의 3일 ('지난 3일간'은 PAST_SPAN)
+            # '지난 3일' = 오늘 이전 가장 최근의 3일 ('지난 3일간'은 LOOKBACK)
             rf"(?:{words(lx.MODIFIERS)})\s*(?={target}|\d{{1,2}}\s*일(?!\s*(?:간|동안|째))|{_MONTH_AHEAD})",
             lambda m: lookup(lx.MODIFIERS, m.group()),
         ),
@@ -436,8 +475,33 @@ def _vague_rules() -> list[TokenRule]:
     ]
 
 
-def build_rules(compact_dates: bool, calendar: HolidayCalendar, vague: bool = False) -> tuple[TokenRule, ...]:
+def _term_rules(terms: Terms) -> list[TokenRule]:
+    """쓰는 쪽이 넣은 시각 어휘: 시각이면 CLOCK('장 마감' 15:30), 구간이면 PERIOD('정규장' 9:00~15:30)"""
+    rules = []
+    for name, value in terms:
+        pattern = r"\s*".join(re.escape(part) for part in name.split())
+        if isinstance(value, time):
+            clock = Clock(value.hour, value.minute, literal=True)
+            rules.append(_rule(TK.CLOCK, pattern, _constant(clock), right_boundary=True))
+        else:
+            start, end = (t.hour + t.minute / 60 for t in value)
+            period = Period(HourMode.AM if start < 12 else HourMode.PM, start, end)
+            rules.append(_rule(TK.PERIOD, pattern, _constant(period), right_boundary=True))
+    return rules
+
+
+def _constant(value: Any) -> Callable[[Match], Any]:
+    def build(match: Match) -> Any:
+        return value
+
+    return build
+
+
+def build_rules(
+    compact_dates: bool, calendar: HolidayCalendar, vague: bool = False, terms: Terms = ()
+) -> tuple[TokenRule, ...]:
     return (
+        *_term_rules(terms),
         *(_vague_rules() if vague else ()),
         *_formatted_rules(compact_dates),
         *_calendar_rules(),

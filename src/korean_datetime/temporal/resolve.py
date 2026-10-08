@@ -7,13 +7,13 @@ from dataclasses import replace
 from datetime import date, datetime, time, timedelta
 
 from .ambiguity import Ambiguity, ordered
-from .calendar_math import add_months, apply_offset, week_start
+from .calendar_math import add_months, apply_offset, apply_offset_to_date, week_start
 from .frame import Frame
-from .model import Direction, Grain, Kind, TemporalExpression
+from .model import Direction, Duration, Grain, Kind, TemporalExpression
 from .options import ParseOptions
-from .resolve_date import DateSpan, has_date, resolve_date
+from .resolve_date import DateSpan, has_date, quarter_span, resolve_date
 from .resolve_time import floor_minute, resolve_clock, resolve_period
-from .tokens import Offset
+from .tokens import Lookback, Offset
 
 _GRAIN_STEP = {
     Grain.SECOND: timedelta(seconds=1),
@@ -65,6 +65,75 @@ def _vague(frame: Frame, direction: str, text: str, now: datetime) -> TemporalEx
     return TemporalExpression(text, span, Kind.VAGUE, Grain.DAY, start, end, direction=Direction(direction))
 
 
+def _midnight(day: date, now: datetime) -> datetime:
+    return datetime.combine(day, time(tzinfo=now.tzinfo))
+
+
+def _duration_grain(offset: Offset) -> Grain:
+    if offset.seconds:
+        return Grain.SECOND if offset.seconds % 60 else Grain.MINUTE if offset.seconds % 3600 else Grain.HOUR
+    if offset.days:
+        return Grain.WEEK if not offset.months and offset.days % 7 == 0 else Grain.DAY
+    return Grain.YEAR if offset.months % 12 == 0 else Grain.MONTH
+
+
+def _duration_value(frame: Frame, offset: Offset, text: str, now: datetime) -> TemporalExpression:
+    """기간 값: 날짜가 아니라 길이. start = end = 기준 시각(분 단위), 길이는 duration"""
+    moment = floor_minute(now)
+    length = Duration(offset.months, offset.days, offset.seconds)
+    span = (frame.start, frame.end)
+    return TemporalExpression(
+        text, span, Kind.DURATION, _duration_grain(offset), moment, moment, duration=length
+    )
+
+
+def _lookback(frame: Frame, lookback: Lookback, text: str, now: datetime) -> TemporalExpression:
+    """'최근 3개월' = 오늘 포함 3개월 [오늘+1일-3개월, 내일), '지난 3개월' = [오늘-3개월, 오늘),
+    '향후 3개월' = [오늘, 오늘+3개월). 시·분 단위는 지금 시각 기준, 분기는 분기 단위"""
+    span = (frame.start, frame.end)
+    today = now.date()
+    if lookback.quarters is not None:
+        n = lookback.quarters
+        first_k, last_k = {"recent": (1 - n, 0), "past": (-n, -1), "future": (0, n - 1)}[lookback.direction]
+        start_day, end_day = quarter_span(today, first_k).start, quarter_span(today, last_k).end
+        return TemporalExpression(
+            text,
+            span,
+            Kind.DATE,
+            Grain.QUARTER,
+            _midnight(start_day, now),
+            _midnight(end_day, now),
+            is_range=True,
+        )
+    offset = lookback.offset or Offset()
+    if offset.is_date_grain:
+        anchor = {"recent": today + timedelta(days=1), "past": today, "future": today}[lookback.direction]
+        sign = 1 if lookback.direction == "future" else -1
+        other = apply_offset_to_date(anchor, offset.scaled(sign))
+        start_day, end_day = (anchor, other) if sign > 0 else (other, anchor)
+        return TemporalExpression(
+            text,
+            span,
+            Kind.DATE,
+            Grain.DAY,
+            _midnight(start_day, now),
+            _midnight(end_day, now),
+            is_range=True,
+        )
+    moment = floor_minute(now)
+    shifted = apply_offset(moment, offset.scaled(1 if lookback.direction == "future" else -1))
+    start, end = (moment, shifted) if lookback.direction == "future" else (shifted, moment)
+    return TemporalExpression(text, span, Kind.DATETIME, Grain.MINUTE, start, end, is_range=True)
+
+
+def _to_date(frame: Frame, unit: str, text: str, now: datetime) -> TemporalExpression:
+    """'연초 이후', '올해 들어' = [올해 1월 1일, 내일), '이달 들어' = [이번 달 1일, 내일)"""
+    today = now.date()
+    first = today.replace(month=1, day=1) if unit == "year" else today.replace(day=1)
+    start, end = _midnight(first, now), _midnight(today + timedelta(days=1), now)
+    return TemporalExpression(text, (frame.start, frame.end), Kind.DATE, Grain.DAY, start, end, is_range=True)
+
+
 def _shift_day(span: DateSpan, shift: int) -> DateSpan:
     """구간의 전날(첫날 하루 전) / 다음 날(끝난 다음 날): '주말 전날' = 금요일"""
     day = span.start - timedelta(days=1) if shift < 0 else span.end
@@ -86,6 +155,12 @@ def _resolve(
     span_text = text[frame.start : frame.end]
     if frame.vague is not None:
         return _vague(frame, frame.vague, span_text, now)
+    if frame.duration is not None:
+        return _duration_value(frame, frame.duration, span_text, now)
+    if frame.lookback is not None:
+        return _lookback(frame, frame.lookback, span_text, now)
+    if frame.to_date is not None:
+        return _to_date(frame, frame.to_date, span_text, now)
     if frame.now:
         return _instant(span_text, frame, floor_minute(now), Grain.MINUTE, Kind.DATETIME)
     if frame.time_offset is not None:
@@ -115,9 +190,7 @@ def _resolve(
         return None
     result, time_flags = combined
     flags = time_flags | _date_flags(frame, span_text, date_span)
-    result = replace(
-        result, ambiguities=ordered(flags), is_range=result.is_range or frame.past_span is not None
-    )
+    result = replace(result, ambiguities=ordered(flags), is_range=result.is_range)
     return _apply_anchor(result, frame.anchored_offset) if frame.anchored_offset else result
 
 

@@ -110,6 +110,7 @@ def test_kind_values() -> None:
         "date",
         "time",
         "datetime",
+        "duration",
         "vague",
     }  # vague는 ParseOptions(vague=True)일 때만
 

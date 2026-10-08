@@ -259,7 +259,8 @@ _CURATED_BUCKETS = {
     "range": "범위", "week_range": "범위", "month_year_range": "범위",
     "clock": "시각", "period": "시각", "datetime": "날짜+시각",
     "holiday": "명절·기념일", "month_day": "월·일", "formatted": "월·일",
-    "negative": "인식하면 안 됨", "invalid_date": "인식하면 안 됨", "duration_not_date": "인식하면 안 됨",
+    "negative": "인식하면 안 됨", "invalid_date": "인식하면 안 됨",
+    "duration": "기간", "lookback": "기간"
 }  # fmt: skip
 
 

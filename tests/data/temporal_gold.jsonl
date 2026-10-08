@@ -293,14 +293,14 @@
 {"category": "range", "text": "25일부터 3일까지", "expect": "future(day(25)).to_after(future(day(3)))"}
 {"category": "range_rejected", "text": "10월 5일부터 10월 3일까지", "expect": "future(md(10, 5))"}
 {"category": "range_rejected", "text": "3시부터 3시까지", "expect": "nearest(3:00)"}
-{"category": "duration_not_date", "text": "3일간 휴가", "expect": "none"}
-{"category": "duration_not_date", "text": "3일 연속 올랐다", "expect": "none"}
-{"category": "duration_not_date", "text": "7일 이내", "expect": "none"}
-{"category": "duration_not_date", "text": "30일 내로", "expect": "none"}
-{"category": "duration_not_date", "text": "1일 1식", "expect": "none"}
-{"category": "duration_not_date", "text": "30분 동안", "expect": "none"}
-{"category": "duration_not_date", "text": "열흘간", "expect": "none"}
-{"category": "duration_not_date", "text": "오늘부터 3일간", "expect": "today"}
+{"category": "duration", "text": "3일간 휴가", "expect": "duration(3, d)"}
+{"category": "duration", "text": "3일 연속 올랐다", "expect": "duration(3, d)"}
+{"category": "duration", "text": "7일 이내", "expect": "duration(7, d)"}
+{"category": "duration", "text": "30일 내로", "expect": "duration(30, d)"}
+{"category": "duration", "text": "1일 1식", "expect": "none"}
+{"category": "duration", "text": "30분 동안", "expect": "duration(30, min)"}
+{"category": "duration", "text": "열흘간", "expect": "duration(10, d)"}
+{"category": "duration", "text": "오늘부터 3일간", "expect": "today"}
 {"category": "negative", "text": "보고 싶어", "expect": "none"}
 {"category": "negative", "text": "오일 교환하러 가", "expect": "none"}
 {"category": "negative", "text": "낮은 가격", "expect": "none"}
@@ -326,21 +326,21 @@
 {"category": "negative", "text": "첫날", "expect": "none"}
 {"category": "negative", "text": "중순", "expect": "none"}
 {"category": "negative", "text": "2주", "expect": "none"}
-{"category": "negative", "text": "하루", "expect": "none"}
-{"category": "negative", "text": "이틀", "expect": "none"}
-{"category": "negative", "text": "일주일", "expect": "none"}
-{"category": "negative", "text": "한달", "expect": "none"}
-{"category": "negative", "text": "1시간", "expect": "none"}
-{"category": "negative", "text": "15분", "expect": "none"}
-{"category": "negative", "text": "십오분", "expect": "none"}
-{"category": "negative", "text": "30분", "expect": "none"}
+{"category": "duration", "text": "하루", "expect": "duration(1, d)"}
+{"category": "duration", "text": "이틀", "expect": "duration(2, d)"}
+{"category": "duration", "text": "일주일", "expect": "duration(1, w)"}
+{"category": "duration", "text": "한달", "expect": "duration(1, mo)"}
+{"category": "duration", "text": "1시간", "expect": "duration(1, h)"}
+{"category": "duration", "text": "15분", "expect": "duration(15, min)"}
+{"category": "duration", "text": "십오분", "expect": "duration(15, min)"}
+{"category": "duration", "text": "30분", "expect": "duration(30, min)"}
 {"category": "negative", "text": "2026", "expect": "none"}
 {"category": "negative", "text": "13월", "expect": "none"}
 {"category": "negative", "text": "13월 1일", "expect": "none"}
 {"category": "negative", "text": "12월 99일", "expect": "none"}
 {"category": "negative", "text": "32일", "expect": "none"}
 {"category": "negative", "text": "25시", "expect": "none"}
-{"category": "negative", "text": "24시간 형식", "expect": "none"}
+{"category": "duration", "text": "24시간 형식", "expect": "duration(24, h)"}
 {"category": "negative", "text": "삼시", "expect": "none"}
 {"category": "negative", "text": "일일", "expect": "none"}
 {"category": "negative", "text": "매핑 실패: 요일을 찾을 수 없음", "expect": "none"}
@@ -442,9 +442,9 @@
 {"category": "range", "text": "다음 달 3일부터 5일까지", "expect": "month(1).day(3).to_after(day(5))"}
 {"category": "range", "text": "내일 오후 3시부터 5시까지", "expect": "(today + 1d).at(15:00).to_after(at(17:00))"}
 {"category": "range", "text": "오늘 밤 11시부터 내일 새벽 2시까지", "expect": "today.at(23:00).to((today + 1d).at(2:00))"}
-{"category": "duration_not_date", "text": "3일간", "expect": "none"}
-{"category": "duration_not_date", "text": "2주 동안", "expect": "none"}
-{"category": "duration_not_date", "text": "한 달 내내", "expect": "none"}
+{"category": "duration", "text": "3일간", "expect": "duration(3, d)"}
+{"category": "duration", "text": "2주 동안", "expect": "duration(2, w)"}
+{"category": "duration", "text": "한 달 내내", "expect": "duration(1, mo)"}
 {"category": "negative", "text": "오늘의집 가구", "expect": "none"}
 {"category": "negative", "text": "내일신문 구독", "expect": "none"}
 {"category": "negative", "text": "주말농장 분양", "expect": "none"}
@@ -617,3 +617,44 @@
 {"category": "negative", "text": "내일정 확인해줘", "expect": "none"}
 {"category": "negative", "text": "내일상 기록", "expect": "none"}
 {"category": "negative", "text": "오늘다녀왔다", "expect": "none"}
+{"category": "duration", "text": "6개월 적금 금리", "expect": "duration(6, mo)"}
+{"category": "duration", "text": "일주일 걸려요", "expect": "duration(1, w)"}
+{"category": "duration", "text": "1년간 보유했어", "expect": "duration(1, y)"}
+{"category": "duration", "text": "3일간 여행", "expect": "duration(3, d)"}
+{"category": "duration", "text": "30분 걸려", "expect": "duration(30, min)"}
+{"category": "duration", "text": "1시간 30분 동안 회의", "expect": "duration(90, min)"}
+{"category": "duration", "text": "이틀 걸렸어", "expect": "duration(2, d)"}
+{"category": "duration", "text": "보름 동안", "expect": "duration(15, d)"}
+{"category": "duration", "text": "한 달 넘게 걸렸다", "expect": "duration(1, mo)"}
+{"category": "duration", "text": "5일 수익률", "expect": "duration(5, d)"}
+{"category": "duration", "text": "20일 이평선", "expect": "duration(20, d)"}
+{"category": "duration", "text": "60일 이동평균", "expect": "duration(60, d)"}
+{"category": "lookback", "text": "최근 3개월 주가", "expect": "(today + 1d - 3mo).to(today)"}
+{"category": "lookback", "text": "최근 1달", "expect": "(today + 1d - 1mo).to(today)"}
+{"category": "lookback", "text": "최근 한 달간 거래량", "expect": "(today + 1d - 1mo).to(today)"}
+{"category": "lookback", "text": "최근 일주일", "expect": "(today + 1d - 1w).to(today)"}
+{"category": "lookback", "text": "최근 7일", "expect": "(today + 1d - 7d).to(today)"}
+{"category": "lookback", "text": "최근 1년 수익률", "expect": "(today + 1d - 1y).to(today)"}
+{"category": "lookback", "text": "지난 3개월간 수익률", "expect": "(today - 3mo).to(today - 1d)"}
+{"category": "lookback", "text": "지난 6개월 실적", "expect": "(today - 6mo).to(today - 1d)"}
+{"category": "lookback", "text": "향후 3개월 전망", "expect": "today.to(today + 3mo - 1d)"}
+{"category": "lookback", "text": "앞으로 2주", "expect": "today.to(today + 2w - 1d)"}
+{"category": "lookback", "text": "최근 30분 체결", "expect": "(now - 30min).to(now)"}
+{"category": "lookback", "text": "최근 4분기 EPS", "expect": "qtr(-3).to(qtr(0))"}
+{"category": "lookback", "text": "지난 4분기 실적", "expect": "qtr(-4).to(qtr(-1))"}
+{"category": "lookback", "text": "이번 분기 실적", "expect": "qtr(0)"}
+{"category": "lookback", "text": "지난 분기 영업이익", "expect": "qtr(-1)"}
+{"category": "lookback", "text": "직전 분기 대비", "expect": "qtr(-1)"}
+{"category": "lookback", "text": "다음 분기", "expect": "qtr(1)"}
+{"category": "lookback", "text": "연초 이후 수익률", "expect": "year(0).month(1).first().to(today)"}
+{"category": "lookback", "text": "올해 들어 상승률", "expect": "year(0).month(1).first().to(today)"}
+{"category": "lookback", "text": "이달 들어 거래량", "expect": "month(0).first().to(today)"}
+{"category": "negative", "text": "삼성전자 100주 매수", "expect": "none"}
+{"category": "negative", "text": "85만6767주를 공모한다", "expect": "none"}
+{"category": "negative", "text": "100달러까지 낮아질 것", "expect": "none"}
+{"category": "negative", "text": "가격이 10분의 1로 줄었다", "expect": "none"}
+{"category": "negative", "text": "홀짝 구분 없이 신청", "expect": "none"}
+{"category": "negative", "text": "2022 분야별 순위", "expect": "none"}
+{"category": "duration", "text": "2주간 보유", "expect": "duration(2, w)"}
+{"category": "duration", "text": "2주 만에 회복", "expect": "duration(2, w)"}
+{"category": "duration", "text": "3주일 걸렸다", "expect": "duration(3, w)"}

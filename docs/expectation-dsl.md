@@ -139,6 +139,8 @@ grain이 맞지 않는 메서드를 쓰면 오류입니다. 예: `today.weekday(
 | `nearest(T)` | 오전/오후가 모호한 T: 기준 시각 이후 가장 가까운 후보 (오늘 T, 오늘 T+12, 내일 T, 내일 T+12 순) | time / instant | 없음 | `nearest(2:00)` → 09-29 02:00 |
 | `period(A, B)` | 오늘 A시 ~ B시 | time / period | 일 | `period(18, 21)` |
 | `lunar(M, D)` | 올해 음력 M월 D일 | date / day | 연 | `lunar(8, 15)` → 2026-09-25 |
+| `qtr(K)` | 이번 분기에서 K번째 분기 (0 이번, -1 지난, 1 다음) | date / quarter | 없음 | `qtr(-1)` → 2026-07-01 ~ 10-01 |
+| `duration(N, U)` | 기간 값 N단위 (U: y, mo, w, d, h, min, s). 날짜가 아니라 길이라 start = end = 기준 시각, ISO 길이(`P6M`)를 비교 | duration | 없음 | `duration(6, mo)` → P6M, `duration(90, min)` → PT1H30M |
 | `future(X)` | [5.1](#51-future와-past) | X를 따름 | — | `future(md(6, 3))` → 2027-06-03 |
 | `past(X)` | [5.1](#51-future와-past) | X를 따름 | — | `past(md(12, 25))` → 2025-12-25 |
 | `latest(X)` | [5.1](#51-future와-past) — `Cycle.PAST` | X를 따름 | — | `latest(day(29))`@11-01 → 10-29 |
@@ -381,7 +383,8 @@ X의 주기는 **가장 안쪽 기본 값**이 정합니다([4.1](#41-기본-값
 | `separator` | 10월 5일(월) 오후 2시, ISO `T` | `future(md(10, 5)).at(14:00)` |
 | `range` | A부터 B까지, A~B | `nearest(3:00).to_after(nearest(5:00))` |
 | `range_rejected` | 뒤집힌 범위, 빈 범위 | `future(md(10, 5))` |
-| `duration_not_date` | 3일간, 7일 이내, 30분 동안 | `none` |
+| `duration` | 기간 값: 3일간, 6개월, 30분 동안, 5일 수익률 (날짜가 아님, `1일 1식` 같은 비율은 none) | `duration(3, d)`, `duration(6, mo)` |
+| `lookback` | 거슬러 올라가는·앞으로의 기간, 분기, 연초 이후: 최근 3개월, 지난 분기, 연초 이후 | `(today + 1d - 3mo).to(today)`, `qtr(-1)` |
 | `ambiguity` | 모호성 표시 검증용 (여러 날 + 시각, 자정 넘김, 다음 주말) | `week(0).weekend().at(15:00)` |
 | `negative` | 날짜/시간이 아닌 문장, 잘못된 값 | `none` |
 

@@ -155,8 +155,10 @@ class HourMode(str, Enum):
 @dataclass(frozen=True, slots=True)
 class Period:
     mode: HourMode
-    start: int | None  # 시간대만 말했을 때의 구간 [start, end) 시. None이면 시각과 함께만 쓰임 (am/pm)
-    end: int | None
+    start: (
+        float | None
+    )  # 시간대만 말했을 때의 구간 [start, end) 시(15.5 = 15:30). None이면 시각과 함께만 (am/pm)
+    end: float | None
 
 
 _EARLY_MORNING = Period(HourMode.AM, 6, 8)
@@ -280,7 +282,10 @@ ANAPHORA: tuple[str, ...] = (
     "거기서", "그로부터", "그때부터", "이때부터",
 )  # fmt: skip
 # 달력 밖 정보가 필요한 단위 (회사·기관 휴무일). 계산할 수 없으므로 표현 전체를 인식하지 않음
-CALENDAR_DEPENDENT: tuple[str, ...] = ("영업일", "근무일", "업무일", "휴무일")
+CALENDAR_DEPENDENT: tuple[str, ...] = ("영업일", "거래일", "근무일", "업무일", "휴무일")
+# 영업일 이동 ('전 거래일', '익영업일'). 'N거래일 전/후'는 규칙에서. 영업일 달력이 있을 때만 계산
+BUSINESS_DAY_WORDS: tuple[str, ...] = ("거래일", "영업일")
+BUSINESS_DAY_STEP: dict[str, int] = {"직전": -1, "이전": -1, "전": -1, "다음": 1, "익": 1, "익일": 1}
 
 # 막연한 때 (ParseOptions(vague=True)일 때만 인식). 넣고 빼기는 이 표만 고치면 됨.
 # AI허브 시간 표현 데이터에서 시간 표현으로 레이블된 비율이 높은 것만 (최근 86~91%, 요즘 92% 등).
@@ -315,6 +320,30 @@ UPCOMING_ANY: tuple[str, ...] = ("다가오는", "매월", "매달", "매년", "
 DURATION_SUFFIX = (
     r"\s*(?:간|동안|째|연속|이내|이상|이하|내로|내에|안에|만에|마다|씩)|\s+\d+\s*(?:식|회|번|끼)"
 )
+# 기간이지만 길이 값이 아닌 것: 비율('3일마다', '1일 1식'), 순서('3일째')
+RATE_OR_ORDINAL_SUFFIX = (
+    r"\s*(?:째|마다|씩)|\s+(?:\d+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열)\s*(?:식|회|번|끼)"
+)
+# 'N일' 뒤에 오면 날짜가 아니라 기간 ('5일 수익률', '20일 이평선', '60일 이동평균')
+DURATION_CUES: tuple[str, ...] = ("수익률", "이평", "이동평균", "평균", "간격", "주기", "치", "분량", "짜리")
+# 거슬러 올라가는·앞으로의 기간: 최근(오늘 포함), 지난·직전(오늘 전까지), 향후·앞으로(오늘부터)
+LOOKBACK_WORDS: dict[str, str] = {
+    "최근": "recent",
+    "지난": "past",
+    "직전": "past",
+    "향후": "future",
+    "앞으로": "future",
+}
+QUARTER_REL: dict[str, int] = {
+    "이번": 0,
+    "당": 0,
+    "금": 0,
+    "지난": -1,
+    "전": -1,
+    "직전": -1,
+    "다음": 1,
+    "차기": 1,
+}
 
 # 기준 시각과 같은 시각 ('내일 이 시각' = 내일 지금 시각)
 SAME_TIME_WORDS: tuple[str, ...] = (

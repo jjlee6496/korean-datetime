@@ -48,6 +48,8 @@ def temporal_matches(predicted: object, expected: Mapping[str, Any]) -> bool:
         return False
     if "is_range" in expected and predicted.is_range != bool(expected["is_range"]):
         return False
+    if "duration" in expected:
+        return predicted.duration is not None and predicted.duration.iso == expected["duration"]
     if expected.get("shape") == "instant":
         return not predicted.is_range and predicted.end - predicted.start <= _INSTANT_MAX
     return True

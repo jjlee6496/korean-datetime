@@ -43,6 +43,7 @@ class Expect:
     grain: str  # day | week | month | year | instant | period | range
     month_first: date | None = None  # .row()로 만든 주: 그 달의 1일 (앞 달 칸 판정용)
     ambiguities: frozenset[str] = frozenset()  # 기준 시각에 따라 생기는 모호성 (future 넘김, 같은 요일 …)
+    duration: str | None = None  # kind=duration일 때 ISO 8601 길이 ('P6M', 'P2W', 'PT1H30M')
 
     def flagged(self, *names: str) -> Expect:
         return replace(self, ambiguities=self.ambiguities | set(names))
@@ -58,6 +59,8 @@ class Expect:
         }
         if self.end is not None:
             expected["end"] = self.end.isoformat()
+        if self.duration is not None:
+            expected["duration"] = self.duration
         return expected
 
 
@@ -276,6 +279,49 @@ def _today(args: list[Node], ref: datetime) -> Expect | None:
 @_atom("now", None)
 def _now(args: list[Node], ref: datetime) -> Expect | None:
     return Expect(_floor(ref), None, "datetime", "instant")
+
+
+_DURATION_UNITS = {
+    "y": (12, 0, 0),
+    "mo": (1, 0, 0),
+    "w": (0, 7, 0),
+    "d": (0, 1, 0),
+    "h": (0, 0, 3600),
+    "min": (0, 0, 60),
+    "s": (0, 0, 1),
+}
+
+
+def iso_duration(months: int, days: int, seconds: int) -> str:
+    """ISO 8601 길이. 주 단위로 떨어지는 날 수만 있으면 W ('P2W'), 그 밖은 Y·M·D·H·M·S"""
+    if not months and not seconds and days and days % 7 == 0:
+        return f"P{days // 7}W"
+    date_part = "".join(f"{v}{u}" for v, u in ((months // 12, "Y"), (months % 12, "M"), (days, "D")) if v)
+    hours, rest = divmod(seconds, 3600)
+    minutes, secs = divmod(rest, 60)
+    time_part = "".join(f"{v}{u}" for v, u in ((hours, "H"), (minutes, "M"), (secs, "S")) if v)
+    return "P" + date_part + (f"T{time_part}" if time_part else "") if date_part or time_part else "P0D"
+
+
+@_atom("duration", None)
+def _duration(args: list[Node], ref: datetime) -> Expect | None:
+    """기간 값 ('6개월' = duration(6, mo)). 날짜가 아니므로 start = end = 기준 시각"""
+    _arity(args, 2, "duration")
+    unit = _word(args[1])
+    if unit not in _DURATION_UNITS:
+        raise ExpectationError(f"duration 단위는 {', '.join(_DURATION_UNITS)} 중 하나: {unit}")
+    months, days, seconds = (part * _int(args[0]) for part in _DURATION_UNITS[unit])
+    moment = _floor(ref)
+    return Expect(moment, moment, "duration", "duration", duration=iso_duration(months, days, seconds))
+
+
+@_atom("qtr", None)
+def _qtr(args: list[Node], ref: datetime) -> Expect | None:
+    """이번 분기 기준 k번째 분기 (qtr(0) 이번, qtr(-1) 지난, qtr(1) 다음)"""
+    _arity(args, 1, "qtr")
+    index = ref.year * 4 + (ref.month - 1) // 3 + _int(args[0])
+    first = date(index // 4, index % 4 * 3 + 1, 1)
+    return _span(first, _add_months(first, 3), ref, "quarter")
 
 
 @_atom("none", None)

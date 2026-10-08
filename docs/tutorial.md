@@ -254,7 +254,63 @@ found[0].value   # → 2026-10-01
 어떤 말을 넣을지는 `temporal/lexicon.py`의 `VAGUE_WORDS` 표 하나에서 정합니다.
 "곧", "당장", "앞으로"는 실제 문장에서 시간이 아닌 경우가 많아 빠져 있습니다.
 
-## 10. 명절과 공휴일
+## 10. 데이터 조회: 기간, 최근 N, 분기, 영업일
+
+**상황**: "최근 3개월 주가", "지난 분기 실적", "3거래일 전 종가"처럼 지난 데이터를 묻는 질문입니다.
+
+**기간 값**은 날짜가 아니라 길이라서 `kind`가 `DURATION`이고, 길이는 `duration`에 있습니다.
+
+```python
+from korean_datetime import Kind
+
+r = parse("6개월 적금 금리", now=NOW)
+(r.kind, r.duration.iso)   # → (<Kind.DURATION: 'duration'>, 'P6M')
+parse("1시간 30분 동안 회의", now=NOW).duration.iso   # → PT1H30M
+parse("20일 이평선", now=NOW).duration.iso            # → P20D
+```
+
+"15일에 보자"의 15일은 날짜이고, "20일 이평선"처럼 기간 단서가 붙으면 기간입니다. "3일마다", "3일째"는 비율·순서라 기간 값으로 보지 않습니다.
+
+**거슬러 올라가는 기간**은 범위로 나옵니다. "최근"은 오늘을 포함하고, "지난"은 어제까지, "향후"는 오늘부터입니다.
+
+```python
+r = parse("최근 3개월 주가", now=NOW)
+(r.start.date(), r.end.date(), r.is_range)   # → (datetime.date(2026, 7, 2), datetime.date(2026, 10, 2), True)
+r = parse("지난 분기 영업이익", now=NOW)
+(r.start.date(), r.end.date())               # → (datetime.date(2026, 7, 1), datetime.date(2026, 10, 1))
+r = parse("최근 4분기 EPS", now=NOW)
+(r.start.date(), r.end.date())               # → (datetime.date(2026, 1, 1), datetime.date(2027, 1, 1))
+parse("연초 이후 수익률", now=NOW).start.date()   # → 2026-01-01
+```
+
+"최근 4분기"는 이번 분기를 포함한 4개 분기이고, 다 끝난 분기만 원하면 "지난 4분기"입니다.
+
+**영업일**은 기관마다 휴일이 달라 라이브러리가 알 수 없습니다. 달력을 넣어야 계산하고, 없으면 인식하지 않습니다.
+
+```python
+from datetime import date, time
+from korean_datetime import Cycle, WeekdayCalendar
+
+krx = WeekdayCalendar(holidays=[date(2026, 10, 9)])   # 예시: 10월 9일(금) 휴장. 실제 목록은 쓰는 쪽이 넣음
+data = ParseOptions(
+    cycle=Cycle.PAST,                 # 지난 데이터 조회: 생략된 날짜는 과거로
+    business_week=True,               # '이번 주' = 영업일
+    business_calendar=krx,
+    terms={"장 마감": time(15, 30)},  # 도메인 시각 어휘
+)
+monday = datetime(2026, 10, 12, 10)
+parse("전 거래일 종가", now=monday, options=data).start.date()   # → 2026-10-08
+parse("3거래일 전", now=monday, options=data).start.date()       # → 2026-10-06
+r = parse("지난주", now=monday, options=data)
+(r.start.date(), r.end.date())                                  # → (datetime.date(2026, 10, 5), datetime.date(2026, 10, 9))
+parse("전 거래일 장 마감", now=monday, options=data).start        # → 2026-10-08 15:30:00
+parse_all("3거래일 전", now=monday)                              # → []
+```
+
+금요일이 휴장이라 "전 거래일"은 목요일이고, "지난주"는 월~목입니다. 주 중간의 휴일은 구간 안에 남으니,
+날짜 하나하나가 영업일인지는 `krx.is_business_day(day)`로 확인하세요.
+
+## 11. 명절과 공휴일
 
 ```python
 parse("추석 연휴에 고향 가요", now=NOW).start   # → 2027-09-14 00:00:00
@@ -265,7 +321,7 @@ parse("설날", now=NOW).start                    # → 2027-02-07 00:00:00
 올해 추석(9월 25일)은 지났으므로 내년 추석 연휴가 나옵니다. 음력은 천문 계산(1900~2100년)으로 바꿉니다.
 대체공휴일이나 회사 창립기념일처럼 계산할 수 없는 날은 외부 달력을 넣습니다([README](../README.md#기념일공휴일-데이터-주입)).
 
-## 11. 문제 해결
+## 12. 문제 해결
 
 | 증상 | 원인 | 해결 |
 |---|---|---|

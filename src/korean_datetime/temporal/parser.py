@@ -36,9 +36,10 @@ def _builtin_scanner(compact_dates: bool, vague: bool) -> Scanner:
 
 def _make_scanner(options: ParseOptions) -> Scanner:
     """내장 달력이면 공유 스캐너, 주입된 달력이면 그 달력의 이름으로 새로 만든 스캐너"""
-    if options.holidays is None:
+    if options.holidays is None and not options.terms:
         return _builtin_scanner(options.compact_dates, options.vague)
-    return Scanner(build_rules(options.compact_dates, options.holidays, options.vague))
+    calendar = options.holidays if options.holidays is not None else BUILTIN_HOLIDAYS
+    return Scanner(build_rules(options.compact_dates, calendar, options.vague, options.terms))
 
 
 class TemporalParser:

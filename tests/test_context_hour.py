@@ -12,7 +12,7 @@ from datetime import datetime
 
 import pytest
 
-from korean_datetime import Ambiguity, AmbiguousHour, ParseOptions, TemporalParser
+from korean_datetime import Ambiguity, AmbiguousHour, Kind, ParseOptions, TemporalParser
 
 NOW = datetime(2026, 10, 1, 9, 0)
 CONTEXT = TemporalParser(ParseOptions(ambiguous_hour=AmbiguousHour.CONTEXT))
@@ -21,7 +21,11 @@ DAYTIME = TemporalParser(ParseOptions(ambiguous_hour=AmbiguousHour.DAYTIME))
 
 def _hours(parser: TemporalParser, text: str) -> list[int]:
     """'N시' 표현의 시 ('저녁', '아침'처럼 혼자 쓴 시간대 말도 결과에 나오지만 여기서는 시각만 비교)"""
-    return [r.start.hour for r in parser.parse_all(text, now=NOW) if "시" in r.text]
+    return [
+        r.start.hour
+        for r in parser.parse_all(text, now=NOW)
+        if "시" in r.text and r.kind is not Kind.DURATION
+    ]
 
 
 @pytest.mark.parametrize(

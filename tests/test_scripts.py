@@ -162,7 +162,7 @@ def test_aihub_eval_scores_detection_and_values(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
     news = next(line.split() for line in result.stdout.splitlines() if line.startswith("news "))
     assert news[1:3] == ["2", "1.000"]  # 정답 2개(오늘, 추석) 모두 찾음
-    assert news[3:5] == ["3", "0.667"]  # 예측 3개 중 '내일'은 정답에 없음
+    assert news[3:5] == ["4", "0.750"]  # 예측 4개('3일 동안'은 기간 정답과 겹침) 중 '내일'만 정답에 없음
     assert "news.explicit                         1   1.000       1     1.000" in result.stdout
     assert "('내일'," in result.stdout
 

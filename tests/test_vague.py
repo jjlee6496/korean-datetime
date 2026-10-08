@@ -16,7 +16,7 @@ VAGUE = TemporalParser(ParseOptions(vague=True))
 @pytest.mark.parametrize(
     ("text", "word", "direction"),
     [
-        ("최근 3년간 매출이 늘었다", "최근", Direction.RECENT),
+        ("최근 매출이 늘었다", "최근", Direction.RECENT),
         ("요즘 날씨가 좋다", "요즘", Direction.RECENT),
         ("예전에는 그랬지", "예전", Direction.PAST),
         ("향후 일정은 미정", "향후", Direction.FUTURE),

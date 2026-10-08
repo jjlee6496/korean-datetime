@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from datetime import tzinfo
+from datetime import time, tzinfo
 from enum import Enum
 
+from .business_calendar import BusinessCalendar
 from .holiday_calendar import BUILTIN_HOLIDAYS, HolidayCalendar
 
 
@@ -48,6 +50,11 @@ class ParseOptions:
         daytime_start: DAYTIME 규칙에서 오전으로 볼 최소 시각 (0~12)
         compact_dates: 구분자 없는 4·6자리 숫자(1015, 261015)를 날짜로 인식 (오탐이 많아 기본 꺼짐)
         vague: '최근', '요즘', '향후' 같은 막연한 때를 Kind.VAGUE로 인식 (값은 기준일, 방향은 direction)
+        business_week: '이번 주', '다음주'처럼 주 전체를 가리키면 영업일 범위로 (기본 월~금,
+            business_calendar가 있으면 그 주의 첫 영업일 ~ 마지막 영업일)
+        business_calendar: 영업일 달력 (business_calendar 모듈). 있어야 '3거래일 전', '전 거래일'을 계산
+        terms: 도메인 시각 어휘 {이름: 시각 또는 (시작, 끝)}. 예: {"장 마감": time(15, 30),
+            "정규장": (time(9), time(15, 30))}. 날짜와 결합됨('어제 장 마감'). 매핑을 넣어도 됨
         holidays: 기념일/공휴일 달력. None이면 내장 달력. 외부 데이터 주입은 holiday_calendar 모듈 참고
         timezone: now도 reference_time()도 없을 때 서버 시각을 읽을 시간대 (예: KST). None이면 서버 로컬 시각
     """
@@ -57,10 +64,14 @@ class ParseOptions:
     daytime_start: int = 7
     compact_dates: bool = False
     vague: bool = False
+    business_week: bool = False
+    business_calendar: BusinessCalendar | None = None
+    terms: Terms = ()
     holidays: HolidayCalendar | None = None
     timezone: tzinfo | None = None
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, "terms", _normalize_terms(self.terms))
         object.__setattr__(self, "cycle", _enum(Cycle, self.cycle, "cycle"))
         try:
             policy = AmbiguousHour(self.ambiguous_hour)
@@ -76,9 +87,37 @@ class ParseOptions:
             raise TypeError(f"timezone은 tzinfo여야 합니다 (예: ZoneInfo('Asia/Seoul')): {self.timezone!r}")
         if self.holidays is not None and not isinstance(self.holidays, HolidayCalendar):
             raise TypeError("holidays는 HolidayCalendar(names, span_names, span)를 구현해야 합니다")
-        for name in ("compact_dates", "vague"):
+        if self.business_calendar is not None and not isinstance(self.business_calendar, BusinessCalendar):
+            raise TypeError("business_calendar는 BusinessCalendar(is_business_day)를 구현해야 합니다")
+        for name in ("compact_dates", "vague", "business_week"):
             if not isinstance(getattr(self, name), bool):
                 raise TypeError(f"{name}은(는) bool이어야 합니다")
+
+
+TermValue = time | tuple[time, time]
+Terms = tuple[tuple[str, TermValue], ...]
+
+
+def _normalize_terms(terms: Mapping[str, TermValue] | Terms) -> Terms:
+    """매핑이나 (이름, 값) 목록 → 이름순 튜플 (ParseOptions를 해시 가능하게). 잘못된 값은 거부"""
+    items = terms.items() if isinstance(terms, Mapping) else terms
+    normalized = []
+    for name, value in items:
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError(f"terms의 이름은 비어 있지 않은 문자열이어야 합니다: {name!r}")
+        normalized.append((name.strip(), _check_term(name, value)))
+    return tuple(sorted(normalized, key=lambda item: item[0]))
+
+
+def _check_term(name: str, value: object) -> TermValue:
+    if isinstance(value, time):
+        return value
+    if isinstance(value, tuple) and len(value) == 2 and all(isinstance(v, time) for v in value):
+        start, end = value
+        if start >= end:
+            raise ValueError(f"terms[{name!r}]의 시작이 끝보다 앞서야 합니다: {start} ~ {end}")
+        return (start, end)
+    raise TypeError(f"terms[{name!r}]는 time이나 (time, time)이어야 합니다: {value!r}")
 
 
 def _enum(kind: type[Cycle], value: object, name: str) -> Cycle:

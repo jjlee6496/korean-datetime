@@ -33,7 +33,13 @@ class TK(str, Enum):
     ON_THE_HOUR = "on_the_hour"  # 정각
     NOW = "now"  # 지금
     SAME_TIME = "same_time"  # 이 시각 (날짜와 함께: 그날 지금 시각)
-    PAST_SPAN = "past_span"  # Offset: 지난 3일간 = [3일 전, 오늘)
+    LOOKBACK = "lookback"  # Lookback: 최근 3개월, 지난 3일간, 향후 2주, 최근 4분기
+    QUARTER_REL = "quarter_rel"  # int: 이번 분기(0), 지난 분기(-1), 다음 분기(1)
+    TO_DATE = "to_date"  # str: 연초 이후·올해 들어(year), 이달 들어(month) = 그 시작부터 오늘까지
+    DURATION = "duration"  # Offset: 6개월, 3일간, 30분 동안 (날짜가 아닌 길이)
+    BUSINESS_DAY = (
+        "business_day"  # int: 3거래일 전(-3), 전 거래일(-1), 다음 영업일(1) — 영업일 달력이 있어야 계산
+    )
     NUM = "num"  # NumUnit: 3일, 두 시간 (기간 후보)
     DIRECTION = "direction"  # int: 후(+1), 전(-1)
     REL = "rel"  # Offset: 3일 후, 30분 전
@@ -76,6 +82,16 @@ class MonthPart:
 class HolidayRef:
     key: str
     span: bool = False  # '연휴'면 앞뒤 포함 기간
+
+
+@dataclass(frozen=True, slots=True)
+class Lookback:
+    """'최근 3개월'(recent: 오늘 포함), '지난 3개월'(past: 오늘 전까지), '향후 3개월'(future: 오늘부터).
+    분기면 quarters, 그 밖은 offset"""
+
+    direction: str
+    offset: Offset | None = None
+    quarters: int | None = None
 
 
 @dataclass(frozen=True, slots=True)

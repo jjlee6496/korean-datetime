@@ -255,21 +255,21 @@
 {"category": "negative", "text": "첫날", "expected": null}
 {"category": "negative", "text": "중순", "expected": null}
 {"category": "negative", "text": "2주", "expected": null}
-{"category": "negative", "text": "하루", "expected": null}
-{"category": "negative", "text": "이틀", "expected": null}
-{"category": "negative", "text": "일주일", "expected": null}
-{"category": "negative", "text": "한달", "expected": null}
-{"category": "negative", "text": "1시간", "expected": null}
-{"category": "negative", "text": "15분", "expected": null}
-{"category": "negative", "text": "십오분", "expected": null}
-{"category": "negative", "text": "30분", "expected": null}
+{"category": "duration", "text": "하루", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P1D"}}
+{"category": "duration", "text": "이틀", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P2D"}}
+{"category": "duration", "text": "일주일", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P1W"}}
+{"category": "duration", "text": "한달", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P1M"}}
+{"category": "duration", "text": "1시간", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "PT1H"}}
+{"category": "duration", "text": "15분", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "PT15M"}}
+{"category": "duration", "text": "십오분", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "PT15M"}}
+{"category": "duration", "text": "30분", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "PT30M"}}
 {"category": "negative", "text": "2026", "expected": null}
 {"category": "negative", "text": "13월", "expected": null}
 {"category": "negative", "text": "13월 1일", "expected": null}
 {"category": "negative", "text": "12월 99일", "expected": null}
 {"category": "negative", "text": "32일", "expected": null}
 {"category": "negative", "text": "25시", "expected": null}
-{"category": "negative", "text": "24시간 형식", "expected": null}
+{"category": "duration", "text": "24시간 형식", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "PT24H"}}
 {"category": "negative", "text": "삼시", "expected": null}
 {"category": "negative", "text": "일일", "expected": null}
 {"category": "negative", "text": "매핑 실패: 요일을 찾을 수 없음", "expected": null}
@@ -310,14 +310,14 @@
 {"category": "invalid_date", "text": "2026년 2월 29일", "expected": null}
 {"category": "invalid_date", "text": "31일", "expected": {"start": "2026-10-31", "kind": "date"}}
 {"category": "invalid_date", "text": "2월 29일", "expected": {"start": "2028-02-29", "kind": "date"}}
-{"category": "duration_not_date", "text": "3일간 휴가", "expected": null}
-{"category": "duration_not_date", "text": "3일 연속 올랐다", "expected": null}
-{"category": "duration_not_date", "text": "7일 이내", "expected": null}
-{"category": "duration_not_date", "text": "30일 내로", "expected": null}
-{"category": "duration_not_date", "text": "1일 1식", "expected": null}
-{"category": "duration_not_date", "text": "30분 동안", "expected": null}
-{"category": "duration_not_date", "text": "열흘간", "expected": null}
-{"category": "duration_not_date", "text": "오늘부터 3일간", "expected": {"start": "2026-09-28T00:00:00", "end": "2026-09-29T00:00:00"}}
+{"category": "duration", "text": "3일간 휴가", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P3D"}}
+{"category": "duration", "text": "3일 연속 올랐다", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P3D"}}
+{"category": "duration", "text": "7일 이내", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P1W"}}
+{"category": "duration", "text": "30일 내로", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P30D"}}
+{"category": "duration", "text": "1일 1식", "expected": null}
+{"category": "duration", "text": "30분 동안", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "PT30M"}}
+{"category": "duration", "text": "열흘간", "expected": {"start": "2026-09-28T14:30:00", "kind": "duration", "duration": "P10D"}}
+{"category": "duration", "text": "오늘부터 3일간", "expected": {"start": "2026-09-28T00:00:00", "end": "2026-09-29T00:00:00"}}
 {"category": "formatted", "text": "99년 3월 1일", "expected": {"start": "1999-03-01", "kind": "date"}}
 {"category": "formatted", "text": "99.03.01", "expected": {"start": "1999-03-01", "kind": "date"}}
 {"category": "relative_day", "text": "내일", "now": "2027-12-31T23:10:00", "expected": {"start": "2028-01-01T00:00:00", "end": "2028-01-02T00:00:00", "kind": "date"}}

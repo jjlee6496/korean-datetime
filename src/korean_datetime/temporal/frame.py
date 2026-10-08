@@ -17,7 +17,7 @@ from dataclasses import dataclass, replace
 
 from ..core.scanner import Token
 from .lexicon import Period
-from .tokens import TK, Clock, DateTriple, HolidayRef, MonthPart, Offset
+from .tokens import TK, Clock, DateTriple, HolidayRef, Lookback, MonthPart, Offset
 
 # 표현 사이에 허용하는 것: 공백, 쉼표, 조사, 괄호 요일 '(월)', ISO 구분자 'T'
 _JOIN_GAP = re.compile(r"(?:[\s,]|T|\(\s*[월화수목금토일](?:요일|욜)?\s*\)|에|의|쯤|경|께|즈음|정도)*")
@@ -55,7 +55,11 @@ class Frame:
     modifier_only: bool = False  # '곧', '당장': 시각 없이 혼자면 인식하지 않음
     modifier: int | None = None  # '지난 금요일'의 지난(-1)
     same_time: str | None = None  # '내일 이 시각'(clock), '작년 이맘때'(day)
-    past_span: Offset | None = None  # '지난 3일간'
+    lookback: Lookback | None = None  # '최근 3개월', '지난 3일간', '최근 4분기'
+    quarter_rel: int | None = None  # '이번 분기'(0), '지난 분기'(-1)
+    to_date: str | None = None  # '연초 이후'(year), '이달 들어'(month)
+    duration: Offset | None = None  # '6개월', '30분 동안': 기간 값 (다른 토큰과 묶지 않음)
+    business_days: int | None = None  # '3거래일 전'(-3), '전 거래일'(-1): 영업일 달력으로 이동
     vague: str | None = None  # '최근'(recent), '향후'(future): 다른 토큰과 묶지 않음
     two_digit_year: bool = False  # '99년', '25.07.15'
 
@@ -162,7 +166,7 @@ def _add_week_part(frame: Frame, token: Token) -> Frame | None:
 
 def _add_day_shift(frame: Frame, token: Token) -> Frame | None:
     """'화요일의 전날': 날짜 뒤에 붙음. 앞에 날짜가 없으면 link_day_shifts가 앞 표현의 날짜를 이어줌."""
-    ok = frame.day_shift is None and frame.date_offset is None and frame.past_span is None
+    ok = frame.day_shift is None and frame.date_offset is None and frame.lookback is None
     return replace(frame, day_shift=token.value) if _requires(frame, 4, ok) else None
 
 
@@ -212,7 +216,11 @@ _ADDERS: dict[str, tuple[int, Adder]] = {
     TK.PERIOD: (4, _simple("period", 4)),
     TK.CLOCK: (5, _simple("clock", 5)),
     TK.NOW: (5, lambda f, t: _now(f, t.value) if f.is_empty else None),
-    TK.PAST_SPAN: (2, lambda f, t: replace(f, past_span=t.value) if f.is_empty else None),
+    TK.LOOKBACK: (9, lambda f, t: replace(f, lookback=t.value) if f.is_empty else None),
+    TK.QUARTER_REL: (1, lambda f, t: replace(f, quarter_rel=t.value) if f.is_empty else None),
+    TK.TO_DATE: (9, lambda f, t: replace(f, to_date=t.value) if f.is_empty else None),
+    TK.DURATION: (9, lambda f, t: replace(f, duration=t.value) if f.is_empty else None),
+    TK.BUSINESS_DAY: (2, lambda f, t: replace(f, business_days=t.value) if f.is_empty else None),
     TK.SAME_TIME: (
         5,
         lambda f, t: replace(f, same_time=t.value) if f.rank < 4 and f.time_offset is None else None,
@@ -286,7 +294,17 @@ def build_frames(tokens: Sequence[Token], text: str) -> list[Frame]:
 _SLOT_RANKS: tuple[tuple[str, ...], ...] = (
     ("year", "year_rel", "modifier"),
     ("month", "month_rel", "week_rel", "year_part"),
-    ("day", "day_rel", "week_nth", "nth_weekday", "holiday", "month_part", "date_offset", "past_span"),
+    (
+        "day",
+        "day_rel",
+        "week_nth",
+        "nth_weekday",
+        "holiday",
+        "month_part",
+        "date_offset",
+        "quarter_rel",
+        "business_days",
+    ),
     ("weekday", "week_part"),
     ("period",),
     ("clock", "now", "time_offset", "same_time"),

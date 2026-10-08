@@ -11,6 +11,7 @@ from dataclasses import dataclass, replace
 from datetime import date, timedelta
 
 from .ambiguity import Ambiguity
+from .business_calendar import business_days_between, step_business_days
 from .calendar_math import (
     add_months,
     apply_offset_to_date,
@@ -108,6 +109,13 @@ def _nearest_cycle(compute: Compute, today: date) -> DateSpan | None:
     return _shifted_if(k, span)
 
 
+def quarter_span(today: date, k: int) -> DateSpan:
+    """오늘이 든 분기에서 k번째 분기 (0 이번, -1 지난, 1 다음)"""
+    index = today.year * 4 + (today.month - 1) // 3 + k
+    first = date(index // 4, index % 4 * 3 + 1, 1)
+    return DateSpan(first, add_months(first, 3), Grain.QUARTER)
+
+
 def has_date(frame: Frame) -> bool:
     return any(
         value is not None
@@ -124,7 +132,8 @@ def has_date(frame: Frame) -> bool:
             frame.day,
             frame.week_nth,
             frame.nth_weekday,
-            frame.past_span,
+            frame.quarter_rel,
+            frame.business_days,
             frame.month_part,
             frame.weekday,
             frame.week_part,
@@ -139,14 +148,18 @@ def resolve_date(
     after = ended_before or today
     if frame.modifier == 1 and options.cycle is not Cycle.FUTURE:  # '오는 15일', '다가오는 추석'
         options = replace(options, cycle=Cycle.FUTURE)
-    if frame.past_span is not None:  # '지난 3일간' = [3일 전, 오늘)
-        return DateSpan(apply_offset_to_date(today, frame.past_span.scaled(-1)), today)
+    if frame.quarter_rel is not None:  # '이번 분기', '지난 분기'
+        return quarter_span(today, frame.quarter_rel)
+    if frame.business_days is not None:  # '3거래일 전': 달력이 없으면 휴일을 모르므로 계산하지 않음
+        calendar = options.business_calendar
+        moved = None if calendar is None else step_business_days(calendar, today, frame.business_days)
+        return None if moved is None else _day(moved)
     if frame.date_offset is not None:
         return _day(apply_offset_to_date(today, frame.date_offset))
     if frame.day_rel is not None:
         return _day(today + timedelta(days=frame.day_rel))
     if frame.week_rel is not None:
-        return _within_week(week_start(today) + timedelta(weeks=frame.week_rel), frame)
+        return _within_week(week_start(today) + timedelta(weeks=frame.week_rel), frame, options)
     if frame.holiday is not None:
         return _holiday(frame, frame.holiday, today, options, after)
     if (
@@ -167,7 +180,7 @@ def resolve_date(
         same_weekday = frame.modifier in (None, 1) and today.weekday() == frame.weekday
         return span.flagged(Ambiguity.SAME_WEEKDAY) if same_weekday else span
     if frame.week_part is not None:
-        shifted = lambda k: _within_week(week_start(today) + timedelta(weeks=k), frame)  # noqa: E731
+        shifted = lambda k: _within_week(week_start(today) + timedelta(weeks=k), frame, options)  # noqa: E731
         return _choose_cycle(shifted, False, after, options, today)
     return None
 
@@ -191,7 +204,21 @@ def _explicit_year(frame: Frame, today: date) -> int | None:
     return today.year + frame.year_rel if frame.year_rel is not None else None
 
 
-def _within_week(monday: date, frame: Frame) -> DateSpan:
+def _week_span(monday: date, options: ParseOptions) -> DateSpan:
+    """주 전체. business_week면 월~금, 달력이 있으면 그 주의 첫 영업일 ~ 마지막 영업일
+    (주 중간의 휴일은 구간에 남음, 주 전체가 휴일이면 월~금)"""
+    if not options.business_week:
+        return DateSpan(monday, monday + timedelta(days=7), Grain.WEEK)
+    calendar = options.business_calendar
+    open_days = (
+        [] if calendar is None else business_days_between(calendar, monday, monday + timedelta(days=7))
+    )
+    if not open_days:
+        return DateSpan(monday, monday + timedelta(days=5), Grain.WEEK)
+    return DateSpan(open_days[0], open_days[-1] + timedelta(days=1), Grain.WEEK)
+
+
+def _within_week(monday: date, frame: Frame, options: ParseOptions) -> DateSpan:
     if frame.weekday is not None:
         return _day(monday + timedelta(days=frame.weekday))
     if frame.week_part == "weekend":
@@ -200,7 +227,7 @@ def _within_week(monday: date, frame: Frame) -> DateSpan:
         return DateSpan(monday, monday + timedelta(days=5))
     if frame.week_part == "early":
         return DateSpan(monday, monday + timedelta(days=2))
-    return DateSpan(monday, monday + timedelta(days=7), Grain.WEEK)
+    return _week_span(monday, options)
 
 
 def _holiday(
@@ -230,7 +257,7 @@ def _month_based(frame: Frame, today: date, options: ParseOptions, after: date) 
             first = date(_base_year(explicit_year, today) + k, frame.month, 1)
         else:
             first = add_months(month_start(today), k)
-        return _within_month(first, frame, today)
+        return _within_month(first, frame, today, options)
 
     explicit = frame.month_rel is not None or (frame.month is not None and explicit_year is not None)
     if frame.modifier == -1 and not explicit:  # '지난 3일': 오늘 이전 가장 최근
@@ -247,13 +274,13 @@ def _with_past_shift(compute: Compute, today: date) -> DateSpan | None:
     return None
 
 
-def _within_month(first: date, frame: Frame, today: date) -> DateSpan | None:
+def _within_month(first: date, frame: Frame, today: date, options: ParseOptions) -> DateSpan | None:
     if frame.day is not None:
         if frame.day > days_in_month(first.year, first.month):
             return None  # 없는 날짜('2월 30일', '9월 31일')는 인식하지 않음
         return _day(first.replace(day=frame.day))
     if frame.week_nth is not None:
-        return _calendar_week(first, frame.week_nth, frame, today)
+        return _calendar_week(first, frame.week_nth, frame, today, options)
     if frame.nth_weekday is not None:
         return _nth_weekday(first, frame.nth_weekday, frame)
     if frame.month_part is not None:
@@ -263,7 +290,9 @@ def _within_month(first: date, frame: Frame, today: date) -> DateSpan | None:
     return DateSpan(first, next_month_start(first), Grain.MONTH)
 
 
-def _calendar_week(first: date, week_nth: int, frame: Frame, today: date) -> DateSpan | None:
+def _calendar_week(
+    first: date, week_nth: int, frame: Frame, today: date, options: ParseOptions
+) -> DateSpan | None:
     """'셋째 주 토요일', '마지막 주': 달력 줄(1일이 든 월~일 줄이 1주) 기준. 앞뒤 달 날짜일 수 있음."""
     monday = calendar_row(first, week_nth)
     if monday is None:
@@ -278,7 +307,7 @@ def _calendar_week(first: date, week_nth: int, frame: Frame, today: date) -> Dat
         return DateSpan(monday + timedelta(days=5), monday + timedelta(days=7))
     if frame.week_part == "weekdays":
         return DateSpan(monday, monday + timedelta(days=5))
-    return DateSpan(monday, monday + timedelta(days=7), Grain.WEEK)
+    return _week_span(monday, options)
 
 
 def _nth_weekday(first: date, nth: int, frame: Frame) -> DateSpan | None:
