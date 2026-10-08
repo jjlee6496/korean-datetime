@@ -44,6 +44,10 @@ def _open_hour(frame: Frame, result: TemporalExpression) -> int | None:
     return clock.hour % 12 if is_open else None
 
 
+def _from_reference(frame: Frame) -> bool:
+    return any(value is not None for value in (frame.duration, frame.lookback, frame.to_date, frame.vague))
+
+
 def _settled_hour(result: TemporalExpression) -> int | None:
     """오전/오후가 정해진 시각의 24시간제 시 (날짜만 있거나 아직 모호하면 None)"""
     if result.kind is Kind.DATE or Ambiguity.MERIDIEM in result.ambiguities:
@@ -102,6 +106,9 @@ def apply_context_hours(
     adjusted: list[tuple[Frame, TemporalExpression]] = []
     previous: int | None = None
     for frame, result in items:
+        if _from_reference(frame):  # '2시간', '최근 30분': 말한 시각이 아니라 지금 시각에서 나온 값
+            adjusted.append((frame, result))
+            continue
         if (hour := _open_hour(frame, result)) is not None:
             chosen = _choose(hour, previous, text, result.span)
             if chosen is not None and chosen != result.start.hour:

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Sequence
+from itertools import pairwise
 
 from ..core.scanner import Token, ends_word
 from . import lexicon as lx
@@ -18,7 +19,9 @@ _DURATION_GAP = re.compile(r"\s*")
 _DURATION_SUFFIX = re.compile(lx.DURATION_SUFFIX)
 _DIRECTION_GAP = re.compile(r"\s*(?:정도|쯤|가량|즈음)?\s*")
 _RATE_OR_ORDINAL = re.compile(lx.RATE_OR_ORDINAL_SUFFIX)
-_DURATION_CUE = re.compile(rf"\s*(?:{'|'.join(lx.DURATION_CUES)})")
+_DURATION_CUE = re.compile(
+    rf"\s*(?:{'|'.join(lx.DURATION_CUES)})|(?:{'|'.join(lx.GLUED_DURATION_CUES)})(?![가-힣])"
+)
 _CLOCK_GAP = re.compile(r"\s*")
 _FRACTION = re.compile(r"의\s*(?:\d|[일이삼사오육칠팔구십한두세네])")  # '10분의 1'
 _DURATION_SUFFIX_RE = re.compile(lx.DURATION_SUFFIX)
@@ -91,7 +94,7 @@ def _merge_durations(tokens: Sequence[Token], text: str) -> list[Token]:
             merged.extend(_replace(token, TK.BREAK, None) for token in tokens[i:run_end])
             i = run_end
             continue
-        if run_end - i >= 2 and _word_ends(text, tokens[run_end - 1].end):
+        if run_end - i >= 2 and _mergeable_run(tokens, i, run_end, text):
             # '1시간 30분 동안': 방향 없는 기간 묶음은 하나의 기간 값
             start, end = tokens[i].start, tokens[run_end - 1].end
             offset = _sum_offsets(tokens[i:run_end])
@@ -117,6 +120,21 @@ def _is_date_after_month(tokens: Sequence[Token], i: int, run_end: int, text: st
         previous.kind in _MONTH_KINDS
         and _DURATION_GAP.fullmatch(text, previous.end, tokens[i].start) is not None
     )
+
+
+def _unit_size(token: Token) -> int:
+    months, days, seconds = lx.DURATION_UNITS[token.value.unit]
+    return months * 2_592_000 + days * 86_400 + seconds
+
+
+def _mergeable_run(tokens: Sequence[Token], i: int, run_end: int, text: str) -> bool:
+    """방향 없는 'N단위' 여러 개를 하나의 기간으로 볼지: '1년 6개월'처럼 큰 단위에서 작은 단위로 가고,
+    월 바로 뒤가 아니어야 함 ('12월 20일 5년 임기'는 날짜 20일 + 기간 5년)"""
+    numbers = [token for token in tokens[i:run_end] if token.kind == TK.NUM]
+    sizes = [_unit_size(token) for token in numbers]
+    decreasing = all(a > b for a, b in pairwise(sizes))
+    after_month = i > 0 and tokens[i - 1].kind in _MONTH_KINDS
+    return decreasing and not after_month and _word_ends(text, tokens[run_end - 1].end)
 
 
 def _duration_run_end(tokens: Sequence[Token], i: int, text: str) -> int:

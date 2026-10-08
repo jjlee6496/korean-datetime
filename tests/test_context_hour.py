@@ -75,3 +75,11 @@ def test_context_uses_only_the_same_text() -> None:
     """앞 호출의 결과는 쓰지 않음: 같은 입력이면 항상 같은 결과"""
     CONTEXT.parse_all("오후 6시에 끝나고", now=NOW)
     assert _hours(CONTEXT, "8시 영화 보자") == [8]
+
+
+def test_durations_and_lookbacks_are_not_stated_times() -> None:
+    """'2시간', '최근 30분'은 지금 시각에서 나온 값이라 앞 시각(문맥)으로 쓰지 않음"""
+    evening = datetime(2026, 10, 8, 21, 0)
+    plain = [r.start.hour for r in CONTEXT.parse_all("9시에 출발", now=evening)]
+    assert [r.start.hour for r in CONTEXT.parse_all("2시간 기다리고 9시에 출발", now=evening)][-1:] == plain
+    assert [r.start.hour for r in CONTEXT.parse_all("최근 30분 보다가 9시에 출발", now=evening)][-1:] == plain

@@ -182,7 +182,7 @@ parse("29일 첫 신청을 받았다", now=article, options=news).start   # → 
 parse("15일부터 접수한다", now=article, options=news).start       # → 2021-11-15 00:00:00
 ```
 
-AI허브 뉴스 데이터에서 값 정확도는 `FUTURE` 0.841, `PAST` 0.860, `NEAREST` **0.908**이었습니다([벤치마크](benchmark.md)).
+AI허브 뉴스 데이터에서 값 정확도는 `FUTURE` 0.839, `PAST` 0.857, `NEAREST` **0.905**였습니다([벤치마크](benchmark.md)).
 뉴스에는 "15일부터 접수"처럼 앞으로의 일정도 많아서 무조건 과거로 보는 것보다 가까운 쪽이 낫습니다.
 "지난 15일", "오는 15일"처럼 문장에 방향이 있으면 `cycle`과 상관없이 그쪽을 따릅니다.
 

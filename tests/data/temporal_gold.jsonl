@@ -658,3 +658,9 @@
 {"category": "duration", "text": "2주간 보유", "expect": "duration(2, w)"}
 {"category": "duration", "text": "2주 만에 회복", "expect": "duration(2, w)"}
 {"category": "duration", "text": "3주일 걸렸다", "expect": "duration(3, w)"}
+{"category": "month_day", "text": "12월 20일 5년 임기의 대통령직", "expect": "future(md(12, 20))"}
+{"category": "month_day", "text": "7월 6일 치뤄진 국민 투표", "expect": "future(md(7, 6))"}
+{"category": "formatted", "text": "2015년 간편송금 서비스", "expect": "yr(2015)"}
+{"category": "duration", "text": "1년 6개월 동안", "expect": "duration(18, mo)"}
+{"category": "duration", "text": "3일간의 여행", "expect": "duration(3, d)"}
+{"category": "duration", "text": "3일치 식량", "expect": "duration(3, d)"}

@@ -134,7 +134,7 @@ def _business_steps(match: Match) -> int | None:
 def _calendar_rules() -> list[TokenRule]:
     month_rel = f"({rel.prefix_pattern(lx.MONTH_PREFIX_FIXED)})\\s*달"
     return [
-        _rule(TK.YEAR, r"(?<!\d)(\d{4})\s*년(?!\s*(?:간|동안|째))", lambda m: int(m[1])),
+        _rule(TK.YEAR, rf"(?<!\d)(\d{{4}})\s*년(?!\s*(?:{lx.SPAN_GAN}|동안|째))", lambda m: int(m[1])),
         _rule(
             TK.YEAR,
             rf"(?<!\d)((?:19|20)\d{{2}})(?!\d)(?=\s*(?:\d{{1,2}}\s*월|(?:{_KOREAN_MONTH})\s*월))",
