@@ -374,6 +374,8 @@ def _lookback(match: Match) -> Lookback | None:
     unit = match["unit"]
     if not amount or (direction == "past" and unit == "일" and not match["span"]):
         return None
+    if len(match["num"]) >= 4 and match["num"].isdigit():  # '지난 2019년'은 연도, 2019년 동안이 아님
+        return None
     if unit == "분기":
         return Lookback(direction, quarters=amount)
     months, days, seconds = lx.DURATION_UNITS[unit]

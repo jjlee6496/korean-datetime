@@ -105,3 +105,10 @@ def test_dates_and_clock_minutes_stay_dates(text: str, kind: Kind) -> None:
     """'15일', '3시 30분'의 30분, '지난 3일'(가장 최근의 3일)은 기간 값이 아님"""
     result = parse(text, now=datetime(2026, 10, 8, 10))
     assert result is not None and result.kind is kind, text
+
+
+def test_four_digit_year_after_jinan_is_a_year_not_a_lookback() -> None:
+    """회귀: '지난 2019년'을 2019년 동안으로 읽던 버그 (AI허브 뉴스 값 정확도 하락의 원인)"""
+    result = parse("지난 2019년 출시한 제품", now=datetime(2021, 6, 1, 10))
+    assert result is not None and not result.is_range
+    assert (result.start, result.end) == (datetime(2019, 1, 1), datetime(2020, 1, 1))
