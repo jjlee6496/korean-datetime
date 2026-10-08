@@ -31,15 +31,17 @@ _PERIOD_WORDS = re.compile(
 )
 
 
-def _is_open(frame: Frame, result: TemporalExpression) -> bool:
-    """오전/오후를 문맥으로 정할 수 있는 시각 (12시는 정오/자정 문제라 제외)"""
-    return (
-        frame.clock is not None
-        and Ambiguity.MERIDIEM in result.ambiguities
-        and frame.clock.hour % 12 != 0
+def _open_hour(frame: Frame, result: TemporalExpression) -> int | None:
+    """오전/오후를 문맥으로 정할 수 있는 시각이면 그 시(1~11), 아니면 None (12시는 정오/자정 문제라 제외)"""
+    clock = frame.clock
+    if clock is None or clock.hour % 12 == 0:
+        return None
+    is_open = (
+        Ambiguity.MERIDIEM in result.ambiguities
         and not result.is_range
         and frame.anchored_offset is None  # '7시 5분 전'은 오프셋 적용 뒤라 시만 바꿀 수 없음
     )
+    return clock.hour % 12 if is_open else None
 
 
 def _settled_hour(result: TemporalExpression) -> int | None:
@@ -100,9 +102,8 @@ def apply_context_hours(
     adjusted: list[tuple[Frame, TemporalExpression]] = []
     previous: int | None = None
     for frame, result in items:
-        if _is_open(frame, result):
-            assert frame.clock is not None
-            chosen = _choose(frame.clock.hour % 12, previous, text, result.span)
+        if (hour := _open_hour(frame, result)) is not None:
+            chosen = _choose(hour, previous, text, result.span)
             if chosen is not None and chosen != result.start.hour:
                 result = _with_hour(result, chosen, now, roll)
         elif (settled := _settled_hour(result)) is not None:

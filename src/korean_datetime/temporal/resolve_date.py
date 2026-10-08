@@ -25,7 +25,7 @@ from .calendar_math import (
 from .frame import Frame
 from .model import Grain
 from .options import Cycle, ParseOptions, holiday_calendar
-from .tokens import MonthPart
+from .tokens import HolidayRef, MonthPart
 
 
 @dataclass(frozen=True, slots=True)
@@ -148,7 +148,7 @@ def resolve_date(
     if frame.week_rel is not None:
         return _within_week(week_start(today) + timedelta(weeks=frame.week_rel), frame)
     if frame.holiday is not None:
-        return _holiday(frame, today, options, after)
+        return _holiday(frame, frame.holiday, today, options, after)
     if (
         frame.has_month
         or frame.day is not None
@@ -203,9 +203,10 @@ def _within_week(monday: date, frame: Frame) -> DateSpan:
     return DateSpan(monday, monday + timedelta(days=7), Grain.WEEK)
 
 
-def _holiday(frame: Frame, today: date, options: ParseOptions, after: date) -> DateSpan | None:
-    assert frame.holiday is not None
-    ref, explicit_year = frame.holiday, _explicit_year(frame, today)
+def _holiday(
+    frame: Frame, ref: HolidayRef, today: date, options: ParseOptions, after: date
+) -> DateSpan | None:
+    explicit_year = _explicit_year(frame, today)
 
     calendar = holiday_calendar(options)
 
@@ -252,9 +253,9 @@ def _within_month(first: date, frame: Frame, today: date) -> DateSpan | None:
             return None  # 없는 날짜('2월 30일', '9월 31일')는 인식하지 않음
         return _day(first.replace(day=frame.day))
     if frame.week_nth is not None:
-        return _calendar_week(first, frame, today)
+        return _calendar_week(first, frame.week_nth, frame, today)
     if frame.nth_weekday is not None:
-        return _nth_weekday(first, frame)
+        return _nth_weekday(first, frame.nth_weekday, frame)
     if frame.month_part is not None:
         return _month_part(first, frame.month_part)
     if frame.weekday is not None:
@@ -262,10 +263,9 @@ def _within_month(first: date, frame: Frame, today: date) -> DateSpan | None:
     return DateSpan(first, next_month_start(first), Grain.MONTH)
 
 
-def _calendar_week(first: date, frame: Frame, today: date) -> DateSpan | None:
+def _calendar_week(first: date, week_nth: int, frame: Frame, today: date) -> DateSpan | None:
     """'셋째 주 토요일', '마지막 주': 달력 줄(1일이 든 월~일 줄이 1주) 기준. 앞뒤 달 날짜일 수 있음."""
-    assert frame.week_nth is not None
-    monday = calendar_row(first, frame.week_nth)
+    monday = calendar_row(first, week_nth)
     if monday is None:
         return None
     if frame.weekday is not None:
@@ -281,15 +281,14 @@ def _calendar_week(first: date, frame: Frame, today: date) -> DateSpan | None:
     return DateSpan(monday, monday + timedelta(days=7), Grain.WEEK)
 
 
-def _nth_weekday(first: date, frame: Frame) -> DateSpan | None:
+def _nth_weekday(first: date, nth: int, frame: Frame) -> DateSpan | None:
     """'셋째 토요일', '마지막 금요일', '셋째 주말': 그 달 안의 N번째 요일 (주말은 N번째 토요일부터 이틀)"""
-    assert frame.nth_weekday is not None
     if frame.week_part == "weekend":
-        saturday = nth_weekday(first, 5, frame.nth_weekday)
+        saturday = nth_weekday(first, 5, nth)
         return None if saturday is None else DateSpan(saturday, saturday + timedelta(days=2))
     if frame.weekday is None:
         return None
-    day = nth_weekday(first, frame.weekday, frame.nth_weekday)
+    day = nth_weekday(first, frame.weekday, nth)
     return None if day is None else _day(day)
 
 
@@ -306,15 +305,13 @@ def _month_part(first: date, part: MonthPart) -> DateSpan:
     return DateSpan(first.replace(day=begin), first + timedelta(days=end - 1))
 
 
-def _year_based(frame: Frame, today: date, options: ParseOptions, after: date) -> DateSpan:
+def _year_based(frame: Frame, today: date, options: ParseOptions, after: date) -> DateSpan | None:
     explicit_year = _explicit_year(frame, today)
 
     def compute(k: int) -> DateSpan:
         return _year_part(date(_base_year(explicit_year, today) + k, 1, 1), frame.year_part)
 
-    span = _choose_cycle(compute, explicit_year is not None, after, options, today)
-    assert span is not None
-    return span
+    return _choose_cycle(compute, explicit_year is not None, after, options, today)
 
 
 def _year_part(jan1: date, part: str | None) -> DateSpan:

@@ -50,6 +50,16 @@ outputs = {
 }
 
 
+class IntegrityError(RuntimeError):
+    """측정 기록이 서로 맞지 않음 (빠진 응답, 비결정적 결과, 직접 호출과 HTTP의 차이)"""
+
+
+def require(condition: bool, *detail: object) -> None:
+    """무결성 검사. assert와 달리 python -O에서도 꺼지지 않음"""
+    if not condition:
+        raise IntegrityError(*detail)
+
+
 def predictions(name: str, row: dict[str, Any]) -> list[Prediction]:
     result = []
     cursor = 0
@@ -93,13 +103,14 @@ expected = {
 }
 for name, rows in outputs.items():
     actual = {(x["id"], x["round"]) for x in rows}
-    assert len(rows) == len(actual) == len(expected) and actual == expected, (
+    require(
+        len(rows) == len(actual) == len(expected) and actual == expected,
         name,
         "missing or duplicate responses",
     )
 direct = {(x["id"], x["round"]): x["entities"] for x in outputs["Duckling"]}
 http = {(x["id"], x["round"]): x["entities"] for x in outputs["Duckling HTTP"]}
-assert direct == http, "Duckling direct and HTTP JSON differ"
+require(direct == http, "Duckling direct and HTTP JSON differ")
 predictors: dict[str, Predict] = {}
 for name, rows in outputs.items():
     cache: dict[tuple[str, datetime], list[Prediction]] = {}
@@ -108,7 +119,7 @@ for name, rows in outputs.items():
         key = (x["text"], datetime.fromisoformat(x["now"]))
         value = predictions(name, r)
         if key in cache:
-            assert cache[key] == value, (name, "nondeterministic", r["id"])
+            require(cache[key] == value, name, "nondeterministic", r["id"])
         cache[key] = value
 
     def cached_predict(
@@ -120,7 +131,7 @@ for name, rows in outputs.items():
 
 for x in corpus:
     key = (x["text"], datetime.fromisoformat(x["now"]))
-    assert predictors["Duckling"](*key) == predictors["Duckling HTTP"](*key), ("HTTP mismatch", x["id"])
+    require(predictors["Duckling"](*key) == predictors["Duckling HTTP"](*key), "HTTP mismatch", x["id"])
 scores = _score_aihub(cases, predictors)
 fp = _score_false_alarms(empty, predictors)
 curated_scores = _score_curated(predictors)
@@ -143,7 +154,7 @@ for name, score in scores.items():
     }
 for name, rows in outputs.items():
     times = [x for x in rows if x["round"] > 0]
-    assert len(times) == 5 * len(corpus)
+    require(len(times) == 5 * len(corpus), name, "expected 5 timed rounds per sentence")
     metrics = {}
     for metric in ["ns", "parse_ns"]:
         if metric not in times[0]:

@@ -57,13 +57,12 @@ def _same_position(span: DateSpan, today: date) -> date:
     return span.start
 
 
-def _vague(frame: Frame, text: str, now: datetime) -> TemporalExpression:
+def _vague(frame: Frame, direction: str, text: str, now: datetime) -> TemporalExpression:
     """막연한 때: 값은 기준일 하루, 뜻은 direction (호출하는 쪽이 kind=VAGUE를 보고 정확한 날짜와 구별)"""
-    assert frame.vague is not None
     start = datetime.combine(now.date(), time(tzinfo=now.tzinfo))
     end = start + timedelta(days=1)
     span = (frame.start, frame.end)
-    return TemporalExpression(text, span, Kind.VAGUE, Grain.DAY, start, end, direction=Direction(frame.vague))
+    return TemporalExpression(text, span, Kind.VAGUE, Grain.DAY, start, end, direction=Direction(direction))
 
 
 def _shift_day(span: DateSpan, shift: int) -> DateSpan:
@@ -86,7 +85,7 @@ def _resolve(
 ) -> TemporalExpression | None:
     span_text = text[frame.start : frame.end]
     if frame.vague is not None:
-        return _vague(frame, span_text, now)
+        return _vague(frame, frame.vague, span_text, now)
     if frame.now:
         return _instant(span_text, frame, floor_minute(now), Grain.MINUTE, Kind.DATETIME)
     if frame.time_offset is not None:
@@ -157,11 +156,12 @@ def _combine(
     day = date_span.start if date_span else _modifier_day(frame, now)
     kind = Kind.DATETIME if date_span else Kind.TIME
     if frame.clock is not None:
-        start, flags = resolve_clock(frame, day, now, options, _time_shift(frame))
+        start, flags = resolve_clock(frame, frame.clock, day, now, options, _time_shift(frame))
         precise = frame.minute is not None or frame.clock.minute is not None
         return _instant(text, frame, start, Grain.MINUTE if precise else Grain.HOUR, kind), flags
-    if frame.period is not None:
-        start, end, flags = resolve_period(frame, day, now, options)
+    period = frame.period
+    if period is not None and period.start is not None and period.end is not None:
+        start, end, flags = resolve_period(period.start, period.end, day, now, options)
         return TemporalExpression(text, (frame.start, frame.end), kind, Grain.HOUR, start, end), flags
     if date_span is None:
         return None

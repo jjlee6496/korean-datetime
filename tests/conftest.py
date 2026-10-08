@@ -12,7 +12,12 @@ def pytest_terminal_summary(terminalreporter: pytest.TerminalReporter) -> None:
         report = sampled_report()
         ambiguity = sampled_ambiguity_report()
         references = sampled_references()
-    except Exception as error:  # 리포트 실패가 테스트 결과를 가리지 않도록 경고만 출력
+    except (
+        OSError,
+        ValueError,
+        LookupError,
+        ImportError,
+    ) as error:  # 리포트 실패가 테스트 결과를 가리지 않도록 경고만
         terminalreporter.write_line(f"[정량 평가] 리포트 생성 실패: {error!r}")
         return
     period = "2026-01-01 ~ 2028-02-29 고정 목록, KST 포함"

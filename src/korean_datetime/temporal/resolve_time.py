@@ -67,15 +67,19 @@ Flags = frozenset[Ambiguity]
 
 
 def resolve_clock(
-    frame: Frame, day: date | None, now: datetime, options: ParseOptions, shift: timedelta = timedelta(0)
+    frame: Frame,
+    clock: Clock,
+    day: date | None,
+    now: datetime,
+    options: ParseOptions,
+    shift: timedelta = timedelta(0),
 ) -> tuple[datetime, Flags]:
     """
     (기준이 되는 시각, 모호성). day가 None이면 날짜 미지정 (기준일에서 추론, 필요하면 다음 날).
     shift는 뒤에 붙은 오프셋('17시 5분 전'의 -5분): 미래 여부는 오프셋을 적용한 시각으로 판단합니다.
     """
-    assert frame.clock is not None
-    moment, flags = _resolve_clock(frame, day, now, options, shift)
-    return moment, flags | _meridiem(frame.clock, frame)
+    moment, flags = _resolve_clock(frame, clock, day, now, options, shift)
+    return moment, flags | _meridiem(clock, frame)
 
 
 def _meridiem(clock: Clock, frame: Frame) -> Flags:
@@ -86,10 +90,9 @@ def _meridiem(clock: Clock, frame: Frame) -> Flags:
 
 
 def _resolve_clock(
-    frame: Frame, day: date | None, now: datetime, options: ParseOptions, shift: timedelta
+    frame: Frame, clock: Clock, day: date | None, now: datetime, options: ParseOptions, shift: timedelta
 ) -> tuple[datetime, Flags]:
-    assert frame.clock is not None
-    clock, tz = frame.clock, now.tzinfo
+    tz = now.tzinfo
     minute = frame.minute if frame.minute is not None else (clock.minute or 0)
     reference = floor_minute(now)
     target_day = day or now.date()
@@ -119,13 +122,13 @@ def _resolve_clock(
 
 
 def resolve_period(
-    frame: Frame, day: date | None, now: datetime, options: ParseOptions
+    start_hour: float, end_hour: float, day: date | None, now: datetime, options: ParseOptions
 ) -> tuple[datetime, datetime, Flags]:
-    assert frame.period is not None and frame.period.start is not None and frame.period.end is not None
+    """시간대('저녁' = 18~21시)의 구간. day가 None이면 기준일, 이미 끝났으면(cycle=FUTURE) 다음 날"""
     target_day = day or now.date()
-    start = at_hours(target_day, frame.period.start, now.tzinfo)
-    end = at_hours(target_day, frame.period.end, now.tzinfo)
-    flags = _attribution(frame.period.start)
+    start = at_hours(target_day, start_hour, now.tzinfo)
+    end = at_hours(target_day, end_hour, now.tzinfo)
+    flags = _attribution(start_hour)
     if day is None and options.cycle is Cycle.FUTURE and end <= now:
         return start + timedelta(days=1), end + timedelta(days=1), flags | _shifted(True)
     return start, end, flags

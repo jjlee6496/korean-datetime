@@ -419,8 +419,7 @@ def _shift(ref: datetime, cycle: str, k: int) -> datetime:
 
 
 def _ended(result: Expect, ref: datetime) -> bool:
-    if result.kind == "date":
-        assert result.end is not None
+    if result.kind == "date" and result.end is not None:
         return result.end <= _midnight(ref.date(), ref)
     if result.end is None:
         return result.start < _floor(ref)

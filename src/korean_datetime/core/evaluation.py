@@ -133,7 +133,9 @@ def evaluate(cases: Iterable[GoldCase], predict: Predict, match: Match) -> Evalu
 def _run_case(case: GoldCase, predict: Predict, match: Match) -> CaseResult:
     try:
         predicted = predict(case.text, case.now)
-    except Exception as error:  # 한 케이스의 예외가 전체 평가를 멈추지 않도록 실패로 기록
+    except (ValueError, TypeError, ArithmeticError, LookupError) as error:
+        # 입력 때문에 생길 수 있는 오류는 그 케이스의 실패로 기록하고 평가를 계속함.
+        # 그 밖의 예외(AttributeError 등 코드 버그)는 숨기지 않고 그대로 올림
         return CaseResult(case, None, False, f"예외 {type(error).__name__}: {error}")
     if case.expected is None:
         ok = predicted is None

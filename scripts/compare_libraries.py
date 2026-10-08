@@ -291,8 +291,12 @@ def _score_curated(predictors: dict[str, Predict]) -> dict[str, Counter[str]]:
             else:
                 ok = first.start.replace(second=0) == want.start.replace(second=0)
             if ok and want is not None and want.grain == "range":
-                assert want.end is not None
-                ok = first is not None and first.is_range and _range_end_ok(first.end, want.end)
+                ok = (
+                    first is not None
+                    and first.is_range
+                    and want.end is not None
+                    and _range_end_ok(first.end, want.end)
+                )
             scores[name][f"{bucket}.n"] += 1
             scores[name][f"{bucket}.ok"] += ok
             scores[name]["전체.n"] += 1

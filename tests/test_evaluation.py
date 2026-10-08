@@ -202,3 +202,19 @@ def test_ambiguous_field_must_be_list(tmp_path: object) -> None:
     )
     with pytest.raises(ValueError, match="ambiguous"):
         load_expression_gold(path, [ANCHOR_REF])
+
+
+def test_input_errors_are_recorded_but_code_bugs_propagate() -> None:
+    """평가기: 입력 때문에 생길 수 있는 오류는 그 케이스의 실패로 기록하고, 코드 버그는 숨기지 않음"""
+    case = GoldCase(text="내일", expected={"start": "2026-09-29"}, category="ok", now=ANCHOR_REF)
+
+    def bad_input(text: str, now: datetime) -> object:
+        raise ValueError("잘못된 입력")
+
+    def code_bug(text: str, now: datetime) -> object:
+        raise AttributeError("버그")
+
+    report = evaluate([case], predict=bad_input, match=lambda pred, exp: True)
+    assert report.failures[0].detail.startswith("예외 ValueError")
+    with pytest.raises(AttributeError):
+        evaluate([case], predict=code_bug, match=lambda pred, exp: True)
